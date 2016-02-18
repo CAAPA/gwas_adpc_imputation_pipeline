@@ -13,11 +13,9 @@ institute=$2
 mkdir ../data/output
 mkdir ../data/output/${site}
 mkdir ../data/output/${site}/flow
+rm ../data/output/${site}/flow/flow_nrs.txt
 mkdir ../data/working/
 mkdir ../data/working/${site}
-
-#Initialize the output file with flow diagram nrs
-echo "" > ../data/output/${site}/flow/flow_nrs.txt
 
 #Run through the pipeline
 bash get_gwas_samples.sh $site $institute
