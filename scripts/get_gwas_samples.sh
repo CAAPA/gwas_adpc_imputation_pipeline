@@ -11,7 +11,10 @@ institute=$2
 in_file_prefix=../data/input/${site}/gwas
 out_file_prefix=../data/working/${site}/gwas_init
 
-cat map_gwas_fam_file_ids.R | R --vanilla --args $in_file_prefix $out_file_prefix $institute
+cat map_gwas_fam_file_ids.R | R --vanilla --args \
+                                ${in_file_prefix}.fam \
+                                ${out_file_prefix}.fam \
+                                $institute
 
 
 #Output nrs for flow diagram
