@@ -21,6 +21,8 @@ bash get_gwas_samples.sh $site $institute
 bash get_adpc_samples.sh $site $institute
 bash get_good_samples.sh $site gwas
 bash get_good_samples.sh $site adpc
+bash get_common_samples.sh $site gwas adpc
+bash get_common_samples.sh $site adpc gwas
 
 #Create the flow diagram for this site
 bash ../doc/build_flow.sh $site
