@@ -23,8 +23,8 @@ digraph {
 
     QC_GWAS [label="QC GWAS (n=n_qc_gwas, m=m_qc_gwas)",
              shape=box] //params: n_qc_gwas, m=m_qc_gwas
-    COMMON_GWAS -> QC_GWAS [label=" delete m_bad_gwas_snps SNPs"];
-                //script: do_qc; params: m_bad_gwas_snps
+    COMMON_GWAS -> QC_GWAS [label=" delete m_bad_gwas SNPs (m_gwas_hwe failed HWE, m_gwas_mono monomorphic, m_gwas_call_rate > 5% missing)"];
+                //script: do_gwas_qc; params: m_bad_gwas
                 //m (whatever subcategories removed)
 
 
@@ -56,8 +56,8 @@ digraph {
 
     QC_ADPC [label="QC ADPC (n=n_qc_adpc, m=m_qc_adpc)",
              shape=box] //params: n_qc_adpc, m=m_qc_adpc
-    COMMON_ADPC -> QC_ADPC [label=" delete m_bad_adpc_snps SNPs"];
-                //script: do_qc; params: m_bad_adpc_snps
+    COMMON_ADPC -> QC_ADPC [label=" delete m_bad_adpc SNPs (m_bad_cluster failed clustering, m_adpc_hwe failed HWE, m_adpc_mono monomorphic, m_adpc_call_rate > 5% missing)"];
+                //script: do_adpc_qc; params: m_bad_adpc
                 //m (whatever subcategories removed)
                 //remember to also remove ACGT
 

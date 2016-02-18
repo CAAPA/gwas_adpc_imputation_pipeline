@@ -27,7 +27,14 @@ Here I had to match the original PLINK files that Nick received from the investi
 
 ## Flow diagram nomenclature
 
+- "good" samples are those samples that are listed in <i>manifest_good_sample_list.txt</i>
 
 ## Technical notes
 
 - When the initial ADPC and GWAS files are created, sex and phenotype values in the fam files are set to missing (0)
+- The following PLINK parameters were used for the SNP QC (both GWAS and ADPC): --maf 0.0001 --geno 0.05 --hwe 0.0001
+
+
+## Issues
+
+- For Chicago, there is one additional GOOD common sample, WG0237021-DNAA02, which was not inclduded in the original run. I don't know why...
