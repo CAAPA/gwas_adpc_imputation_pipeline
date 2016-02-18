@@ -17,6 +17,7 @@ output: html_document
 - <i>manifest_master.txt</i>: The first sheet of <i>10411manifest.xlsx</i> (copied and pasted)
 - <i>manifest_good_sample_list.txt</i>: List of samples extracted from the first column of the GOOD worksheet of <i>10411manifest.xlsx</i>
 - <i>adpc.*</i>: PLINK files for all samples typed on ADPC (originally called <i>ADPC_final</i> and just renamed)
+- <i>ADPC_SNPs_flagged_markers.txt</i>: List of SNPs that Nick and Rich identified as failing clustering
 
 ### data/input/\<site\>/
 
