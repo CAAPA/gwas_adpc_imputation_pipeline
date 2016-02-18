@@ -21,4 +21,7 @@ plink --bfile $in_file_prefix --keep  ${work_dir}/good_samples_keep.txt --make-b
 n_good=`wc -l ${out_file_prefix}.fam | tr -s ' ' | cut -f2 -d' '`
 echo "n_good_${dataset} $n_good" >> ../data/output/${site}/flow/flow_nrs.txt
 m_good=`wc -l ${out_file_prefix}.bim | tr -s ' ' | cut -f2 -d' '`
-echo "m_good_${dataset} $m_good" >> ../data/output/${site}/flow/flow_nrs.txt>> ../data/output/${site}/flow/flow_nrs.txt
+echo "m_good_${dataset} $m_good" >> ../data/output/${site}/flow/flow_nrs.txt
+n_init=`wc -l ${in_file_prefix}.fam | tr -s ' ' | cut -f2 -d' '`
+n_bad=$(($n_init-$n_good))
+echo "n_bad_${dataset} $n_bad" >> ../data/output/${site}/flow/flow_nrs.txt
