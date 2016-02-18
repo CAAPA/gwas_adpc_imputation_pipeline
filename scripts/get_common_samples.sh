@@ -21,6 +21,6 @@ plink --bfile $in_file_prefix \
 
 #Output nrs for flow diagram
 n_common=`wc -l ${out_file_prefix}.fam | tr -s ' ' | cut -f2 -d' '`
-echo "n_common_${dataset} $n_common" >> ../data/output/${site}/flow/flow_nrs.txt
+echo "n_common_${in_dataset} $n_common" >> ../data/output/${site}/flow/flow_nrs.txt
 m_common=`wc -l ${out_file_prefix}.bim | tr -s ' ' | cut -f2 -d' '`
-echo "m_common_${dataset} $m_common" >> ../data/output/${site}/flow/flow_nrs.txt>> ../data/output/${site}/flow/flow_nrs.txt
+echo "m_common_${in_dataset} $m_common" >> ../data/output/${site}/flow/flow_nrs.txt>> ../data/output/${site}/flow/flow_nrs.txt
