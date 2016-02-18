@@ -16,6 +16,9 @@ mkdir ../data/output/${site}/flow
 mkdir ../data/working/
 mkdir ../data/working/${site}
 
+#Initialize the output file with flow diagram nrs
+echo "" > ../data/output/${site}/flow/flow_nrs.txt
+
 #Run through the pipeline
 bash get_gwas_samples.sh $site $institute
 bash get_adpc_samples.sh $site $institute
