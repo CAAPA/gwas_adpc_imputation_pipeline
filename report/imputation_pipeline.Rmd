@@ -1,0 +1,33 @@
+---
+title: "CAAPA GWAS+ADPC imputation pipeline"
+output: html_document
+---
+
+## Imputation summary statistics
+
+## Folder structure
+
+### data/raw
+
+- <i>10411manifest.xlsx</i>: Rich's manifest file, obtained from Nick
+- per site, the fam and bim files received from Nick, which he originally received from the investigators; used to determine which GWAS files to use as input
+
+### data/input
+
+- <i>manifest_master.txt</i>: The first sheet of <i>10411manifest.xlsx</i> (copied and pasted)
+- <i>manifest_good_sample_list.txt</i>: List of samples extracted from the first column of the GOOD worksheet of <i>10411manifest.xlsx</i>
+- <i>adpc.*</i>: PLINK files for all samples typed on ADPC (originally called <i>ADPC_final</i> and just renamed)
+
+### data/input/\<site\>/
+
+Here I had to match the original PLINK files that Nick received from the investigators, to the equivalent GWAS file that he performed QC on. The file names listed below are the original PLINK file prefixes.
+
+- <i>chicago</i>: CAG__2010-09-17__Illumina_1Mv1__hg19 (fam file line count = Nick's previous QC fam file line count;  bim file line count is in the same order as Nick's previous QC bim file)
+
+
+## Flow diagram nomenclature
+
+
+## Technical notes
+
+- When the initial ADPC and GWAS files are created, sex and phenotype values in the fam files are set to missing (0)
