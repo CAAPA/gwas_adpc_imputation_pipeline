@@ -29,6 +29,7 @@ Here I had to match the original PLINK files that Nick received from the investi
 ## Flow diagram nomenclature
 
 - "good" samples are those samples that are listed in <i>manifest_good_sample_list.txt</i>
+- n = sample size, m = number of SNPs
 
 ## Technical notes
 
