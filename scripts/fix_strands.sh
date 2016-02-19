@@ -30,7 +30,7 @@ for ((chr=1; chr<=22; chr++)); do
           --make-bed --out $vcf_file_prefix${chr}
     vcf-sort $vcf_file_prefix${chr}.vcf | \
         bgzip -c > \
-              $vcf_file_prefix${chr}.gz
+              $vcf_file_prefix${chr}.vcf.gz
 done
 
 #Prompt for uploading to server
