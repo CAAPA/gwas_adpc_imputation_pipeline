@@ -14,6 +14,7 @@ mkdir ../data/output
 mkdir ../data/output/${site}
 mkdir ../data/output/${site}/flow
 mkdir ../data/output/${site}/statistics
+mkdir ../data/output/${site}/merged
 rm ../data/output/${site}/flow/flow_nrs.txt
 mkdir ../data/working/
 mkdir ../data/working/${site}
@@ -30,6 +31,7 @@ bash do_adpc_qc.sh $site
 bash fix_strands.sh $site gwas
 bash fix_strands.sh $site adpc
 bash get_common_snp_files.sh $site
+bash merge_adpc_gwas.sh $site
 
 #Create the flow diagram for this site
 bash ../doc/build_flow.sh $site
