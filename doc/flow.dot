@@ -40,7 +40,7 @@ digraph {
               shape=box] //params:n_all_adpc, m_all_adpc
     INIT_ADPC [label="initial ADPC (n=n_init_adpc, m=m_init_adpc)",
                shape=box] //params: n_init_adpc, m_init_adpc
-    ALL_ADPC -> INIT_ADPC [label=" get site specific samples"]
+    ALL_ADPC -> INIT_ADPC [label=" get site specific samples, fix SNP positions (dbSNP 142 chr start)"]
                 //script: get_adpc_samples (site)
 
 
