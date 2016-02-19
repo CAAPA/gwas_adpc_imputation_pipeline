@@ -23,7 +23,7 @@ plink --bfile $in_file_prefix \
       --make-bed --out $no_at_cg_file_prefix
 
 #Create VCF files to upload to server, to identify strand flips
-for ((chr=1; chr<=2; chr++)); do
+for ((chr=1; chr<=22; chr++)); do
     plink --bfile $no_at_cg_file_prefix \
           --chr $chr \
           --recode vcf \
