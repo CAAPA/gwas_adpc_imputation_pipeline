@@ -25,14 +25,14 @@ fi
 #Per chromosome, and per ADPC/GWAS file, create VCF file
 #Exclude discordant SNPs marked for deletion
 for ((chr=1; chr<=22; chr++)); do
-    cut -f6 ${work_dir}/discordant_snps_delete.txt > del_snps.txt
-    cat ${work_dir}/del_snps_rename.txt >> del_snps.txt
+    cut -f6 ${work_dir}/discordant_snps_delete.txt > ${work_dir}/del_snps.txt
+    cat ${work_dir}/del_snps_rename.txt >> ${work_dir}/del_snps.txt
     plink --bfile ${work_dir}/adpc_flipped \
           --chr $chr \
           --exclude ${work_dir}/del_snps.txt \
           --recode vcf \
           --make-bed --out ${work_dir}/adpc_chr${chr}
-    cut -f3 ${work_dir}/discordant_snps_delete.txt > del_snps.txt
+    cut -f3 ${work_dir}/discordant_snps_delete.txt > ${work_dir}/del_snps.txt
     plink --bfile ${work_dir}/gwas_flipped \
           --chr $chr \
           --exclude ${work_dir}/del_snps.txt \
