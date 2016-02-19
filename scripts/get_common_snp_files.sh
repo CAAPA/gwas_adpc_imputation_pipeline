@@ -18,11 +18,11 @@ cat get_common_snps.R | R --vanilla --args ${adpc_file_prefix}.bim \
 
 #Extract the common SNPs
 cut -f3 ${work_dir}/common_snps.txt > ${work_dir}/common_snps_adpc.txt
-plink --noweb --bfile ${work_dir}/adpc \
+plink --noweb --bfile $adpc_file_prefix \
       --extract ${work_dir}/common_snps_adpc.txt \
       --make-bed --out ${work_dir}/adpc_common_snps
 cut -f4 ${work_dir}/common_snps.txt > ${work_dir}/common_snps_gwas.txt
-plink --noweb --bfile ${work_dir}/gwas \
+plink --noweb --bfile $gwas_file_prefix \
       --extract ${work_dir}/common_snps_gwas.txt \
       --make-bed --out ${work_dir}/gwas_common_snps
 
