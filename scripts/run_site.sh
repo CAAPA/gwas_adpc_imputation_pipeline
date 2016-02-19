@@ -13,6 +13,7 @@ institute=$2
 mkdir ../data/output
 mkdir ../data/output/${site}
 mkdir ../data/output/${site}/flow
+mkdir ../data/output/${site}/statistics
 rm ../data/output/${site}/flow/flow_nrs.txt
 mkdir ../data/working/
 mkdir ../data/working/${site}
@@ -26,6 +27,8 @@ bash get_common_samples.sh $site gwas adpc
 bash get_common_samples.sh $site adpc gwas
 bash do_gwas_qc.sh $site
 bash do_adpc_qc.sh $site
+bash fix_strands.sh chicago gwas
+bash fix_strands.sh chicago adpc
 
 #Create the flow diagram for this site
 bash ../doc/build_flow.sh $site
