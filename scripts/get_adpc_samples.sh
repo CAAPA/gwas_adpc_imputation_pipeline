@@ -26,10 +26,18 @@ paste ${work_dir}/adpc_ids.txt ${work_dir}/adpc_ids.txt \
 cp ${in_file_prefix}.bed ${work_dir}/tmp.bed
 cp ${in_file_prefix}.bim ${work_dir}/tmp.bim
 
+#Create input bim files that matches dbSNP 142 chr start
+bash get_dbsnp142_start_pos_files.sh ${work_dir}/tmp ${work_dir}/tmp_chr_start
+#There may now be SNPs with duplicate positions, remove them!
+cat get_dupl_adpc_snps.R | R --vanilla --args $work_dir
+plink --bfile ${work_dir}/tmp_chr_start \
+      --exclude ${work_dir}/adpc_dupl_snps_del.txt \
+      --make-bed --out ${work_dir}/tmp_fixed
+
 #Extract only the relevant samples
-plink --bfile ${work_dir}/tmp --keep ${work_dir}/keep_list.txt --make-bed --out $out_file_prefix
-
-
+plink --bfile ${work_dir}/tmp_fixed \
+      --keep ${work_dir}/keep_list.txt \
+      --make-bed --out $out_file_prefix
 
 #Output nrs for flow diagram
 n_init_adpc=`wc -l ${out_file_prefix}.fam | tr -s ' ' | cut -f2 -d' '`
