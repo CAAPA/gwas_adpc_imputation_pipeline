@@ -11,16 +11,10 @@ work_dir=../data/working/${site}
 adpc_file_prefix=${work_dir}/adpc_flipped
 gwas_file_prefix=${work_dir}/gwas_flipped
 
-#Create input bim files that matches dbSNP 142 chr start
-bash get_dbsnp142_start_pos_files.sh $adpc_file_prefix ${work_dir}/adpc_fixed
-#There may now be SNPs with duplicate positions, remove them!
-cat get_dupl_adpc_snps.R | R --vanilla --args $work_dir
-plink --bfile  ${work_dir}/adpc_fixed \
-      --exclude ${work_dir}/adpc_dupl_snps_del.txt \
-      --make-bed --out ${work_dir}/adpc
-
 #Get a file of common SNPs, merged by chromosome and position
-cat get_common_snps.R | R --vanilla --args ${work_dir}/adpc_pos_fixed.bim ${work_dir}/gwas_flipped.bim ${work_dir}/common_snps.txt
+cat get_common_snps.R | R --vanilla --args ${adpc_file_prefix}.bim \
+                          ${gwas_file_prefix}.bim \
+                          ${work_dir}/common_snps.txt
 
 #Extract the common SNPs
 cut -f3 ${work_dir}/common_snps.txt > ${work_dir}/common_snps_adpc.txt
@@ -88,3 +82,27 @@ else
     plink --noweb --bfile  ${work_dir}/gwas_common_snps \
           --make-bed --out  ${work_dir}/gwas_common_snps_final
 fi
+
+#Run PLINK merge to get a list of SNP discordance
+plink --noweb --bfile ${work_dir}/adpc_common_snps_final \
+      --bmerge ${work_dir}/gwas_common_snps_final.bed \
+      ${work_dir}/gwas_common_snps_final.bim \
+      ${work_dir}/gwas_common_snps_final.fam \
+      --merge-mode 7 \
+      --make-bed --out $work_dir/discordant_snp_check
+
+#Check overall concordance
+concordance_prop=`grep 'concordance rate' ${work_dir}/discordant_snp_check.log | cut -f8 -d' ' | sed 's/.$//'`
+perc_conc=`python -c "print int($concordance_prop*100)"`
+if [ "$perc_conc" -lt 95 ]
+then
+    echo "ERROR! concordance for site $site is less than 95%"
+    read
+fi
+
+#Output nrs for flow diagram
+n_common=`wc -l gwas_common_snps_final.fam | tr -s ' ' | cut -f2 -d' '`
+echo "n_common $n_common" >> ../data/output/${site}/flow/flow_nrs.txt
+m_common=`wc -l gwas_common_snps_final.bim | tr -s ' ' | cut -f2 -d' '`
+echo "m_common $m_common" >> ../data/output/${site}/flow/flow_nrs.txt
+echo "perc_conc $perc_conc" >> ../data/output/${site}/flow/flow_nrs.txt

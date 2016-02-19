@@ -33,7 +33,7 @@ Here I had to match the original PLINK files that Nick received from the investi
 ## Technical notes
 
 - When the initial ADPC and GWAS files are created, sex and phenotype values in the fam files are set to missing (0)
-- The SNP positions of the initial ADPC file was fixed to match dbSNP 142 chromosome end positions (instead of the start position), but not for SNPs with rs IDs - these SNP positions were already correct. This does result in some duplicate SNPs by position, which were removed.
+- The SNP positions of the initial ADPC file was fixed to match dbSNP 142 chromosome end positions (instead of the start position), but not for SNPs with rs IDs - these SNP positions were already correct. This does result in some duplicate SNPs by position (2 SNPs; JHU_8.62003452 and JHU_16.3811555), which were removed.
 - The following PLINK parameters were used for the SNP QC (both GWAS and ADPC): --maf 0.0001 --geno 0.05 --hwe 0.0001
 
 
