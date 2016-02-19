@@ -50,7 +50,7 @@ fi
 #Flip file 1 markers to file 2 markers
 #-First get a list of SNPs to flip
 plink --noweb --bfile  ${work_dir}/adpc_common_snps_renamed_no_dupl \
-      --bmerge ${work_dir}/gwas.bed ${work_dir}/gwas.bim ${work_dir}/gwas.fam \
+      --bmerge ${work_dir}/gwas_flipped.bed ${work_dir}/gwas_flipped.bim ${work_dir}/gwas_flipped.fam \
       --make-bed --out dummy_merge
 #-Then flip the markers
 if [ -e "dummy_merge-merge.missnp" ]
@@ -65,7 +65,7 @@ else
 fi
 #-Are there any markers that cannot be merged after flip? If so, delete them from both data sets
 plink --noweb --bfile  ${work_dir}/adpc_common_snps_flipped \
-      --bmerge ${work_dir}/gwas.bed ${work_dir}/gwas.bim ${work_dir}/gwas.fam \
+      --bmerge ${work_dir}/gwas_flipped.bed ${work_dir}/gwas_flipped.bim ${work_dir}/gwas_flipped.fam \
       --make-bed --out dummy_merge
 if [ -e "dummy_merge-merge.missnp" ]
 then
@@ -99,6 +99,7 @@ then
     echo "ERROR! concordance for site $site is less than 95%"
     read
 fi
+perc_conc=`python -c "print round($concordance_prop*100,2)"`
 
 #Output nrs for flow diagram
 n_common=`wc -l gwas_common_snps_final.fam | tr -s ' ' | cut -f2 -d' '`
