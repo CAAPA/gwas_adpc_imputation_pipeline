@@ -35,8 +35,9 @@ Here I had to match the original PLINK files that Nick received from the investi
 - When the initial ADPC and GWAS files are created, sex and phenotype values in the fam files are set to missing (0)
 - The SNP positions of the initial ADPC file was fixed to match dbSNP 142 chromosome end positions (instead of the start position), but not for SNPs with rs IDs - these SNP positions were already correct. This does result in some duplicate SNPs by position (2 SNPs; JHU_8.62003452 and JHU_16.3811555), which were removed.
 - The following PLINK parameters were used for the SNP QC (both GWAS and ADPC): --maf 0.0001 --geno 0.05 --hwe 0.0001
+- For SNPs that are discordant between ADPC and GWAS (same SNP in the ADPC and GWAS data sets, for the same sample, with different genotype calls): if a SNP is discordant in 5% of samples or more, the SNP is deleted from the dataset, else the SNP value is set to missing for the sample(s) it is discordant for
 
 
 ## Issues
 
-- For Chicago, there is one additional GOOD common sample, WG0237021-DNAA02, which was not inclduded in the original run. I don't know why...
+- For Chicago, there is one additional GOOD common sample, WG0237021-DNAA02, which was not inclduded in the original run. I don't know why...(In the Master sheet of the manifest, all flags are 0 for this sample, it is in the GOOD sheet, it is NOT in the illumina fails sheet, is is NOT in the QC errors sheet.)
