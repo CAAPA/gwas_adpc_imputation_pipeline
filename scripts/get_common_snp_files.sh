@@ -102,8 +102,8 @@ fi
 perc_conc=`python -c "print round($concordance_prop*100,2)"`
 
 #Output nrs for flow diagram
-n_common=`wc -l gwas_common_snps_final.fam | tr -s ' ' | cut -f2 -d' '`
+n_common=`wc -l ${work_dir}/gwas_common_snps_final.fam | tr -s ' ' | cut -f2 -d' '`
 echo "n_common $n_common" >> ../data/output/${site}/flow/flow_nrs.txt
-m_common=`wc -l gwas_common_snps_final.bim | tr -s ' ' | cut -f2 -d' '`
+m_common=`wc -l ${work_dir}/gwas_common_snps_final.bim | tr -s ' ' | cut -f2 -d' '`
 echo "m_common $m_common" >> ../data/output/${site}/flow/flow_nrs.txt
 echo "perc_conc $perc_conc" >> ../data/output/${site}/flow/flow_nrs.txt
