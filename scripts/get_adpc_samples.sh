@@ -34,9 +34,10 @@ plink --bfile ${work_dir}/tmp_chr_start \
       --exclude ${work_dir}/adpc_dupl_snps_del.txt \
       --make-bed --out ${work_dir}/tmp_fixed
 
-#Extract only the relevant samples
+#Extract only the relevant samples and only autosomal SNPs
 plink --bfile ${work_dir}/tmp_fixed \
       --keep ${work_dir}/keep_list.txt \
+      --chr 1-22 \
       --make-bed --out $out_file_prefix
 
 #Output nrs for flow diagram
