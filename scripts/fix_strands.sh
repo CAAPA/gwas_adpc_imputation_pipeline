@@ -27,12 +27,15 @@ for ((chr=1; chr<=22; chr++)); do
     plink --bfile $no_at_cg_file_prefix \
           --chr $chr \
           --recode vcf \
-          --make-bed --out $vcf_file_prefix
+          --make-bed --out $vcf_file_prefix${chr}
+    vcf-sort $vcf_file_prefix${chr}.vcf | \
+        bgzip -c > \
+              $vcf_file_prefix${chr}.gz
 done
 
 #Prompt for uploading to server
 echo "================================================================================="
-echo "Upload ${vcf_file_prefix}<chr> to the imputation server"
+echo "Upload ${vcf_file_prefix}<chr>.vcf.gz to the imputation server"
 echo "Save the output report and statistics file to ../data/output/${site}/statistics/"
 echo "(name the files ${dataset}.pdf and ${dataset}_statistics.txt)"
 echo "then press ENTER"
