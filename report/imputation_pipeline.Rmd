@@ -18,6 +18,7 @@ output: html_document
 - <i>manifest_good_sample_list.txt</i>: List of samples extracted from the first column of the GOOD worksheet of <i>10411manifest.xlsx</i>
 - <i>adpc.*</i>: PLINK files for all samples typed on ADPC (originally called <i>ADPC_final</i> and just renamed)
 - <i>ADPC_SNPs_flagged_markers.txt</i>: List of SNPs that Nick and Rich identified as failing clustering
+- <i>asw_freq_chr*.txt</i>: CHR, SNP, POS, A1 (minor allele),	A2 (major allele), MAF, for the 45 African American thousand genome individuals (ASW population). PLINK was used to calculate the minor/major allele and MAF (see section <i>5.7 Allele frequency</i> of the manual, where they clearly state that A1 = minor allele and A2 = major allele), from TGP files originally extracted for my "tgp" project.
 
 ### data/input/\<site\>/
 
@@ -35,7 +36,6 @@ Here I had to match the original PLINK files that Nick received from the investi
 
 - When the initial ADPC and GWAS files are created, sex and phenotype values in the fam files are set to missing (0)
 - The SNP positions of the initial ADPC file was fixed to match dbSNP 142 chromosome end positions (instead of the start position), but not for SNPs with rs IDs - these SNP positions were already correct. This does result in some duplicate SNPs by position (2 SNP pairs), which were removed (4 SNPs).
-- Some of the GWAS sites also had duplicate SNPs by position (which might have been introduced when the files were "lifted over"). All of these SNPs were removed (the number is quite low, and it would be hard to tell which SNP of a duplicate pair is really correct, in cases where there are duplicate SNP discrepancies).
 - The following PLINK parameters were used for the SNP QC (both GWAS and ADPC): --maf 0.0001 --geno 0.05 --hwe 0.0001
 - For SNPs that are discordant between ADPC and GWAS (same SNP in the ADPC and GWAS data sets, for the same sample, with different genotype calls): if a SNP is discordant in 5% of samples or more, the SNP is deleted from the dataset, else the SNP value is set to missing for the sample(s) it is discordant for
 
