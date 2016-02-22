@@ -50,23 +50,22 @@ done
 #Merge the files
 for ((chr=1; chr<=22; chr++)); do
 
-    plink --vcf ${work_dir}/adpc_fixed_chr${chr}.vcf \
-          --make-bed --out ${work_dir}/b_adpc_chr${chr}
     plink --vcf ${work_dir}/gwas_fixed_chr${chr}.vcf \
           --make-bed --out ${work_dir}/b_gwas_chr${chr}
-    plink --bfile ${work_dir}/b_adpc_chr${chr} \
+    plink --vcf ${work_dir}/adpc_fixed_chr${chr}.vcf \
+          --make-bed --out ${work_dir}/b_adpc_chr${chr}
+
+    #for ADPC, also remove the duplicate position SNPs
+    cat get_dupl_merged_snps.R | R --vanilla --args $work_dir $chr
+    plink --vcf ${work_dir}/adpc_fixed_chr${chr}.vcf \
+          --exclude ${work_dir}/merged_snps_del_chr${chr}.txt \
+          --make-bed --out ${work_dir}/b_adpc_no_dupls_chr${chr}
+
+    plink --bfile ${work_dir}/b_adpc_no_dupls_chr${chr} \
           --bmerge ${work_dir}/b_gwas_chr${chr}.bed \
           ${work_dir}/b_gwas_chr${chr}.bim \
           ${work_dir}/b_gwas_chr${chr}.fam \
           --make-bed --out  ${work_dir}/merged_chr${chr}
-
-    #remove duplicate positions
-    cat get_dupl_merged_snps.R | R --vanilla --args $work_dir $chr
-    plink --bfile  ${work_dir}/merged_chr${chr} \
-          --exclude ${work_dir}/merged_snps_del.txt \
-          --recode vcf \
-          --out ${work_dir}/chr${chr}
-
 
     vcf-sort ${work_dir}/chr${chr}.vcf | \
         bgzip -c > \
