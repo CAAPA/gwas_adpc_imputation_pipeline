@@ -20,7 +20,7 @@ cat map_gwas_fam_file_ids.R | R --vanilla --args \
 cp ${in_file_prefix}.bed ${work_dir}/tmp.bed
 cp ${in_file_prefix}.bim ${work_dir}/tmp.bim
 
-cat get_dupl_snps.R | R --vanilla --args ${work_dir}/tmp.bim
+cat get_dupl_snps.R | R --vanilla --args ${work_dir}/tmp.bim ${work_dir}
 plink --bfile ${work_dir}/tmp \
       --exclude ${work_dir}/dupl_snps_del.txt \
       --make-bed --out ${work_dir}/tmp_fixed

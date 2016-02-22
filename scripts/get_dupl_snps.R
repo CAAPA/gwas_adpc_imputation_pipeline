@@ -1,5 +1,6 @@
 args <- commandArgs(trailingOnly = TRUE)
 in.file.name <- args[1]
+work.dir <- args[2]
 
 bim <- read.table(in.file.name, stringsAsFactors = F)
 

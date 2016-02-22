@@ -29,7 +29,7 @@ cp ${in_file_prefix}.bim ${work_dir}/tmp.bim
 #Create input bim files that matches dbSNP 142 chr start
 bash update_adpc_pos.sh ${work_dir}/tmp ${work_dir}/tmp_chr_start
 #There may now be SNPs with duplicate positions, remove them!
-cat get_dupl_snps.R | R --vanilla --args ${work_dir}/tmp_chr_start.bim
+cat get_dupl_snps.R | R --vanilla --args ${work_dir}/tmp_chr_start.bim ${work_dir}
 plink --bfile ${work_dir}/tmp_chr_start \
       --exclude ${work_dir}/dupl_snps_del.txt \
       --make-bed --out ${work_dir}/tmp_fixed
