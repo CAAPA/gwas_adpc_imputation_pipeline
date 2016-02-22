@@ -31,13 +31,13 @@ for ((chr=1; chr<=22; chr++)); do
           --chr $chr \
           --exclude ${work_dir}/del_snps.txt \
           --recode vcf \
-          --make-bed --out ${work_dir}/adpc_chr${chr}
+          --out ${work_dir}/adpc_chr${chr}
     cut -f3 ${work_dir}/discordant_snps_delete.txt > ${work_dir}/del_snps.txt
     plink --bfile ${work_dir}/gwas_flipped \
           --chr $chr \
           --exclude ${work_dir}/del_snps.txt \
           --recode vcf \
-          --make-bed --out ${work_dir}/gwas_chr${chr}
+          --out ${work_dir}/gwas_chr${chr}
 done
 
 #Per chromosome, and per ADPC/GWAS file, update discordant SNPs by sample to missing
@@ -66,6 +66,11 @@ for ((chr=1; chr<=22; chr++)); do
           ${work_dir}/b_gwas_chr${chr}.bim \
           ${work_dir}/b_gwas_chr${chr}.fam \
           --make-bed --out  ${work_dir}/merged_chr${chr}
+
+
+    plink --bfile ${work_dir}/merged_chr${chr} \
+          --recode vcf \
+          --out ${work_dir}/chr${chr}.vcf
 
     vcf-sort ${work_dir}/chr${chr}.vcf | \
         bgzip -c > \
