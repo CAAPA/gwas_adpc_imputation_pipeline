@@ -7,7 +7,7 @@ digraph {
                shape=box] //params: n_orig_gwas, m_orig_gwas
     INIT_GWAS [label="initial GWAS (n=n_init_gwas, m=m_init_gwas)",
                shape=box] //params: n_init_gwas, m_init_gwas
-    ORIG_GWAS -> INIT_GWAS [label= " map sample IDs, delete non-autosomal SNPs"];
+    ORIG_GWAS -> INIT_GWAS [label= " map sample IDs, delete non-autosomal SNPs, delete m_gwas_dupl_snps duplicate position SNPs"];
                  //script: get_gwas_samples
 
 
@@ -40,7 +40,7 @@ digraph {
               shape=box] //params:n_all_adpc, m_all_adpc
     INIT_ADPC [label="initial ADPC (n=n_init_adpc, m=m_init_adpc)",
                shape=box] //params: n_init_adpc, m_init_adpc
-    ALL_ADPC -> INIT_ADPC [label=" get site specific samples, fix SNP positions (dbSNP 142 chr start), delete non-autosomal SNPs"]
+    ALL_ADPC -> INIT_ADPC [label=" get site specific samples, fix SNP positions, delete non-autosomal SNPs, delete m_adpc_dupl_snps duplicate position SNPs"]
                 //script: get_adpc_samples (site)
 
 

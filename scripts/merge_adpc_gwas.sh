@@ -81,6 +81,5 @@ m_disc_del=$(($m_disc_del-1))
 echo "m_disc_del $m_disc_del" >> ../data/output/${site}/flow/flow_nrs.txt
 n_merged=`wc -l ${work_dir}/merged_chr22.fam | tr -s ' ' | cut -f2 -d' '`
 echo "n_merged $n_merged"  >> ../data/output/${site}/flow/flow_nrs.txt
-vcf_line_count=`wc -l ${work_dir}/chr*.vcf | tail -1 | cut -f2 -d ' '`
-m_merged=$(($vcf_line_count - 7*22))
+m_merged=`wc -l ${work_dir}/merged_chr*bim`
 echo "m_merged $m_merged" >> ../data/output/${site}/flow/flow_nrs.txt
