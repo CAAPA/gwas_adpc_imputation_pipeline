@@ -14,8 +14,13 @@ fix_at_cg_file_prefix=../data/working/${site}/adpc_fixed_AT_CG
 vcf_file_prefix=../data/working/${site}/adpc_chr
 out_file_prefix=../data/working/${site}/adpc_flipped
 
+
+#Calculate the MAF of the ADPC SNPs
+plink --bfile $in_file_prefix --freq --out ../data/working/${site}/adpc_freq
+
 #Get a list of SNP names to delete and those to flip
-cat get_AT_CG_snps_adpc.R | R --vanilla --args ${in_file_prefix}.bim \
+cat get_AT_CG_snps_adpc.R | R --vanilla --args ../data/working/${site}/adpc_freq.frq \
+                              ${in_file_prefix}.bim \
                               $snp_del_file_name \
                               $snp_flip_file_name
 
@@ -59,8 +64,10 @@ plink --bfile $fix_at_cg_file_prefix \
       --make-bed --out $out_file_prefix
 
 #Report the output parameters
-m_ambig=`wc -l $snp_file_name | tr -s ' ' | cut -f2 -d' '`
+m_ambig=`wc -l $snp_del_file_name | tr -s ' ' | cut -f2 -d' '`
 echo "m_ambiguous_adpc $m_ambig" >> ../data/output/${site}/flow/flow_nrs.txt
+m_ambig_flip=`wc -l $snp_flip_file_name | tr -s ' ' | cut -f2 -d' '`
+echo "m_ambiguous_flip $m_ambig_flip" >> ../data/output/${site}/flow/flow_nrs.txt
 m_flip=`wc -l $flip_file | tr -s ' ' | cut -f2 -d' '`
 echo "m_flip_adpc $m_flip" >> ../data/output/${site}/flow/flow_nrs.txt
 n_stranded=`wc -l ${out_file_prefix}.fam | tr -s ' ' | cut -f2 -d' '`

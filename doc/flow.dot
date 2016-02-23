@@ -63,7 +63,7 @@ digraph {
 
     FLIPPED_ADPC [label="strand flipped ADPC (n=n_stranded_adpc, m=m_stranded_adpc)",
                   shape=box] //params: n_stranded_adpc, m_stranded_adpc
-    QC_ADPC -> FLIPPED_ADPC [label=" delete m_ambiguous_adpc strand ambiguous SNPs, flip m_flip_adpc SNPs"];
+    QC_ADPC -> FLIPPED_ADPC [label=" delete m_ambiguous_adpc strand ambiguous SNPs, flip m_ambiguous strand ambiguous SNPs, flip m_flip_adpc other SNPs"];
                  //script: flip_strands; params: m_flip_adpc, m_ambiguous_adpc
 
 
