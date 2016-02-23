@@ -28,8 +28,8 @@ bash get_common_samples.sh $site gwas adpc
 bash get_common_samples.sh $site adpc gwas
 bash do_gwas_qc.sh $site
 bash do_adpc_qc.sh $site
-bash fix_strands_gwas.sh $site
-bash fix_strands_adpc.sh $site
+bash fix_strands.sh $site gwas
+bash fix_strands.sh $site adpc
 bash get_common_snp_files.sh $site
 bash merge_adpc_gwas.sh $site
 

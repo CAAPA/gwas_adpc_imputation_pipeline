@@ -7,24 +7,33 @@ then
     exit
 fi
 site=$1
-dataset=$2   #gwas or adpc
+dataset=$2 #gwas/adpc
 in_file_prefix=../data/working/${site}/${dataset}_qc
-snp_file_name=../data/working/${site}/${dataset}_AC_GT.txt
-no_at_cg_file_prefix=../data/working/${site}/${dataset}_no_AT_CG
+snp_del_file_name=../data/working/${site}/${dataset}_AC_GT_delete.txt
+snp_flip_file_name=../data/working/${site}/${dataset}_AC_GT_update.txt
+fix_at_cg_file_prefix=../data/working/${site}/${dataset}_fixed_AT_CG
 vcf_file_prefix=../data/working/${site}/${dataset}_chr
 out_file_prefix=../data/working/${site}/${dataset}_flipped
 
-#Get a list of SNP names that are AT/TA or CG/GC
-cat get_AT_CG_snps.R | R --vanilla --args ${in_file_prefix}.bim $snp_file_name
+
+#Calculate the MAF of the ${DATASET} SNPs
+plink --bfile $in_file_prefix --freq --out ../data/working/${site}/${dataset}_freq
+
+#Get a list of SNP names to delete and those to flip
+cat get_AT_CG_snps.R | R --vanilla --args ../data/working/${site}/${dataset}_freq.frq \
+                              ${in_file_prefix}.bim \
+                              $snp_del_file_name \
+                              $snp_flip_file_name
 
 #Remove those SNPs
 plink --bfile $in_file_prefix \
-      --exclude $snp_file_name \
-      --make-bed --out $no_at_cg_file_prefix
+      --exclude $snp_del_file_name \
+      --flip $snp_flip_file_name
+      --make-bed --out $fix_at_cg_file_prefix
 
 #Create VCF files to upload to server, to identify strand flips
 for ((chr=1; chr<=22; chr++)); do
-    plink --bfile $no_at_cg_file_prefix \
+    plink --bfile $fix_at_cg_file_prefix \
           --chr $chr \
           --recode vcf \
           --make-bed --out $vcf_file_prefix${chr}
@@ -51,13 +60,15 @@ grep -i strand $stats_file | cut -f8 -d' ' | grep rs >> $flip_file
 grep -i strand $stats_file | cut -f8 -d' ' | grep JHU >> $flip_file
 
 #Create the output file
-plink --bfile $no_at_cg_file_prefix \
+plink --bfile $fix_at_cg_file_prefix \
       --flip $flip_file \
       --make-bed --out $out_file_prefix
 
 #Report the output parameters
-m_ambig=`wc -l $snp_file_name | tr -s ' ' | cut -f2 -d' '`
+m_ambig=`wc -l $snp_del_file_name | tr -s ' ' | cut -f2 -d' '`
 echo "m_ambiguous_${dataset} $m_ambig" >> ../data/output/${site}/flow/flow_nrs.txt
+m_ambig_flip=`wc -l $snp_flip_file_name | tr -s ' ' | cut -f2 -d' '`
+echo "m_ambiguous_flip_${dataset} $m_ambig_flip" >> ../data/output/${site}/flow/flow_nrs.txt
 m_flip=`wc -l $flip_file | tr -s ' ' | cut -f2 -d' '`
 echo "m_flip_${dataset} $m_flip" >> ../data/output/${site}/flow/flow_nrs.txt
 n_stranded=`wc -l ${out_file_prefix}.fam | tr -s ' ' | cut -f2 -d' '`
