@@ -22,6 +22,7 @@ names(bim) <- c("CHR", "SNP", "POS")
 freq <- merge(freq, bim)
 
 for (chr in 1:22) {
+  print(chr)
   chr.freq <- freq[freq$CHR == chr,]
   #ref.freq <- read.table(paste0("../data/input/caapa_freq_chr", chr, ".txt"), 
   ref.freq <- read.table(paste0("../data/input/asw_freq_chr", chr, ".txt"), 
