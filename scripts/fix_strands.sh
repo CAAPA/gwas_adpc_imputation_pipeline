@@ -25,9 +25,12 @@ cat get_AT_CG_snps.R | R --vanilla --args ../data/working/${site}/${dataset}_fre
                               $snp_del_file_name \
                               $snp_flip_file_name
 
+
+cut -f1  $snp_del_file_name > snp_${snp_del_file_name}
+
 #Remove those SNPs
 plink --bfile $in_file_prefix \
-      --exclude $snp_del_file_name \
+      --exclude snp_${snp_del_file_name} \
       --flip $snp_flip_file_name \
       --make-bed --out $fix_at_cg_file_prefix
 
@@ -71,6 +74,12 @@ m_ambig_flip=`wc -l $snp_flip_file_name | tr -s ' ' | cut -f2 -d' '`
 echo "m_ambiguous_flip_${dataset} $m_ambig_flip" >> ../data/output/${site}/flow/flow_nrs.txt
 m_flip=`wc -l $flip_file | tr -s ' ' | cut -f2 -d' '`
 echo "m_flip_${dataset} $m_flip" >> ../data/output/${site}/flow/flow_nrs.txt
+m_maf=`grep base_maf $snp_del_file_name | wc -l | tr -s ' ' | cut -f2 -d' '`
+echo "m_maf_${dataset} $m_maf"  >> ../data/output/${site}/flow/flow_nrs.txt
+m_maf_ref=`grep ref_maf $snp_del_file_name | wc -l | tr -s ' ' | cut -f2 -d' '`
+echo "m_maf_${dataset}_ref $m_maf_ref" >> ../data/output/${site}/flow/flow_nrs.txt
+m_not_in_ref=`grep not_in_ref $snp_del_file_name | wc -l | tr -s ' ' | cut -f2 -d' '`
+echo "m_${dataset}_not_in_ref $m_not_in_ref" >> ../data/output/${site}/flow/flow_nrs.txt
 n_stranded=`wc -l ${out_file_prefix}.fam | tr -s ' ' | cut -f2 -d' '`
 echo "n_stranded_${dataset} $n_stranded" >> ../data/output/${site}/flow/flow_nrs.txt
 m_stranded=`wc -l ${out_file_prefix}.bim | tr -s ' ' | cut -f2 -d' '`

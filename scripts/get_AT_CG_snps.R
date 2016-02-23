@@ -33,7 +33,8 @@ for (chr in 1:22) {
   
   #Get the SNPs to delete - all AT/CG SNPs greater or equal than the specified MAF
   del.frame <- rbind(del.frame,
-                     data.frame(SNP=chr.freq$SNP[chr.freq$MAF >= maf]))
+                     data.frame(SNP=chr.freq$SNP[chr.freq$MAF >= maf],
+                                reason=rep("base_maf", sum(chr.freq$MAF >= maf))))
   #Get the SNPs to flip - remaining AT/CG SNPs with differing minor alleles
   chr.freq <- chr.freq[chr.freq$MAF < maf,]
   merged.freq <- merge(chr.freq, ref.freq, by.x=c("POS", "A1"), by.y=c("POS", "A2"))
@@ -42,11 +43,13 @@ for (chr in 1:22) {
   #Get more SNPs to delete - reference panel that exceeds the MAF
   merged.freq <- merge(chr.freq, ref.freq, by.x=c("POS"), by.y=c("POS"))
   del.frame <- rbind(del.frame,
-                        data.frame(SNP=merged.freq$SNP[merged.freq$MAF.y >= maf]))
+                        data.frame(SNP=merged.freq$SNP[merged.freq$MAF.y >= maf],
+                                   reason=rep("ref_maf", sum(merged.freq$MAF.y >= maf))))
   #Get more SNPs to delete - those SNPs that could not be merged with the reference panel, i.e. they cannot be checked
   merged.freq <- merge(chr.freq, ref.freq, by.x=c("POS"), by.y=c("POS"), all.x=T)
   del.frame <- rbind(del.frame,
-                     data.frame(SNP=merged.freq$SNP[is.na(merged.freq$MAF.y)]))
+                     data.frame(SNP=merged.freq$SNP[is.na(merged.freq$MAF.y)],
+                                reason=rep("not_in_ref", sum(is.na(merged.freq$MAF.y)))))
 }
 
 write.table(del.frame, del.file.name, sep="\t", quote=F, row.names=F, col.names=F)

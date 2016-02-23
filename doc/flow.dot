@@ -30,7 +30,7 @@ digraph {
 
     FLIPPED_GWAS [label="strand flipped GWAS (n=n_stranded_gwas, m=m_stranded_gwas)",
                   shape=box] //params: n_stranded_gwas, m_stranded_gwas
-    QC_GWAS -> FLIPPED_GWAS  [label=" delete m_ambiguous_gwas strand ambiguous SNPs, flip m_ambiguous_flip_gwas strand ambiguous SNPs, flip m_flip_gwas other SNPs"];
+    QC_GWAS -> FLIPPED_GWAS  [label=" delete m_ambiguous_gwas AT/CG SNPs (m_maf_gwas gwas MAF, m_maf_gwas_ref ref MAF, m_gwas_not_in_ref not in ref), flip m_ambiguous_flip_gwas AT/CG SNPs, flip m_flip_gwas other SNPs"];
                  //script: flip_strands; params: m_flip_gwas, m_ambiguous_gwas
 
 
@@ -63,7 +63,7 @@ digraph {
 
     FLIPPED_ADPC [label="strand flipped ADPC (n=n_stranded_adpc, m=m_stranded_adpc)",
                   shape=box] //params: n_stranded_adpc, m_stranded_adpc
-    QC_ADPC -> FLIPPED_ADPC [label=" delete m_ambiguous_adpc strand ambiguous SNPs, flip m_ambiguous_flip_adpc strand ambiguous SNPs, flip m_flip_adpc other SNPs"];
+    QC_ADPC -> FLIPPED_ADPC [label=" delete m_ambiguous_adpc AT/CG SNPs (m_maf_adpc adpc MAF, m_maf_adpc_ref ref MAF, m_adpc_not_in_ref not in ref), flip m_ambiguous_flip_gwas AT/CG SNPs, flip m_flip_gwas other SNPs"];
                  //script: flip_strands; params: m_flip_adpc, m_ambiguous_adpc
 
 
