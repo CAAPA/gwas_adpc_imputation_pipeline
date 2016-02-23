@@ -38,7 +38,7 @@ Here I had to match the original PLINK files that Nick received from the investi
 - The SNP positions of the initial ADPC file was fixed to match dbSNP 142 chromosome end positions (instead of the start position), but not for SNPs with rs IDs - these SNP positions were already correct. This does result in some duplicate SNPs by position (2 SNP pairs), which were removed (4 SNPs).
 - The following PLINK parameters were used for the SNP QC (both GWAS and ADPC): --maf 0.0001 --geno 0.05 --hwe 0.0001
 - For SNPs that are discordant between ADPC and GWAS (same SNP in the ADPC and GWAS data sets, for the same sample, with different genotype calls): if a SNP is discordant in 5% of samples or more, the SNP is deleted from the dataset, else the SNP value is set to missing for the sample(s) it is discordant for
-
+- AT/CG genotypes are deleted from GWAS files (this was done for Detroit before we received the GWAS files, and we need to be consistent); for ADPC files that strategy would result in the deletion of about 70 000 SNPs, so for these ADPC SNPs: SNPs with MAF >= 0.3 are deleted, SNPs with MAF < 0.3 that have a different minor allele as the CAAPA reference SNP: if the CAAPA reference SNP also has MAF < 0.3, the strand of the SNP is flipped, else the SNP is deleted 
 
 ## Issues
 
