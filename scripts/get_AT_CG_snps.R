@@ -48,4 +48,4 @@ for (chr in 1:22) {
 }
 
 write.table(del.frame, del.file.name, sep="\t", quote=F, row.names=F, col.names=F)
-write.table(update.frame, del.file.name, sep="\t", quote=F, row.names=F, col.names=F)
+write.table(update.frame, update.file.name, sep="\t", quote=F, row.names=F, col.names=F)

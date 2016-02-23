@@ -28,7 +28,7 @@ cat get_AT_CG_snps.R | R --vanilla --args ../data/working/${site}/${dataset}_fre
 #Remove those SNPs
 plink --bfile $in_file_prefix \
       --exclude $snp_del_file_name \
-      --flip $snp_flip_file_name
+      --flip $snp_flip_file_name \
       --make-bed --out $fix_at_cg_file_prefix
 
 #Create VCF files to upload to server, to identify strand flips
