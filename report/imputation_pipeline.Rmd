@@ -10,15 +10,17 @@ output: html_document
 ### data/raw
 
 - <i>10411manifest.xlsx</i>: Rich's manifest file, obtained from Nick
-- per site, the fam and bim files received from Nick, which he originally received from the investigators; used to determine which GWAS files to use as input
+- per site, the fam and bim files from Nick's Box account, which he originally received from the investigators; used to determine which GWAS files to use as input
+- <i>caapa</i>: The CAAPA Oct 2015 reference panel, downloaded from Nick's Box account
 
 ### data/input
 
 - <i>manifest_master.txt</i>: The first sheet of <i>10411manifest.xlsx</i> (copied and pasted)
 - <i>manifest_good_sample_list.txt</i>: List of samples extracted from the first column of the GOOD worksheet of <i>10411manifest.xlsx</i>
 - <i>adpc.*</i>: PLINK files for all samples typed on ADPC (originally called <i>ADPC_final</i> and just renamed)
-- <i>ADPC_SNPs_flagged_markers.txt</i>: List of SNPs that Nick and Rich identified as failing clustering
-- <i>asw_freq_chr*.txt</i>: CHR, SNP, POS, A1 (minor allele),	A2 (major allele), MAF, for the 45 African American thousand genome individuals (ASW population). PLINK was used to calculate the minor/major allele and MAF (see section <i>5.7 Allele frequency</i> of the manual, where they clearly state that A1 = minor allele and A2 = major allele), from TGP files originally extracted for my "tgp" project. (Initially I thought to use this for determining whether I should flip ADPC ambiguous SNPs, but we decided it is better to use the CAAPA reference panel for this; however, these files might be useful for later QC troubleshooting of allele frequencies, so are retained for now.)
+- <i>ADPC\_SNPs_flagged_markers.txt</i>: List of SNPs that Nick and Rich identified as failing clustering
+- <i>asw\_freq\_chr\*.txt</i>: CHR, SNP, POS, A1 (minor allele),	A2 (major allele), MAF, for the 45 African American thousand genome individuals (ASW population). PLINK was used to calculate the minor/major allele and MAF (see section <i>5.7 Allele frequency</i> of the manual, where they clearly state that A1 = minor allele and A2 = major allele), from TGP files originally extracted for my "tgp" project. (Initially I thought to use this for determining whether I should flip ADPC ambiguous SNPs, but we decided it is better to use the CAAPA reference panel for this; however, these files might be useful for later QC troubleshooting of allele frequencies, so are retained for now.)
+- <i>caapa\_freq\_chr\*.txt</i>: CHR, SNP, POS, A1 (minor allele),	A2 (major allele), MAF, for the CAAPA reference panel. These files were created using the <i>create\_caapa\_freq\_files.sh</i> script, that implemented SNP QC and related indidvidual removal as documented in <i>VCF\_DataRelease\_README\_Oct2015.pdf</i>. As for <i>asw\_freq\_chr*.txt</i>, PLINK was used to calculate allele frequencies.
 
 ### data/input/\<site\>/
 
@@ -36,9 +38,9 @@ Here I had to match the original PLINK files that Nick received from the investi
 
 - When the initial ADPC and GWAS files are created, sex and phenotype values in the fam files are set to missing (0)
 - The SNP positions of the initial ADPC file was fixed to match dbSNP 142 chromosome end positions (instead of the start position), but not for SNPs with rs IDs - these SNP positions were already correct. This does result in some duplicate SNPs by position (2 SNP pairs), which were removed (4 SNPs).
-- The following PLINK parameters were used for the SNP QC (both GWAS and ADPC): --maf 0.0001 --geno 0.05 --hwe 0.0001
+- The following PLINK parameters were used for the SNP QC (both GWAS and ADPC): <code>--maf 0.0001 --geno 0.05 --hwe 0.0001</code>
 - For SNPs that are discordant between ADPC and GWAS (same SNP in the ADPC and GWAS data sets, for the same sample, with different genotype calls): if a SNP is discordant in 5% of samples or more, the SNP is deleted from the dataset, else the SNP value is set to missing for the sample(s) it is discordant for
-- AT/CG genotypes are deleted from GWAS files (this was done for Detroit before we received the GWAS files, and we need to be consistent); for ADPC files that strategy would result in the deletion of about 70 000 SNPs, so for these ADPC SNPs: SNPs with MAF >= 0.3 are deleted, SNPs with MAF < 0.3 that have a different minor allele as the CAAPA reference SNP: if the CAAPA reference SNP also has MAF < 0.3, the strand of the SNP is flipped, else the SNP is deleted 
+- For ADPC files, there are about 70 000 strand ambiguous SNPs, therefore these SNPs cannot be simply deleted. SNPs with MAF >= 0.3 are deleted, SNPs with MAF < 0.3 that have a different minor allele as the CAAPA reference SNP: if the CAAPA reference SNP also has MAF < 0.3, the strand of the SNP is flipped, else the SNP is deleted. 
 
 ## Issues
 
