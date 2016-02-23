@@ -31,13 +31,13 @@ for ((chr=1; chr<=22; chr++)); do
           --chr $chr \
           --exclude ${work_dir}/del_snps.txt \
           --recode vcf \
-          --make-bed --out ${work_dir}/adpc_chr${chr}
+          --out ${work_dir}/adpc_chr${chr}
     cut -f3 ${work_dir}/discordant_snps_delete.txt > ${work_dir}/del_snps.txt
     plink --bfile ${work_dir}/gwas_flipped \
           --chr $chr \
           --exclude ${work_dir}/del_snps.txt \
           --recode vcf \
-          --make-bed --out ${work_dir}/gwas_chr${chr}
+          --out ${work_dir}/gwas_chr${chr}
 done
 
 #Per chromosome, and per ADPC/GWAS file, update discordant SNPs by sample to missing
@@ -57,7 +57,7 @@ for ((chr=1; chr<=22; chr++)); do
 
     #for ADPC, also remove the duplicate position SNPs
     cat get_dupl_merged_snps.R | R --vanilla --args $work_dir $chr
-    plink --vcf ${work_dir}/adpc_fixed_chr${chr}.vcf \
+    plink --vcf ${work_dir}/adpc_fixed_chr${chr}.vcf
           --exclude ${work_dir}/merged_snps_del_chr${chr}.txt \
           --make-bed --out ${work_dir}/b_adpc_no_dupls_chr${chr}
 
@@ -66,6 +66,11 @@ for ((chr=1; chr<=22; chr++)); do
           ${work_dir}/b_gwas_chr${chr}.bim \
           ${work_dir}/b_gwas_chr${chr}.fam \
           --make-bed --out  ${work_dir}/merged_chr${chr}
+
+
+    plink --bfile ${work_dir}/merged_chr${chr} \
+          --recode vcf \
+          --out ${work_dir}/chr${chr}
 
     vcf-sort ${work_dir}/chr${chr}.vcf | \
         bgzip -c > \
@@ -81,5 +86,5 @@ m_disc_del=$(($m_disc_del-1))
 echo "m_disc_del $m_disc_del" >> ../data/output/${site}/flow/flow_nrs.txt
 n_merged=`wc -l ${work_dir}/merged_chr22.fam | tr -s ' ' | cut -f2 -d' '`
 echo "n_merged $n_merged"  >> ../data/output/${site}/flow/flow_nrs.txt
-m_merged=`wc -l ${work_dir}/merged_chr*bim`
+m_merged=`wc -l ${work_dir}/merged_chr*bim | tail -1  | tr -s ' ' | cut -f2 -d' '`
 echo "m_merged $m_merged" >> ../data/output/${site}/flow/flow_nrs.txt
