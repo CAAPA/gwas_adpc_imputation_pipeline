@@ -20,7 +20,7 @@ output: html_document
 - <i>adpc.*</i>: PLINK files for all samples typed on ADPC (originally called <i>ADPC_final</i> and just renamed)
 - <i>ADPC\_SNPs_flagged_markers.txt</i>: List of SNPs that Nick and Rich identified as failing clustering
 - <i>asw\_freq\_chr\*.txt</i>: CHR, SNP, POS, A1 (minor allele),	A2 (major allele), MAF, for the 45 African American thousand genome individuals (ASW population). PLINK was used to calculate the minor/major allele and MAF (see section <i>5.7 Allele frequency</i> of the manual, where they clearly state that A1 = minor allele and A2 = major allele), from TGP files originally extracted for my "tgp" project. (Initially I thought to use this for determining whether I should flip ADPC ambiguous SNPs, but we decided it is better to use the CAAPA reference panel for this; however, these files might be useful for later QC troubleshooting of allele frequencies, so are retained for now.)
-- <i>caapa\_freq\_chr\*.txt</i>: CHR, SNP, POS, A1 (minor allele),	A2 (major allele), MAF, for the CAAPA reference panel. These files were created using the <i>create\_caapa\_freq\_files.sh</i> script, that implemented SNP QC and related indidvidual removal as documented in <i>VCF\_DataRelease\_README\_Oct2015.pdf</i>. As for <i>asw\_freq\_chr*.txt</i>, PLINK was used to calculate allele frequencies.
+- <i>caapa\_freq\_chr\*.txt</i>: CHR, SNP, POS, A1 (minor allele),	A2 (major allele), MAF, for the CAAPA reference panel. These files were created using the <i>create\_caapa\_freq\_files.sh</i> script, that implemented SNP QC and related individual removal as documented in <i>VCF\_DataRelease\_README\_Oct2015.pdf</i>. As for <i>asw\_freq\_chr*.txt</i>, PLINK was used to calculate allele frequencies.
 
 ### data/input/\<site\>/
 
@@ -28,6 +28,12 @@ Here I had to match the original PLINK files that Nick received from the investi
 
 - <i>chicago</i>: CAG__2010-09-17__Illumina_1Mv1__hg19 (fam file line count = Nick's previous QC fam file line count;  bim file line count is in the same order as Nick's previous QC bim file)
 
+### data/output/\<site\>/
+
+- merged: the GWAS+ADPC merged data sets used for imputation
+- imputed: imputation output files
+- flow: flow diagram of the pipeline run for the site
+- statistics: the imputation server summary reports and statistic files for the GWAS QC, ADPC QC, and imputation
 
 ## Flow diagram nomenclature
 
