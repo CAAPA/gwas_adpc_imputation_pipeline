@@ -18,7 +18,7 @@ output: html_document
 - <i>manifest_good_sample_list.txt</i>: List of samples extracted from the first column of the GOOD worksheet of <i>10411manifest.xlsx</i>
 - <i>adpc.*</i>: PLINK files for all samples typed on ADPC (originally called <i>ADPC_final</i> and just renamed)
 - <i>ADPC_SNPs_flagged_markers.txt</i>: List of SNPs that Nick and Rich identified as failing clustering
-- <i>asw_freq_chr*.txt</i>: CHR, SNP, POS, A1 (minor allele),	A2 (major allele), MAF, for the 45 African American thousand genome individuals (ASW population). PLINK was used to calculate the minor/major allele and MAF (see section <i>5.7 Allele frequency</i> of the manual, where they clearly state that A1 = minor allele and A2 = major allele), from TGP files originally extracted for my "tgp" project.
+- <i>asw_freq_chr*.txt</i>: CHR, SNP, POS, A1 (minor allele),	A2 (major allele), MAF, for the 45 African American thousand genome individuals (ASW population). PLINK was used to calculate the minor/major allele and MAF (see section <i>5.7 Allele frequency</i> of the manual, where they clearly state that A1 = minor allele and A2 = major allele), from TGP files originally extracted for my "tgp" project. (Initially I thought to use this for determining whether I should flip ADPC ambiguous SNPs, but we decided it is better to use the CAAPA reference panel for this; however, these files might be useful for later QC troubleshooting of allele frequencies, so are retained for now.)
 
 ### data/input/\<site\>/
 
