@@ -24,10 +24,8 @@ freq <- merge(freq, bim)
 for (chr in 1:22) {
   print(chr)
   chr.freq <- freq[freq$CHR == chr,]
-  #ref.freq <- read.table(paste0("../data/input/caapa_freq_chr", chr, ".txt"), 
-  ref.freq <- read.table(paste0("../data/input/asw_freq_chr", chr, ".txt"), 
-                         head=T,
-                         stringsAsFactors = F)[,-2]
+  #ref.freq <- read.table(paste0("../data/input/caapa_freq_chr", chr, ".txt"), head=T, stringsAsFactors = F)
+  ref.freq <- read.table(paste0("../data/input/asw_freq_chr", chr, ".txt"), head=T, stringsAsFactors = F)[,-2]
   ref.freq <- ref.freq[ ((ref.freq$A1 == "A") & (ref.freq$A2 == "T")) | 
                           ((ref.freq$A1 == "T") & (ref.freq$A2 == "A")) | 
                           ((ref.freq$A1 == "C") & (ref.freq$A2 == "G")) | 
@@ -45,6 +43,10 @@ for (chr in 1:22) {
   merged.freq <- merge(chr.freq, ref.freq, by.x=c("POS"), by.y=c("POS"))
   del.frame <- rbind(del.frame,
                         data.frame(SNP=merged.freq$SNP[merged.freq$MAF.y >= maf]))
+  #Get more SNPs to delete - those SNPs that could not be merged with the reference panel, i.e. they cannot be checked
+  merged.freq <- merge(chr.freq, ref.freq, by.x=c("POS"), by.y=c("POS"), all.x=T)
+  del.frame <- rbind(del.frame,
+                     data.frame(SNP=merged.freq$SNP[is.na(merged.freq$MAF.y)]))
 }
 
 write.table(del.frame, del.file.name, sep="\t", quote=F, row.names=F, col.names=F)
