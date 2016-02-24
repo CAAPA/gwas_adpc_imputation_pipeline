@@ -9,8 +9,8 @@ fi
 site=$1
 dataset=$2 #gwas/adpc
 in_file_prefix=../data/working/${site}/${dataset}_qc
-snp_del_file_name=../data/working/${site}/${dataset}_AC_GT_delete.txt
-snp_flip_file_name=../data/working/${site}/${dataset}_AC_GT_update.txt
+snp_del_file_name=../data/working/${site}/${dataset}_AT_CG_delete.txt
+snp_flip_file_name=../data/working/${site}/${dataset}_AT_CG_update.txt
 fix_at_cg_file_prefix=../data/working/${site}/${dataset}_fixed_AT_CG
 vcf_file_prefix=../data/working/${site}/${dataset}_chr
 out_file_prefix=../data/working/${site}/${dataset}_flipped
