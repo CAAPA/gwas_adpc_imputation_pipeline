@@ -68,18 +68,20 @@ plink --bfile $fix_at_cg_file_prefix \
       --make-bed --out $out_file_prefix
 
 #Report the output parameters
+m_maf=`grep maf_diff $snp_del_file_name | wc -l | tr -s ' ' | cut -f2 -d' '`
+echo "m_maf_${dataset} $m_maf" >> ../data/output/${site}/flow/flow_nrs.txt
+m_not_in_ref=`grep not_in_ref $snp_del_file_name | wc -l | tr -s ' ' | cut -f2 -d' '`
+echo "m_not_in_ref_${dataset} $m_not_in_ref" >> ../data/output/${site}/flow/flow_nrs.txt
 m_ambig=`wc -l $snp_del_file_name | tr -s ' ' | cut -f2 -d' '`
 echo "m_ambiguous_${dataset} $m_ambig" >> ../data/output/${site}/flow/flow_nrs.txt
-m_ambig_flip=`wc -l $snp_flip_file_name | tr -s ' ' | cut -f2 -d' '`
-echo "m_ambiguous_flip_${dataset} $m_ambig_flip" >> ../data/output/${site}/flow/flow_nrs.txt
-m_flip=`wc -l $flip_file | tr -s ' ' | cut -f2 -d' '`
-echo "m_flip_${dataset} $m_flip" >> ../data/output/${site}/flow/flow_nrs.txt
-m_maf=`grep base_maf $snp_del_file_name | wc -l | tr -s ' ' | cut -f2 -d' '`
-echo "m_maf_${dataset} $m_maf"  >> ../data/output/${site}/flow/flow_nrs.txt
-m_maf_ref=`grep ref_maf $snp_del_file_name | wc -l | tr -s ' ' | cut -f2 -d' '`
-echo "m_maf_${dataset}_ref $m_maf_ref" >> ../data/output/${site}/flow/flow_nrs.txt
-m_not_in_ref=`grep not_in_ref $snp_del_file_name | wc -l | tr -s ' ' | cut -f2 -d' '`
-echo "m_${dataset}_not_in_ref $m_not_in_ref" >> ../data/output/${site}/flow/flow_nrs.txt
+
+m_at_cg=`wc -l $snp_flip_file_name | tr -s ' ' | cut -f2 -d' '`
+echo "m_at_cg_${dataset} $m_at_cg" >> ../data/output/${site}/flow/flow_nrs.txt
+m_non_at_cg=`wc -l $flip_file | tr -s ' ' | cut -f2 -d' '`
+echo "m_non_at_cg_${dataset} $m_non_at_cg" >> ../data/output/${site}/flow/flow_nrs.txt
+m_ambig_flip=$(($m_at_cg+$m_non_at_cg))
+echo "m_flip_${dataset} $m_ambig_flip" >> ../data/output/${site}/flow/flow_nrs.txt
+
 n_stranded=`wc -l ${out_file_prefix}.fam | tr -s ' ' | cut -f2 -d' '`
 echo "n_stranded_${dataset} $n_stranded" >> ../data/output/${site}/flow/flow_nrs.txt
 m_stranded=`wc -l ${out_file_prefix}.bim | tr -s ' ' | cut -f2 -d' '`

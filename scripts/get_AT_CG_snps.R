@@ -5,7 +5,7 @@ in.freq.file.name <- args[1]
 in.bim.file.name <- args[2]
 del.file.name <- args[3]
 update.file.name <- args[4]
-maf <- 0.3
+maf.diff <- 0.05
 
 #Create initial empty output data frame
 del.frame <- data.frame()
@@ -26,30 +26,32 @@ for (chr in 1:22) {
   chr.freq <- freq[freq$CHR == chr,]
   #ref.freq <- read.table(paste0("../data/input/caapa_freq_chr", chr, ".txt"), head=T, stringsAsFactors = F)
   ref.freq <- read.table(paste0("../data/input/asw_freq_chr", chr, ".txt"), head=T, stringsAsFactors = F)[,-2]
+  ref.freq <- ref.freq[ref.freq$CHR == chr,]
   ref.freq <- ref.freq[ ((ref.freq$A1 == "A") & (ref.freq$A2 == "T")) | 
                           ((ref.freq$A1 == "T") & (ref.freq$A2 == "A")) | 
                           ((ref.freq$A1 == "C") & (ref.freq$A2 == "G")) | 
                           ((ref.freq$A1 == "G") & (ref.freq$A2 == "C")),]
   
-  #Get the SNPs to delete - all AT/CG SNPs greater or equal than the specified MAF
-  del.frame <- rbind(del.frame,
-                     data.frame(SNP=chr.freq$SNP[chr.freq$MAF >= maf],
-                                reason=rep("base_maf", sum(chr.freq$MAF >= maf))))
-  #Get the SNPs to flip - remaining AT/CG SNPs with differing minor alleles
-  chr.freq <- chr.freq[chr.freq$MAF < maf,]
-  merged.freq <- merge(chr.freq, ref.freq, by.x=c("POS", "A1"), by.y=c("POS", "A2"))
-  update.frame <- rbind(update.frame,
-                        data.frame(SNP=merged.freq$SNP[merged.freq$MAF.y < maf]))
-  #Get more SNPs to delete - reference panel that exceeds the MAF
-  merged.freq <- merge(chr.freq, ref.freq, by.x=c("POS"), by.y=c("POS"))
-  del.frame <- rbind(del.frame,
-                        data.frame(SNP=merged.freq$SNP[merged.freq$MAF.y >= maf],
-                                   reason=rep("ref_maf", sum(merged.freq$MAF.y >= maf))))
-  #Get more SNPs to delete - those SNPs that could not be merged with the reference panel, i.e. they cannot be checked
+  #merge the data sets and calculate MAF diff
   merged.freq <- merge(chr.freq, ref.freq, by.x=c("POS"), by.y=c("POS"), all.x=T)
+  merged.freq$MAF.DIFF <- abs(merged.freq$MAF.x - merged.freq$MAF.y)
+  
+  #Get SNPs to delete - all SNPs not in the reference genome
+  ind <- is.na(merged.freq$MAF.y)
   del.frame <- rbind(del.frame,
-                     data.frame(SNP=merged.freq$SNP[is.na(merged.freq$MAF.y)],
-                                reason=rep("not_in_ref", sum(is.na(merged.freq$MAF.y)))))
+                     data.frame(SNP=merged.freq$SNP[ind],
+                                reason=rep("not_in_ref", sum(ind))))
+  #Get SNPs to delete - all SNPs with large MAF difference
+  ind <- !is.na(merged.freq$MAF.DIFF) & (merged.freq$MAF.DIFF > maf.diff)
+  del.frame <- rbind(del.frame,
+                     data.frame(SNP=merged.freq$SNP[ind],
+                                reason=rep("maf_diff", sum(ind))))
+  #Remaining SNPs with differing minor alleles need to be flipped
+  ind <- !is.na(merged.freq$MAF.DIFF) & (merged.freq$MAF.DIFF < maf.diff) &
+    (merged.freq$A1.x != merged.freq$A2.x)
+  update.frame <- rbind(update.frame,
+                        data.frame(SNP=merged.freq$SNP[ind]))
+
 }
 
 write.table(del.frame, del.file.name, sep="\t", quote=F, row.names=F, col.names=F)
