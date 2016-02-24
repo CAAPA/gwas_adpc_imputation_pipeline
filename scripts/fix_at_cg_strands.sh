@@ -26,11 +26,11 @@ cat get_AT_CG_snps.R | R --vanilla --args ../data/working/${site}/${dataset}_fre
                               $snp_flip_file_name
 
 
-cut -f1  $snp_del_file_name > snp_${snp_del_file_name}
+cut -f1  $snp_del_file_name >  ../data/working/${site}/snps_plink_delete.txt
 
 #Remove and flip those SNPs
 plink --bfile $in_file_prefix \
-      --exclude snp_${snp_del_file_name} \
+      --exclude  ../data/working/${site}/snps_plink_delete.txt \
       --flip $snp_flip_file_name \
       --make-bed --out $fix_at_cg_file_prefix
 
