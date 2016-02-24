@@ -26,7 +26,6 @@ fi
 #Exclude discordant SNPs marked for deletion
 for ((chr=1; chr<=22; chr++)); do
     cut -f6 ${work_dir}/discordant_snps_delete.txt > ${work_dir}/del_snps.txt
-    cat ${work_dir}/del_snps_rename.txt >> ${work_dir}/del_snps.txt
     plink --bfile ${work_dir}/adpc_flipped \
           --chr $chr \
           --exclude ${work_dir}/del_snps.txt \
@@ -57,7 +56,7 @@ for ((chr=1; chr<=22; chr++)); do
 
     #for ADPC, also remove the duplicate position SNPs
     cat get_dupl_merged_snps.R | R --vanilla --args $work_dir $chr
-    plink --vcf ${work_dir}/adpc_fixed_chr${chr}.vcf
+    plink --vcf ${work_dir}/adpc_fixed_chr${chr}.vcf \
           --exclude ${work_dir}/merged_snps_del_chr${chr}.txt \
           --make-bed --out ${work_dir}/b_adpc_no_dupls_chr${chr}
 
