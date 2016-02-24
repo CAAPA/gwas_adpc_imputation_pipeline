@@ -7,7 +7,7 @@ then
     exit
 fi
 chr_start=$1
-chr_end=$1
+chr_end=$2
 mkdir ../data/working
 
 
