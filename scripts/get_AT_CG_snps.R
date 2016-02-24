@@ -47,7 +47,7 @@ for (chr in 1:22) {
                      data.frame(SNP=merged.freq$SNP[ind],
                                 reason=rep("maf_diff", sum(ind))))
   #Remaining SNPs with differing minor alleles need to be flipped
-  ind <- !is.na(merged.freq$MAF.DIFF) & (merged.freq$MAF.DIFF < maf.diff) &
+  ind <- !is.na(merged.freq$MAF.DIFF) & (merged.freq$MAF.DIFF <= maf.diff) &
     (merged.freq$A1.x != merged.freq$A2.x)
   update.frame <- rbind(update.frame,
                         data.frame(SNP=merged.freq$SNP[ind]))
