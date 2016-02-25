@@ -31,7 +31,7 @@ cut -f1  $snp_del_file_name >  ../data/working/${site}/snps_plink_delete.txt
 #Remove and flip those SNPs
 plink --bfile $in_file_prefix \
       --exclude  ../data/working/${site}/snps_plink_delete.txt \
-      --flip $snp_flip_file_name \
+      #--flip $snp_flip_file_name \
       --make-bed --out $fix_at_cg_file_prefix
 
 #Create VCF files to upload to server, to identify strand flips
@@ -53,5 +53,5 @@ echo "m_not_in_ref_${dataset} $m_not_in_ref" >> ../data/output/${site}/flow/flow
 m_ambig=`wc -l $snp_del_file_name | tr -s ' ' | cut -f2 -d' '`
 echo "m_ambiguous_${dataset} $m_ambig" >> ../data/output/${site}/flow/flow_nrs.txt
 
-m_at_cg=`wc -l $snp_flip_file_name | tr -s ' ' | cut -f2 -d' '`
-echo "m_at_cg_${dataset} $m_at_cg" >> ../data/output/${site}/flow/flow_nrs.txt
+#m_at_cg=`wc -l $snp_flip_file_name | tr -s ' ' | cut -f2 -d' '`
+#echo "m_at_cg_${dataset} $m_at_cg" >> ../data/output/${site}/flow/flow_nrs.txt
