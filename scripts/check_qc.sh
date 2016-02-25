@@ -9,7 +9,7 @@ fi
 site=$1
 dataset=$2
 
-flow_file=../data/output/${site}/flow_flow_nrs.txt
+flow_file=../data/output/${site}/flow/flow_nrs.txt
 
 grep n_qc_${dataset} $flow_file
 grep m_qc_${dataset} $flow_file
