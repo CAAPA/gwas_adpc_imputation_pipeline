@@ -23,7 +23,7 @@ else
 fi
 
 #Get SNPs with the same rs IDs but different positions - these should also be deleted
-cat get_discordant_position_snps.R | R --vanilla --args $work_dir
+cat get_discordant_pos_snps.R | R --vanilla --args $work_dir
 
 #Per chromosome, and per ADPC/GWAS file, create VCF file
 #Exclude discordant SNPs marked for deletion
