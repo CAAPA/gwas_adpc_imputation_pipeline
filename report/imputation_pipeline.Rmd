@@ -1,6 +1,6 @@
 ---
 title: "CAAPA GWAS+ADPC imputation pipeline"
-output: word_document
+output: html_document
 ---
 
 ## Imputation summary statistics
@@ -36,7 +36,7 @@ output: word_document
 
 ### data/input
 
-- <i>manifest_master.txt</i>: The first sheet of <i>10411manifest.xlsx</i> (copied and pasted)
+- <i>manifest_master.txt</i>: The first sheet of <i>10411manifest.xlsx</i> (copied and pasted; "JHS / Uvermont" was changed to JHS\_Uvermont, to avoid institution matching script issues
 - <i>manifest_good_sample_list.txt</i>: List of samples extracted from the first column of the GOOD worksheet of <i>10411manifest.xlsx</i>
 - <i>adpc.*</i>: PLINK files for all samples typed on ADPC (originally called <i>ADPC_final</i> and just renamed)
 - <i>ADPC\_SNPs_flagged_markers.txt</i>: List of SNPs that Nick and Rich identified as failing clustering
