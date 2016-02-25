@@ -10,6 +10,11 @@ manifest <- read.delim("../data/input/manifest_master.txt", stringsAsFactors = F
 #Reduce the manifest file to only the columns and rows that we need
 manifest <- manifest[manifest$Institute == institute,c(4,16)]
 
+#For the NIH, the individual ID that maps to the manifest is V1->V2
+if (institute == "NIH") {
+  in.fam$V1 <- paste0(in.fam$V1, "->", in.fam$V2)
+}
+
 #Merge the files - preserve order!
 in.fam$ORDER <- seq(1, length(in.fam$V1))
 merged <- merge(in.fam, manifest, by.x="V1", by.y="Individual.ID", all.x=T)
