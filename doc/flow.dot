@@ -3,7 +3,7 @@ digraph {
 
     //Initial GWAS flow
 
-    ORIG_GWAS [label="original GWAS (n=n_orig_gwas, m=m_orig_gwas)",
+    ORIG_GWAS [label="GWAS (n=n_orig_gwas, m=m_orig_gwas)",
                shape=box] //params: n_orig_gwas, m_orig_gwas
     INIT_GWAS [label="initial GWAS (n=n_init_gwas, m=m_init_gwas)",
                shape=box] //params: n_init_gwas, m_init_gwas
