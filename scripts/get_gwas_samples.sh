@@ -12,13 +12,24 @@ in_file_prefix=../data/input/${site}/gwas
 out_file_prefix=../data/working/${site}/gwas_init
 work_dir=../data/working/${site}
 
-cat map_gwas_fam_file_ids.R | R --vanilla --args \
+if [ "$site" == "jhu_abr" ]
+then
+    plink --bfile  ${in_file_prefix} --remove ../data/input/jhu_abr/sample_delete.txt \
+          --make-bed --out ${work_dir}/tmp_del
+    cat map_gwas_fam_file_ids.R | R --vanilla --args \
+                                ${work_dir}/tmp_del.fam \
+                                ${work_dir}/tmp.fam \
+                                $institute
+    cp ${work_dir}/tmp_del.bed ${work_dir}/tmp.bed
+    cp ${work_dir}/tmp_del.bim ${work_dir}/tmp.bim
+else
+    cat map_gwas_fam_file_ids.R | R --vanilla --args \
                                 ${in_file_prefix}.fam \
                                 ${work_dir}/tmp.fam \
                                 $institute
-
-cp ${in_file_prefix}.bed ${work_dir}/tmp.bed
-cp ${in_file_prefix}.bim ${work_dir}/tmp.bim
+    cp ${in_file_prefix}.bed ${work_dir}/tmp.bed
+    cp ${in_file_prefix}.bim ${work_dir}/tmp.bim
+fi
 
 cat get_dupl_snps.R | R --vanilla --args ${work_dir}/tmp.bim ${work_dir}
 grep delete ${work_dir}/tmp.fam | cut -f1,2 > ${work_dir}/tmp_rm_ids.txt
@@ -27,6 +38,11 @@ plink --bfile ${work_dir}/tmp \
       --remove ${work_dir}/tmp_rm_ids.txt \
       --make-bed --out ${work_dir}/tmp_fixed
 
+if [ "$site" == "jhu_abr" ]
+then
+    cat swap_abr_samples.R | R --vanilla
+    mv ../data/working/jhu_abr/new_tmp_fixed.fam ../data/working/jhu_abr/tmp_fixed.fam
+fi
 plink --bfile ${work_dir}/tmp_fixed --chr 1-22 --make-bed --out $out_file_prefix
 
 
