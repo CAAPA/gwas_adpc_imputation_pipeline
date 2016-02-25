@@ -73,7 +73,7 @@ digraph {
     GOOD_ADPC -> COMMON_GWAS;
     GOOD_GWAS -> COMMON_ADPC;
 
-    COMMON_SNP [label="common SNP GWAS+ADPC (n=n_common, m=m_common, perc_conc % concordant)",
+    COMMON_SNP [label="common SNP GWAS+ADPC (n=n_common, m=m_common, m_allele_mismatches allele mismatches, perc_conc % concordant)",
                 shape=ellipse] //params: n_common, m_common
     FLIPPED_GWAS -> COMMON_SNP; //script: get_common_snp_files
     FLIPPED_ADPC -> COMMON_SNP; //script: get_common_snp_files

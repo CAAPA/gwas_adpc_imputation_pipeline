@@ -107,3 +107,5 @@ echo "n_common $n_common" >> ../data/output/${site}/flow/flow_nrs.txt
 m_common=`wc -l ${work_dir}/gwas_common_snps_final.bim | tr -s ' ' | cut -f2 -d' '`
 echo "m_common $m_common" >> ../data/output/${site}/flow/flow_nrs.txt
 echo "perc_conc $perc_conc" >> ../data/output/${site}/flow/flow_nrs.txt
+m_allele_mismatches=`wc -l ${work_dir}/allele_mismatches_snps.txt | tr -s ' ' | cut -f2 -d' '`
+echo "m_allele_mismatches $m_allele_mismatches"  >> ../data/output/${site}/flow/flow_nrs.txt
