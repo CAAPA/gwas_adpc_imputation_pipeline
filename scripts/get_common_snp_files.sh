@@ -81,6 +81,7 @@ else
            --make-bed --out  ${work_dir}/adpc_common_snps_final
     plink --noweb --bfile  ${work_dir}/gwas_common_snps \
           --make-bed --out  ${work_dir}/gwas_common_snps_final
+    touch ${work_dir}/allele_mismatches_snps.txt
 fi
 
 #Run PLINK merge to get a list of SNP discordance
