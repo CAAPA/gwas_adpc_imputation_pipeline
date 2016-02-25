@@ -89,6 +89,8 @@ echo "m_disc_miss $m_disc_miss" >> ../data/output/${site}/flow/flow_nrs.txt
 m_disc_del=`wc -l ${work_dir}/discordant_snps_delete.txt | tr -s ' ' | cut -f2 -d' '`
 m_disc_del=$(($m_disc_del-1))
 echo "m_disc_del $m_disc_del" >> ../data/output/${site}/flow/flow_nrs.txt
+m_disc_pos=`wc -l ${work_dir}/discordant_pos_snps_delete.txt | tr -s ' ' | cut -f2 -d' '`
+echo "m_disc_pos $m_disc_pos" >> ../data/output/${site}/flow/flow_nrs.txt
 n_merged=`wc -l ${work_dir}/merged_chr22.fam | tr -s ' ' | cut -f2 -d' '`
 echo "n_merged $n_merged"  >> ../data/output/${site}/flow/flow_nrs.txt
 m_merged=`wc -l ${work_dir}/merged_chr*bim | tail -1  | tr -s ' ' | cut -f2 -d' '`

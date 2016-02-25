@@ -80,7 +80,7 @@ digraph {
 
     MERGED [label="GWAS+ADPC (n=n_merged, m=m_merged)",
             shape=box] //params: n_merged, m_merged
-    COMMON_SNP -> MERGED [label= " set m_disc_miss SNPs to missing, delete m_disc_del SNPs"];
+    COMMON_SNP -> MERGED [label= " set m_disc_miss SNPs to missing, delete m_disc_del discordant value SNPs, delete m_disc_pos discordant position SNPs"];
             //script: merge_adpc_gwas; params: m_disc_miss, m_disc_del
     FLIPPED_GWAS -> MERGED;
     FLIPPED_ADPC -> MERGED;
