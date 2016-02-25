@@ -22,16 +22,22 @@ else
          ${work_dir}/discordant_snps_update.txt
 fi
 
+#Get SNPs with the same rs IDs but different positions - these should also be deleted
+cat get_discordant_position_snps.R | R --vanilla --args $work_dir
+
 #Per chromosome, and per ADPC/GWAS file, create VCF file
 #Exclude discordant SNPs marked for deletion
+#Also exclude SNPs with the same rs ID, but different positions
 for ((chr=1; chr<=22; chr++)); do
     cut -f6 ${work_dir}/discordant_snps_delete.txt > ${work_dir}/del_snps.txt
+    cat ${work_dir}/discordant_pos_snps_delete.txt >> ${work_dir}/del_snps.txt
     plink --bfile ${work_dir}/adpc_flipped \
           --chr $chr \
           --exclude ${work_dir}/del_snps.txt \
           --recode vcf \
           --out ${work_dir}/adpc_chr${chr}
     cut -f3 ${work_dir}/discordant_snps_delete.txt > ${work_dir}/del_snps.txt
+    cat ${work_dir}/discordant_pos_snps_delete.txt >> ${work_dir}/del_snps.txt
     plink --bfile ${work_dir}/gwas_flipped \
           --chr $chr \
           --exclude ${work_dir}/del_snps.txt \
