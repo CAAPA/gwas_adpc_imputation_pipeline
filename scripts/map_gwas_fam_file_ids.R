@@ -8,11 +8,21 @@ in.fam <- read.table(in.file.name, stringsAsFactors = F)
 manifest <- read.delim("../data/input/manifest_master.txt", stringsAsFactors = F)
 
 #Reduce the manifest file to only the columns and rows that we need
-manifest <- manifest[manifest$Institute == institute,c(4,16)]
-
+#For wakeforest, the mapping field is actually contained in the Family ID column
+if (institute == "WakeForest") {
+  manifest <- manifest[manifest$Institute == institute,c(4,15)]
+  names(manifest)[2] <- "Individual.ID"
+} else {
+  manifest <- manifest[manifest$Institute == institute,c(4,16)]
+}
+  
 #For the NIH, the individual ID that maps to the manifest is V1->V2
 if (institute == "NIH") {
   in.fam$V1 <- paste0(in.fam$V1, "->", in.fam$V2)
+}
+#For wakeforest, the individual ID that maps to the manifest is V1_V2
+if (institute == "WakeForest") {
+  in.fam$V1 <- paste0(in.fam$V1, "_", in.fam$V2)
 }
 
 #Merge the files - preserve order!
