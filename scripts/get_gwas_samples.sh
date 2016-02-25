@@ -12,7 +12,17 @@ in_file_prefix=../data/input/${site}/gwas
 out_file_prefix=../data/working/${site}/gwas_init
 work_dir=../data/working/${site}
 
-if [ "$site" == "jhu_abr" ]
+if [ "$site" == "jhu_bdos" ]
+then
+    plink --bfile  ${in_file_prefix} --remove ../data/input/jhu_bdos/sample_delete.txt \
+          --make-bed --out ${work_dir}/tmp_del
+    cat map_gwas_fam_file_ids.R | R --vanilla --args \
+                                ${work_dir}/tmp_del.fam \
+                                ${work_dir}/tmp.fam \
+                                $institute
+    cp ${work_dir}/tmp_del.bed ${work_dir}/tmp.bed
+    cp ${work_dir}/tmp_del.bim ${work_dir}/tmp.bim
+elif [ "$site" == "jhu_abr" ]
 then
     plink --bfile  ${in_file_prefix} --remove ../data/input/jhu_abr/sample_delete.txt \
           --make-bed --out ${work_dir}/tmp_del
