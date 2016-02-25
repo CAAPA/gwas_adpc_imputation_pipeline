@@ -15,7 +15,9 @@ out_file_prefix=${work_dir}/${dataset}_good
 #Extract only those samples in the good list
 paste ../data/input/manifest_good_sample_list.txt ../data/input/manifest_good_sample_list.txt > \
       ${work_dir}/good_samples_keep.txt
-plink --bfile $in_file_prefix --keep  ${work_dir}/good_samples_keep.txt --make-bed --out $out_file_prefix
+paste ../data/input/manifest_qc_errors.txt ../data/input/manifest_qc_errors.txt > \
+      ${work_dir}/bad_samples_remove.txt
+plink --bfile $in_file_prefix --keep  ${work_dir}/good_samples_keep.txt --remove ${work_dir}/bad_samples_remove.txt --make-bed --out $out_file_prefix
 
 #Output nrs for flow diagram
 n_good=`wc -l ${out_file_prefix}.fam | tr -s ' ' | cut -f2 -d' '`
