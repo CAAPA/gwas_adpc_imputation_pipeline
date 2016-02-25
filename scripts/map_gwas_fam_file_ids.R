@@ -12,10 +12,11 @@ manifest <- manifest[manifest$Institute == institute,c(4,16)]
 
 #Merge the files - preserve order!
 in.fam$ORDER <- seq(1, length(in.fam$V1))
-merged <- merge(in.fam, manifest, by.x="V1", by.y="Individual.ID")
+merged <- merge(in.fam, manifest, by.x="V1", by.y="Individual.ID", all.x=T)
 
 #Create the output fam file
 ids <- merged$Institute.Sample.Label[order(merged$ORDER)]
+ids[is.na(ids)] <- paste0("delete", seq(1, sum(is.na(ids))))
 zeros <- rep(0, length(ids))
 out.fam <- data.frame(V1=ids, V2=ids, V3=zeros, V4=zeros, V5=zeros, V6=zeros)
 

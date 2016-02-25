@@ -21,8 +21,10 @@ cp ${in_file_prefix}.bed ${work_dir}/tmp.bed
 cp ${in_file_prefix}.bim ${work_dir}/tmp.bim
 
 cat get_dupl_snps.R | R --vanilla --args ${work_dir}/tmp.bim ${work_dir}
+grep delete ${work_dir}/tmp.fam | cut -f1,2 > ${work_dir}/tmp_rm_ids.txt
 plink --bfile ${work_dir}/tmp \
       --exclude ${work_dir}/dupl_snps_del.txt \
+      --remove ${work_dir}/tmp_rm_ids.txt \
       --make-bed --out ${work_dir}/tmp_fixed
 
 plink --bfile ${work_dir}/tmp_fixed --chr 1-22 --make-bed --out $out_file_prefix
