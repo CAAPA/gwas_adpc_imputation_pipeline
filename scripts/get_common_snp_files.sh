@@ -33,13 +33,13 @@ plink --noweb --bfile ${work_dir}/adpc_common_snps \
       --make-bed --out ${work_dir}/adpc_common_snps_renamed
 
 #Have any duplicate SNPs been introduced by the above? If so, delete the SNPs
-cut -f2 ${work_dir}/adpc_common_snps_renamed.bim | sort | uniq -d > duplicate_snps.txt
-if [ -e "duplicate_snps.txt" ]
+cut -f2 ${work_dir}/adpc_common_snps_renamed.bim | sort | uniq -d > ${work_dir}/duplicate_snps.txt
+if [ -e "${work_dir}/duplicate_snps.txt" ]
 then
     plink --noweb --bfile ${work_dir}/adpc_common_snps_renamed \
-          --exclude duplicate_snps.txt \
+          --exclude ${work_dir}/duplicate_snps.txt \
           --make-bed --out ${work_dir}/adpc_common_snps_renamed_no_dupl
-    rm duplicate_snps.txt
+    rm ${work_dir}/duplicate_snps.txt
 else
     mv ${work_dir}/adpc_common_snps_renamed.bed ${work_dir}/adpc_common_snps_renamed_no_dupl.bed
     mv ${work_dir}/adpc_common_snps_renamed.bim ${work_dir}/adpc_common_snps_renamed_no_dupl.bim
