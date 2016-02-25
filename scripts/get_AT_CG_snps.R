@@ -24,8 +24,8 @@ freq <- merge(freq, bim)
 for (chr in 1:22) {
   print(chr)
   chr.freq <- freq[freq$CHR == chr,]
-  #ref.freq <- read.table(paste0("../data/input/caapa_freq_chr", chr, ".txt"), head=T, stringsAsFactors = F)
-  ref.freq <- read.table(paste0("../data/input/asw_freq_chr", chr, ".txt"), head=T, stringsAsFactors = F)[,-2]
+  ref.freq <- read.table(paste0("../data/input/caapa_freq_chr", chr, ".txt"), head=T, stringsAsFactors = F)
+  #ref.freq <- read.table(paste0("../data/input/asw_freq_chr", chr, ".txt"), head=T, stringsAsFactors = F)[,-2]
   ref.freq <- ref.freq[ref.freq$CHR == chr,]
   ref.freq <- ref.freq[ ((ref.freq$A1 == "A") & (ref.freq$A2 == "T")) | 
                           ((ref.freq$A1 == "T") & (ref.freq$A2 == "A")) | 
