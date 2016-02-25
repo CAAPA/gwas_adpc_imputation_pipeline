@@ -5,7 +5,7 @@ in.freq.file.name <- args[1]
 in.bim.file.name <- args[2]
 del.file.name <- args[3]
 update.file.name <- args[4]
-maf.diff <- 0.05
+maf.diff <- 0.025
 
 #Create initial empty output data frame
 del.frame <- data.frame()
