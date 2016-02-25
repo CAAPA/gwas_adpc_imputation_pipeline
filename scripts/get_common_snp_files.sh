@@ -51,14 +51,14 @@ fi
 #-First get a list of SNPs to flip
 plink --noweb --bfile  ${work_dir}/adpc_common_snps_renamed_no_dupl \
       --bmerge ${work_dir}/gwas_flipped.bed ${work_dir}/gwas_flipped.bim ${work_dir}/gwas_flipped.fam \
-      --make-bed --out dummy_merge
+      --make-bed --out ${work_dir}/dummy_merge
 #-Then flip the markers
-if [ -e "dummy_merge-merge.missnp" ]
+if [ -e "${work_dir}/dummy_merge-merge.missnp" ]
 then
     plink --noweb --bfile  ${work_dir}/adpc_common_snps_renamed_no_dupl \
-          --flip dummy_merge-merge.missnp \
+          --flip ${work_dir}/dummy_merge-merge.missnp \
           --make-bed --out  ${work_dir}/adpc_common_snps_flipped
-    mv dummy_merge-merge.missnp ${work_dir}/flip_snps.txt
+    mv ${work_dir}/dummy_merge-merge.missnp ${work_dir}/flip_snps.txt
 else
     plink --noweb --bfile  ${work_dir}/adpc_common_snps_renamed_no_dupl \
           --make-bed --out  ${work_dir}/adpc_common_snps_flipped
@@ -66,16 +66,16 @@ fi
 #-Are there any markers that cannot be merged after flip? If so, delete them from both data sets
 plink --noweb --bfile  ${work_dir}/adpc_common_snps_flipped \
       --bmerge ${work_dir}/gwas_flipped.bed ${work_dir}/gwas_flipped.bim ${work_dir}/gwas_flipped.fam \
-      --make-bed --out dummy_merge
-if [ -e "dummy_merge-merge.missnp" ]
+      --make-bed --out ${work_dir}/dummy_merge
+if [ -e "${work_dir}/dummy_merge-merge.missnp" ]
 then
     plink --noweb --bfile  ${work_dir}/adpc_common_snps_flipped \
-          --exclude dummy_merge-merge.missnp \
+          --exclude ${work_dir}/dummy_merge-merge.missnp \
           --make-bed --out  ${work_dir}/adpc_common_snps_final
     plink --noweb --bfile  ${work_dir}/gwas_common_snps \
-          --exclude dummy_merge-merge.missnp \
+          --exclude ${work_dir}/dummy_merge-merge.missnp \
           --make-bed --out  ${work_dir}/gwas_common_snps_final
-    mv dummy_merge-merge.missnp ${work_dir}/allele_mismatches_snps.txt
+    mv ${work_dir}/dummy_merge-merge.missnp ${work_dir}/allele_mismatches_snps.txt
 else
     plink --noweb --bfile  ${work_dir}/adpc_common_snps_flipped \
            --make-bed --out  ${work_dir}/adpc_common_snps_final
