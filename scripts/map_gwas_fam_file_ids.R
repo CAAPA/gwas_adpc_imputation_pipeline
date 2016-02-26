@@ -16,8 +16,11 @@ if (institute == "WakeForest") {
   manifest <- manifest[manifest$Institute == institute,c(4,16)]
 }
   
-#For the NIH, the individual ID that maps to the manifest is V1->V2
+#For the NIH and JHS_Uvermont, the individual ID that maps to the manifest is V1->V2
 if (institute == "NIH") {
+  in.fam$V1 <- paste0(in.fam$V1, "->", in.fam$V2)
+}
+if (institute == "JHS_Uvermont") {
   in.fam$V1 <- paste0(in.fam$V1, "->", in.fam$V2)
 }
 #For wakeforest, the individual ID that maps to the manifest is V1_V2
