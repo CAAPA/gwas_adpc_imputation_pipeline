@@ -98,9 +98,27 @@ perc_conc=`python -c "print int($concordance_prop*100)"`
 if [ "$perc_conc" -lt 95 ]
 then
     echo "ERROR! concordance for site $site is less than 95%"
-    read
+    #read
 fi
 perc_conc=`python -c "print round($concordance_prop*100,2)"`
+
+#Run PLINK merge and then IBD estimation to check that all samples are concordant
+sed 's/WG/ADPC_WG/g' ${work_dir}/adpc_common_snps_final.fam > ${work_dir}/adpc_common_snps_final.fam.new
+sed 's/WG/GWAS_WG/g' ${work_dir}/gwas_common_snps_final.fam > ${work_dir}/gwas_common_snps_final.fam.new
+mv  ${work_dir}/adpc_common_snps_final.fam.new  ${work_dir}/adpc_common_snps_final.fam
+mv ${work_dir}/gwas_common_snps_final.fam.new ${work_dir}/gwas_common_snps_final.fam
+plink --noweb --bfile ${work_dir}/adpc_common_snps_final \
+      --bmerge ${work_dir}/gwas_common_snps_final.bed \
+      ${work_dir}/gwas_common_snps_final.bim \
+      ${work_dir}/gwas_common_snps_final.fam \
+      --make-bed --out $work_dir/discordant_sample_check
+plink --bfile $work_dir/discordant_sample_check --genome --out ${work_dir}/adpc_gwas_ibd
+
+#Check if there are any discordant samples
+cat check_sample_concordance.R | R --vanilla --args \
+                                   ${work_dir}/adpc_gwas_ibd.genome \
+                                   ../data/output/${site}/flow/flow_nrs.txt \
+                                   ${work_dir}/discordant_samples.txt
 
 #Output nrs for flow diagram
 n_common=`wc -l ${work_dir}/gwas_common_snps_final.fam | tr -s ' ' | cut -f2 -d' '`
