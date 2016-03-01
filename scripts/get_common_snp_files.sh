@@ -84,23 +84,6 @@ else
     touch ${work_dir}/allele_mismatches_snps.txt
 fi
 
-#Run PLINK merge to get a list of SNP discordance
-plink --noweb --bfile ${work_dir}/adpc_common_snps_final \
-      --bmerge ${work_dir}/gwas_common_snps_final.bed \
-      ${work_dir}/gwas_common_snps_final.bim \
-      ${work_dir}/gwas_common_snps_final.fam \
-      --merge-mode 7 \
-      --make-bed --out $work_dir/discordant_snp_check
-
-#Check overall concordance
-concordance_prop=`grep 'concordance rate' ${work_dir}/discordant_snp_check.log | cut -f8 -d' ' | sed 's/.$//'`
-perc_conc=`python -c "print int($concordance_prop*100)"`
-if [ "$perc_conc" -lt 95 ]
-then
-    echo "ERROR! concordance for site $site is less than 95%"
-    #read
-fi
-perc_conc=`python -c "print round($concordance_prop*100,2)"`
 
 #Run PLINK merge and then IBD estimation to check that all samples are concordant
 sed 's/WG/ADPC_WG/g' ${work_dir}/adpc_common_snps_final.fam > ${work_dir}/adpc_common_snps_final.fam.new
@@ -120,11 +103,49 @@ cat check_sample_concordance.R | R --vanilla --args \
                                    ../data/output/${site}/flow/flow_nrs.txt \
                                    ${work_dir}/discordant_samples.txt
 
+#Delete discordant ADPC samples
+cut -f1 ${work_dir}/discordant_samples.txt | sed 's/ADPC_//' > ${work_dir}/adpc_del_col.txt
+paste ${work_dir}/adpc_del_col.txt ${work_dir}/adpc_del_col.txt > \
+      ${work_dir}/adpc_discordant_samples.txt
+plink --bfile  ${work_dir}/adpc_common_snps_final \
+      --remove  ${work_dir}/adpc_discordant_samples.txt \
+      --make-bed --out  ${work_dir}/adpc_common_snps_final_concordant
+
+#Delete discordant GWAS samples
+cut -f1 ${work_dir}/discordant_samples.txt | sed 's/GWAS_//' > ${work_dir}/gwas_del_col.txt
+paste ${work_dir}/gwas_del_col.txt ${work_dir}/gwas_del_col.txt > \
+      ${work_dir}/gwas_discordant_samples.txt
+plink --bfile  ${work_dir}/gwas_common_snps_final \
+      --remove  ${work_dir}/gwas_discordant_samples.txt \
+      --make-bed --out  ${work_dir}/gwas_common_snps_final_concordant
+
+#Run PLINK merge to get a list of SNP discordance
+plink --noweb --bfile ${work_dir}/adpc_common_snps_final_concordant \
+      --bmerge ${work_dir}/gwas_common_snps_final_concordant.bed \
+      ${work_dir}/gwas_common_snps_final_concordant.bim \
+      ${work_dir}/gwas_common_snps_final_concordant.fam \
+      --merge-mode 7 \
+      --make-bed --out $work_dir/discordant_snp_check
+
+#Check overall concordance
+concordance_prop=`grep 'concordance rate' ${work_dir}/discordant_snp_check.log | cut -f8 -d' ' | sed 's/.$//'`
+perc_conc=`python -c "print int($concordance_prop*100)"`
+if [ "$perc_conc" -lt 95 ]
+then
+    echo "ERROR! concordance for site $site is less than 95%"
+    #read
+fi
+perc_conc=`python -c "print round($concordance_prop*100,2)"`
+
 #Output nrs for flow diagram
 n_common=`wc -l ${work_dir}/gwas_common_snps_final.fam | tr -s ' ' | cut -f2 -d' '`
 echo "n_common $n_common" >> ../data/output/${site}/flow/flow_nrs.txt
 m_common=`wc -l ${work_dir}/gwas_common_snps_final.bim | tr -s ' ' | cut -f2 -d' '`
 echo "m_common $m_common" >> ../data/output/${site}/flow/flow_nrs.txt
+n_conc_common=`wc -l ${work_dir}/gwas_common_snps_final_concordant.fam | tr -s ' ' | cut -f2 -d' '`
+echo "n_conc_common $n_conc_common" >> ../data/output/${site}/flow/flow_nrs.txt
+m_conc_common=`wc -l ${work_dir}/gwas_common_snps_final_concordant.bim | tr -s ' ' | cut -f2 -d' '`
+echo "m_conc_common $m_conc_common" >> ../data/output/${site}/flow/flow_nrs.txt
 echo "perc_conc $perc_conc" >> ../data/output/${site}/flow/flow_nrs.txt
 m_allele_mismatches=`wc -l ${work_dir}/allele_mismatches_snps.txt | tr -s ' ' | cut -f2 -d' '`
 echo "m_allele_mismatches $m_allele_mismatches"  >> ../data/output/${site}/flow/flow_nrs.txt

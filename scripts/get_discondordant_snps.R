@@ -4,8 +4,8 @@ work.dir <- args[1]
 in.file.name <- file.path(work.dir, "discordant_snp_check-merge.diff")
 delete.out.file.name <- file.path(work.dir, "discordant_snps_delete.txt")
 update.out.file.name <- file.path(work.dir, "discordant_snps_update.txt")
-bim.file.name <- file.path(work.dir, "adpc_common_snps_final.bim")
-fam.file.name <- file.path(work.dir, "adpc_common_snps_final.fam")
+bim.file.name <- file.path(work.dir, "adpc_common_snps_final_concordant.bim")
+fam.file.name <- file.path(work.dir, "adpc_common_snps_final_concordant.fam")
 adpc.ids.bim.file.name <- file.path(work.dir, "adpc_common_snps.bim")
 
 #Read input

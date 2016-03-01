@@ -73,14 +73,18 @@ digraph {
     GOOD_ADPC -> COMMON_GWAS;
     GOOD_GWAS -> COMMON_ADPC;
 
-    COMMON_SNP [label="common SNP GWAS+ADPC (n=n_common, m=m_common, m_allele_mismatches allele mismatches, perc_conc % concordant, n_discordant_samples discordant samples)",
+    COMMON_SNP [label="common SNP GWAS+ADPC (n=n_common, m=m_common, m_allele_mismatches allele mismatches)",
                 shape=ellipse] //params: n_common, m_common
     FLIPPED_GWAS -> COMMON_SNP; //script: get_common_snp_files
     FLIPPED_ADPC -> COMMON_SNP; //script: get_common_snp_files
 
+    COMMON_SNP_CONCORDANT [label=common SNP GWAS+ADPC (n=n_conc_common, m=m_conc_common, perc_conc % concordant)",
+                shape=ellipse]
+    COMMON_SNP -> COMMON_SNP_CONCORDANT [label = " delete n_discordant_samples discordant samples"]l
+
     MERGED [label="GWAS+ADPC (n=n_merged, m=m_merged)",
             shape=box] //params: n_merged, m_merged
-    COMMON_SNP -> MERGED [label= " set m_disc_miss SNPs to missing, delete m_disc_del discordant value SNPs, delete m_disc_pos discordant position SNPs"];
+    COMMON_SNP_CONCORDANT -> MERGED [label= " set m_disc_miss SNPs to missing, delete m_disc_del discordant value SNPs, delete m_disc_pos discordant position SNPs"];
             //script: merge_adpc_gwas; params: m_disc_miss, m_disc_del
     FLIPPED_GWAS -> MERGED;
     FLIPPED_ADPC -> MERGED;
