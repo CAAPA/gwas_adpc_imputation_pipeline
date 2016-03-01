@@ -22,6 +22,15 @@ else
          ${work_dir}/discordant_snps_update.txt
 fi
 
+#Correct fam files to not use "_" as delimitter - this causes VCF tools to bomb
+sed 's/_/-/g' ${work_dir}/adpc_flipped.fam > ${work_dir}/adpc_flipped.fam.new
+cp ${work_dir}/adpc_flipped.fam ${work_dir}/adpc_flipped.fam.bak
+cp ${work_dir}/adpc_flipped.fam.new ${work_dir}/adpc_flipped.fam
+sed 's/_/-/g' ${work_dir}/gwas_flipped.fam > ${work_dir}/gwas_flipped.fam.new
+cp ${work_dir}/gwas_flipped.fam ${work_dir}/gwas_flipped.fam.bak
+cp ${work_dir}/gwas_flipped.fam.new ${work_dir}/gwas_flipped.fam
+
+
 #Delete discordant samples
 plink --bfile  ${work_dir}/adpc_flipped \
       --remove  ${work_dir}/adpc_discordant_samples.txt \
@@ -64,7 +73,7 @@ done
 #Merge the files
 for ((chr=1; chr<=22; chr++)); do
 
-    plink --vcf ${work_dir}/gwas_fixed_chr${chr}.vcf \
+    plink --vcf ${work_dir}/gwas_fixed_chr${chr}.vcf  \
           --make-bed --out ${work_dir}/b_gwas_chr${chr}
     plink --vcf ${work_dir}/adpc_fixed_chr${chr}.vcf \
           --make-bed --out ${work_dir}/b_adpc_chr${chr}
