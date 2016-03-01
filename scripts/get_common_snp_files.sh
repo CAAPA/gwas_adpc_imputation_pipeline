@@ -101,7 +101,8 @@ plink --bfile $work_dir/discordant_sample_check --genome --out ${work_dir}/adpc_
 cat check_sample_concordance.R | R --vanilla --args \
                                    ${work_dir}/adpc_gwas_ibd.genome \
                                    ../data/output/${site}/flow/flow_nrs.txt \
-                                   ${work_dir}/discordant_samples.txt
+                                   ${work_dir}/discordant_samples.txt \
+                                   ${work_dir}/crossmatched_samples.txt
 
 #Delete discordant ADPC samples
 cut -f1 ${work_dir}/discordant_samples.txt | sed 's/ADPC_//' > ${work_dir}/adpc_del_col.txt
