@@ -78,9 +78,9 @@ digraph {
     FLIPPED_GWAS -> COMMON_SNP; //script: get_common_snp_files
     FLIPPED_ADPC -> COMMON_SNP; //script: get_common_snp_files
 
-    COMMON_SNP_CONCORDANT [label=common SNP GWAS+ADPC (n=n_conc_common, m=m_conc_common, perc_conc % concordant)",
+    COMMON_SNP_CONCORDANT [label="common SNP GWAS+ADPC (n=n_conc_common, m=m_conc_common, perc_conc % concordant)",
                 shape=ellipse]
-    COMMON_SNP -> COMMON_SNP_CONCORDANT [label = " delete n_discordant_samples discordant samples"]l
+    COMMON_SNP -> COMMON_SNP_CONCORDANT [label = " delete n_discordant_samples discordant samples"]
 
     MERGED [label="GWAS+ADPC (n=n_merged, m=m_merged)",
             shape=box] //params: n_merged, m_merged

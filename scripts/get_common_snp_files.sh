@@ -88,8 +88,10 @@ fi
 #Run PLINK merge and then IBD estimation to check that all samples are concordant
 sed 's/WG/ADPC_WG/g' ${work_dir}/adpc_common_snps_final.fam > ${work_dir}/adpc_common_snps_final.fam.new
 sed 's/WG/GWAS_WG/g' ${work_dir}/gwas_common_snps_final.fam > ${work_dir}/gwas_common_snps_final.fam.new
-mv  ${work_dir}/adpc_common_snps_final.fam.new  ${work_dir}/adpc_common_snps_final.fam
-mv ${work_dir}/gwas_common_snps_final.fam.new ${work_dir}/gwas_common_snps_final.fam
+cp ${work_dir}/adpc_common_snps_final.fam  ${work_dir}/adpc_common_snps_final.fam.bak
+cp ${work_dir}/gwas_common_snps_final.fam  ${work_dir}/gwas_common_snps_final.fam.bak
+cp ${work_dir}/adpc_common_snps_final.fam.new  ${work_dir}/adpc_common_snps_final.fam
+cp ${work_dir}/gwas_common_snps_final.fam.new ${work_dir}/gwas_common_snps_final.fam
 plink --noweb --bfile ${work_dir}/adpc_common_snps_final \
       --bmerge ${work_dir}/gwas_common_snps_final.bed \
       ${work_dir}/gwas_common_snps_final.bim \
@@ -104,6 +106,10 @@ cat check_sample_concordance.R | R --vanilla --args \
                                    ${work_dir}/discordant_samples.txt \
                                    ${work_dir}/crossmatched_samples.txt
 
+#Restore the fam files
+cp  ${work_dir}/adpc_common_snps_final.fam.bak  ${work_dir}/adpc_common_snps_final.fam
+cp  ${work_dir}/gwas_common_snps_final.fam.bak  ${work_dir}/gwas_common_snps_final.fam
+
 #Delete discordant ADPC samples
 cut -f1 ${work_dir}/discordant_samples.txt | sed 's/ADPC_//' > ${work_dir}/adpc_del_col.txt
 paste ${work_dir}/adpc_del_col.txt ${work_dir}/adpc_del_col.txt > \
@@ -113,7 +119,7 @@ plink --bfile  ${work_dir}/adpc_common_snps_final \
       --make-bed --out  ${work_dir}/adpc_common_snps_final_concordant
 
 #Delete discordant GWAS samples
-cut -f1 ${work_dir}/discordant_samples.txt | sed 's/GWAS_//' > ${work_dir}/gwas_del_col.txt
+cut -f2 ${work_dir}/discordant_samples.txt | sed 's/GWAS_//' > ${work_dir}/gwas_del_col.txt
 paste ${work_dir}/gwas_del_col.txt ${work_dir}/gwas_del_col.txt > \
       ${work_dir}/gwas_discordant_samples.txt
 plink --bfile  ${work_dir}/gwas_common_snps_final \
