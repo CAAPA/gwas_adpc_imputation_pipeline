@@ -1,6 +1,6 @@
 ---
 title: "CAAPA GWAS+ADPC imputation pipeline"
-output: word_document
+output: html_document
 ---
 
 ## Imputation summary statistics
@@ -23,6 +23,8 @@ output: word_document
 - When calculating CAAPA allele frequencies, the related individuals documented in <i>VCF\_DataRelease\_README\_Oct2015.pdf</i> are first removed. The remaining 883 samples are exactly the same 883 samples that we sent as the CAAPA reference panel to Michigan (checked against <i>data/raw/caapa/CAAPA_chr22_manifest_postFiltering.txt</i>)
 - For Chicago, there is one additional GOOD common sample, WG0237021-DNAA02, which was not inclduded in the original run. I don't know why...(In the Master sheet of the manifest, all flags are 0 for this sample, it is in the GOOD sheet, it is NOT in the illumina fails sheet, and NOT in the QC errors sheet.). Nick confirmed that there is no reason to remove this sample, and it will be included in the analysis.
 - For JHU 650Y, there are no AT/CG SNPs in the GWAS data set with MAF that are discrepant with the CAAPA reference panel. I double checked that there are indeed some AT/CG SNPs in this dataset (to make sure that this was not removed pre-QC as was originally the case for Detroit: there are 3283.
+- A manual check was done to ensure that there are no IBD duplicates in the GWAS QC data set; no IBD duplicates were found in any of the sites checked (TODO: Detroit and Washington still needs to be checked)
+- A check was also done to ensure that there are no discordant ADPC + GWAS samples (sample with the same ID in the ADPC and GWAS data sets, that are NOT IBD duplicates): if a site has e.g. 1000 samples, 10 samples could theoretically be discordant, and overall concordance between the data sets could then still be 99\%. With the exception of Jackson JHS, JHU ABR, UCSF SanFransisco and Winston Salem, discordant samples were found for all of the sites. Except for the Washington site, there were no crossmatched samples (sample with different IDs in the ADPC and GWAS data sets, that are IBD duplicates). Discordant samples were deleted from the data sets. (TODO: investigate sample identity issues in Washington)
 
 ### File pre-processing steps
 
@@ -32,7 +34,7 @@ The GWAS bim file was lifted over from hg18 to hg19, using CrossMap (http://cros
 
 ### JHU ABR
 
-Some sample swaps occurred for this site in the GWAS data set. The sample identities were corrected according to <i>data/input/jhu_abr/sample\_delete.txt</i> (old ID, new ID; 14 samples), and 3 samples were deleted <i>data/input/jhu\_abr/sample\_delete.txt</i> (502001034, 502001069, 502001149).
+Some sample swaps occurred for this site in the GWAS data set. The sample identities were corrected according to <i>data/input/jhu_abr/sample\_delete.txt</i> (old ID, new ID; 18 samples), and 4 samples were deleted <i>data/input/jhu\_abr/sample\_delete.txt</i> (502001034, 502001069, 502001149, 502001136). The last sample was deleted due to it being an IBD duplicate of another sample in the data set, 502001135 (missing rate for 502001136 = 2118/1992457 in the GWAS QC data set, missing rate for 502001135 = 2019/1992457 in the GWAS QC data set, i.e. 502001136 had the highest missing rate). Both of these samples were discordant with their corresponding ADPC sample ID, and instead was IBD duplicates of ADPC sample WG0233367-DNAA04.
 
 ### JHU Barbados
 
