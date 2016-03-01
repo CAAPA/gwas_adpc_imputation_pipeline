@@ -6,7 +6,7 @@ err.file.name <- args[3]
 
 ibd <- read.table(ibd.file.name, head=T, stringsAsFactors = F)
 dupl.ibd <- ibd[substr(ibd$IID1,6,21) == substr(ibd$IID2,6,21),]
-nr.discordant.samples <- sum(dupl.ibd$PI_HAT < 0.95)
+nr.discordant.samples <- sum(dupl.ibd$PI_HAT < 0.9)
 cat(paste0("n_discordant_samples ", nr.discordant.samples, "\n"),
     file=log.file.name, append = T)
 
