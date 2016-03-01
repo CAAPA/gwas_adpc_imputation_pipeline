@@ -1,6 +1,6 @@
 ---
 title: "CAAPA GWAS+ADPC imputation pipeline"
-output: html_document
+output: word_document
 ---
 
 ## Imputation summary statistics
@@ -22,10 +22,35 @@ output: html_document
 - For the imputation configuration, the <i>CAAPA - African American</i> reference panel was used, and the configured population was <i>AA (CAAPA)</i>
 - When calculating CAAPA allele frequencies, the related individuals documented in <i>VCF\_DataRelease\_README\_Oct2015.pdf</i> are first removed. The remaining 883 samples are exactly the same 883 samples that we sent as the CAAPA reference panel to Michigan (checked against <i>data/raw/caapa/CAAPA_chr22_manifest_postFiltering.txt</i>)
 - For Chicago, there is one additional GOOD common sample, WG0237021-DNAA02, which was not inclduded in the original run. I don't know why...(In the Master sheet of the manifest, all flags are 0 for this sample, it is in the GOOD sheet, it is NOT in the illumina fails sheet, and NOT in the QC errors sheet.). Nick confirmed that there is no reason to remove this sample, and it will be included in the analysis.
-- For JHU 650Y, there are no AT/CG SNPs in the GWAS data set with MAF that are discrepant with the CAAPA reference panel. I double checked that there are indeed some AT/CG SNPs in this dataset (to make sure that this was not removed pre-QC as was originally the case for Detroit): there are 3283.
+- For JHU 650Y, there are no AT/CG SNPs in the GWAS data set with MAF that are discrepant with the CAAPA reference panel. I double checked that there are indeed some AT/CG SNPs in this dataset (to make sure that this was not removed pre-QC as was originally the case for Detroit: there are 3283.
+
+### File pre-processing steps
+
+#### Jackson
+
+The GWAS bim file was lifted over from hg18 to hg19, using CrossMap (http://crossmap.sourceforge.net), and the hg18tohg19 chain file published with this software. In addition, the ARIC and JHS sites had to be split out from the original file, according to <i>data/input/jackson/site_map.txt</i>
+
+### JHU ABR
+
+Some sample swaps occurred for this site in the GWAS data set. The sample identities were corrected according to <i>data/input/jhu_abr/sample\_delete.txt</i> (old ID, new ID; 14 samples), and 3 samples were deleted <i>data/input/jhu\_abr/sample\_delete.txt</i> (502001034, 502001069, 502001149).
+
+### JHU Barbados
+
+Samples with suspect identities identified for the Barbados sample identity project were deleted from the GWAS file (<i>data/input/jhu\_barbados/sample\_delete.txt</i>; 9 samples).
 
 ## Issues
+- On average, there are 5000 ADPC AT/CG SNPs that have a MAF difference of more than 2.5% compared to the CAAPA reference panel. For Barbados and ABR, this is about double (roughly 10 000 SNPs), and for Puerto Rico, this is almost 5 times more (roughly 24 000 SNPs). Since these populations may be distinct from African Americans, should we change this threshold to 5% for these sites?
 - For UCSF PR, there are 4 additional GOOD common samples(WG0233330-DNAH04\_HR5371, WG0233320-DNAA02\_NY50126, WG0233342-DNAC01\_SJ1252, WG0233354-DNAF02\_SJ5348), which was not inclduded in the original run. I don't know why...(In the Master sheet of the manifest, all flags are 0 for these samples, they are in the GOOD sheet, and NOT in the illumina fails sheet, and NOT in the QC errors sheet.). 
+- In the same way as for UCSF PR, for Washington, there are 21 additional GOOD common samples: 
+```{r, echo=FALSE}
+prev.fam <- read.table("/Volumes/Promise Pegasus/caapa_chip_data_merging/iteration_1/GWAS_files/Washington/GWAS/NIH_keep.fam")
+new.fam <- read.table("/Volumes/Promise Pegasus/caapa_imputation_pipeline/data/working/washington/gwas_common.fam")
+#dim(prev.fam)
+#dim(new.fam)
+#sum(prev.fam$V2 %in% new.fam$V2)
+new.fam[!(new.fam$V2 %in% prev.fam$V2),2]
+```
+
 
 ## Folder structure
 
@@ -49,6 +74,14 @@ output: html_document
 Here I had to match the original PLINK files that Nick received from the investigators, to the equivalent GWAS file that he performed QC on. The file names listed below are the original PLINK file prefixes.
 
 - <i>chicago</i>: CAG__2010-09-17__Illumina_1Mv1__hg19 (fam file line count = Nick's previous QC fam file line count;  bim file line count is in the same order as Nick's previous QC bim file)
+- <i>jackson</i>: JHS/JHS\_CAAPA\_AFFY6; site\_map.txt was extracted from JHS\_992GenotypedSamples\_ForCAAPA_Phenotypes\_15May2015.xls (received in an email from Nicl)
+- <i>jhu\_650y</i>: GRAAD/GRAAD\_650Y
+- <i>jhu\_abr</i>: GRAAD/ABR\_GWAS; files for GWAS sample identity fixes are also in this folder
+- <i>jhu\_bdos</i>: Extracted from BC gene; a file containing a list of samples with suspect IDs that should be deleted also located in this folder
+- <i>ucsf\_pr</i>: Puerto Rico/GALA2\_hg19\_NA34\_121214\_rsid\_PuertoRicans\_ADPC
+- <i>ucsf\_sf</i>: UCSF/SAGE\_hg19\_NA3\4_082814\_rsid\_AfricanAmericans\_ADPC
+- <i>washington</i>: Rotimi/hgc\_all\_501\_autosome\_b37\_d8 
+- <i>winston\_salem</i>: WFU/SARP\_ADPC (note that SAD is entirely contained in SARP)
 
 ### data/output/\<site\>/
 
