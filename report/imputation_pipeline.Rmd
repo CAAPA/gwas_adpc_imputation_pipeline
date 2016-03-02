@@ -22,9 +22,10 @@ output: html_document
 - For the imputation configuration, the <i>CAAPA - African American</i> reference panel was used, and the configured population was <i>AA (CAAPA)</i>
 - When calculating CAAPA allele frequencies, the related individuals documented in <i>VCF\_DataRelease\_README\_Oct2015.pdf</i> are first removed. The remaining 883 samples are exactly the same 883 samples that we sent as the CAAPA reference panel to Michigan (checked against <i>data/raw/caapa/CAAPA_chr22_manifest_postFiltering.txt</i>)
 - For Chicago, there is one additional GOOD common sample, WG0237021-DNAA02, which was not inclduded in the original run. I don't know why...(In the Master sheet of the manifest, all flags are 0 for this sample, it is in the GOOD sheet, it is NOT in the illumina fails sheet, and NOT in the QC errors sheet.). Nick confirmed that there is no reason to remove this sample, and it will be included in the analysis.
-- For JHU 650Y, there are no AT/CG SNPs in the GWAS data set with MAF that are discrepant with the CAAPA reference panel. I double checked that there are indeed some AT/CG SNPs in this dataset (to make sure that this was not removed pre-QC as was originally the case for Detroit: there are 3283.
+- For all the JHU sites, there are no AT/CG SNPs in the GWAS data sets, since the array did not capture any AT/CG SNPs (according to Nick).
 - A manual check was done to ensure that there are no IBD duplicates in the GWAS QC data set; no IBD duplicates were found in any of the sites checked (TODO: Detroit and Washington still needs to be checked)
 - A check was also done to ensure that there are no discordant ADPC + GWAS samples (sample with the same ID in the ADPC and GWAS data sets, that are NOT IBD duplicates): if a site has e.g. 1000 samples, 10 samples could theoretically be discordant, and overall concordance between the data sets could then still be 99\%. With the exception of Jackson JHS, JHU ABR, UCSF SanFransisco and Winston Salem, discordant samples were found for all of the sites. Except for the Washington site, there were no crossmatched samples (sample with different IDs in the ADPC and GWAS data sets, that are IBD duplicates). Discordant samples were deleted from the data sets. (TODO: investigate sample identity issues in Washington)
+
 
 ### File pre-processing steps
 
@@ -43,16 +44,6 @@ Samples with suspect identities identified for the Barbados sample identity proj
 ## Issues
 - On average, there are 5000 ADPC AT/CG SNPs that have a MAF difference of more than 2.5% compared to the CAAPA reference panel. For Barbados and ABR, this is about double (roughly 10 000 SNPs), and for Puerto Rico, this is almost 5 times more (roughly 24 000 SNPs). Since these populations may be distinct from African Americans, should we change this threshold to 5% for these sites?
 - For UCSF PR, there are 4 additional GOOD common samples(WG0233330-DNAH04\_HR5371, WG0233320-DNAA02\_NY50126, WG0233342-DNAC01\_SJ1252, WG0233354-DNAF02\_SJ5348), which was not inclduded in the original run. I don't know why...(In the Master sheet of the manifest, all flags are 0 for these samples, they are in the GOOD sheet, and NOT in the illumina fails sheet, and NOT in the QC errors sheet.). 
-- In the same way as for UCSF PR, for Washington, there are 21 additional GOOD common samples: 
-```{r, echo=FALSE}
-prev.fam <- read.table("/Volumes/Promise Pegasus/caapa_chip_data_merging/iteration_1/GWAS_files/Washington/GWAS/NIH_keep.fam")
-new.fam <- read.table("/Volumes/Promise Pegasus/caapa_imputation_pipeline/data/working/washington/gwas_common.fam")
-#dim(prev.fam)
-#dim(new.fam)
-#sum(prev.fam$V2 %in% new.fam$V2)
-new.fam[!(new.fam$V2 %in% prev.fam$V2),2]
-```
-
 
 ## Folder structure
 
@@ -65,7 +56,7 @@ new.fam[!(new.fam$V2 %in% prev.fam$V2),2]
 ### data/input
 
 - <i>manifest_master.txt</i>: The first sheet of <i>10411manifest.xlsx</i> (copied and pasted; "JHS / Uvermont" was changed to JHS\_Uvermont, to avoid institution matching script issues
-- <i>manifest_good_sample_list.txt</i>: List of samples extracted from the first column of the GOOD worksheet of <i>10411manifest.xlsx</i>
+- <i>manifest_good_sample_list.txt</i>: List of samples extracted from the first column of the GOOD worksheet of <i>10411manifest.xlsx</i>, that has <i>Remove</i> set to 0. The following 4 additional samples were added manually to the list: WG0233367-DNAA04, WG0233368-DNAG03, WG0233368-DNAC01, WG0233367-DNAD12. These samples are JHU ABR samples that were mislabelled with different sample IDs in the GWAS data set, but their identities were since corrected. (These 4 samples have <i>Remove</i> set to 1 since they had no GWAS data; I checked that there are no other ABR samples that were also marked for removal also for not having GWAS data; these were the only 4 samples.)
 - <i>adpc.*</i>: PLINK files for all samples typed on ADPC (originally called <i>ADPC_final</i> and just renamed)
 - <i>ADPC\_SNPs_flagged_markers.txt</i>: List of SNPs that Nick and Rich identified as failing clustering
 - <i>asw\_freq\_chr\*.txt</i>: CHR, SNP, POS, A1 (minor allele),	A2 (major allele), MAF, for the 45 African American thousand genome individuals (ASW population). PLINK was used to calculate the minor/major allele and MAF (see section <i>5.7 Allele frequency</i> of the manual, where they clearly state that A1 = minor allele and A2 = major allele), from TGP files originally extracted for my "tgp" project. (Initially I thought to use this for determining whether I should flip ADPC ambiguous SNPs, but we decided it is better to use the CAAPA reference panel for this; however, these files might be useful for later QC troubleshooting of allele frequencies, so are retained for now.)
