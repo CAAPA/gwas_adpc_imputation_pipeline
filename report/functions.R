@@ -61,13 +61,12 @@ getImputationQCStatistics1 <- function (dataset) {
   out.frame <- data.frame()
   
   for (site in sites){
-    stats.file <- paste0("../data/output/", site, "/statistcs/", dataset, ".pdf")
-    work.file <- paste0("../data/working/", site, "/imputation_stats.txt")
+    stats.file <- paste0("../data/output/", site, "/statistics/", dataset, ".pdf")
+    stats.summ.file <- paste0("../data/working/", site, "/", dataset, "_imputation_statistics_1.txt")
     if (file.exists(stats.file)) {
-      #TODO: create a shell script that will write the nrs to file which can just be read in then,
-      #similar to flow_nrs; pass stats.file and work.file as arguments
-      #system(paste("pdftotext", stats.file, work.file))
-      nrs <- c(site, rep("", 7))
+      system(paste("bash get_imputation_qc_stats.sh", site, dataset))
+      stats <- read.table(stats.summ.file)[,2]
+      nrs <- c(site, as.character(stats))
     } else {
       nrs <- c(site, rep("", 7))
     }
@@ -93,11 +92,14 @@ getImputationQCStatistics2 <- function (dataset) {
   out.frame <- data.frame()
   
   for (site in sites){
-    flow.file <- paste0("../data/output/", site, "/flow/flow_nrs.txt")
-    if (file.exists(flow.file)) {
-      nrs <- c(site, rep("", 6))
+    stats.file <- paste0("../data/output/", site, "/statistics/", dataset, ".pdf")
+    stats.summ.file <- paste0("../data/working/", site, "/", dataset, "_imputation_statistics_2.txt")
+    if (file.exists(stats.file)) {
+      system(paste("bash get_imputation_qc_stats.sh", site, dataset))
+      stats <- read.table(stats.summ.file)[,2]
+      nrs <- c(site, as.character(stats))
     } else {
-      nrs <- c(site, rep("", 6))
+      nrs <- c(site, rep("", 7))
     }
     out.frame <- rbind(out.frame, data.frame(t(nrs)))
   }
