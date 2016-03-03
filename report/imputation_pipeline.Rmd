@@ -3,7 +3,62 @@ title: "CAAPA GWAS+ADPC imputation pipeline"
 output: html_document
 ---
 
-## Imputation summary statistics
+## Summary statistics
+
+### Pre-imputation QC
+
+```{r, echo=FALSE}
+library(stringr)
+
+sites <- c("chicago",
+           #"detroit",
+           "jackson_aric",
+           "jackson_jhs",
+           "jhu_650y",
+           "jhu_abr",
+           #"jhu_bdos",
+           #"ucsf_pr",
+           "ucsf_sf",
+           #"washington",
+           "winston_salem")
+out.frame <- data.frame()
+
+for (site in sites){
+  flow.file <- paste0("../data/output/", site, "/flow/flow_nrs.txt")
+  if (file.exists(flow.file)) {
+    flow.nrs <- read.table(flow.file)
+    flow.nrs <- flow.nrs[flow.nrs$V1 %in% c("n_init_gwas",
+                                            "n_common",
+                                            "n_conc_common",
+                                            "m_init_gwas",
+                                            "m_init_adpc",
+                                            "m_qc_gwas",
+                                            "m_qc_adpc",
+                                            "m_stranded_gwas",
+                                            "m_stranded_adpc",
+                                            "m_merged"),]
+    
+    nrs <- c(site, str_trim(flow.nrs[,2]))
+  } else {
+    nrs <- c(site, rep("", 10))
+  }
+  out.frame <- rbind(out.frame, data.frame(t(nrs)))
+}
+
+names(out.frame) <- c("",
+                      "n initial GWAS",
+                      "m initial GWAS",
+                      "m initial ADPC",
+                      "m QC GWAS",
+                      "m QC ADPC",
+                      "m no AT/CG GWAS",
+                      "m no AT/CG ADPC",
+                      "n common samples",
+                      "n concordant samples",
+                      "m merged")
+out.frame <- out.frame[,c(1,2,9,10,3,5,7,4,6,8,11)]
+knitr::kable(out.frame, align=c("l", rep("r",10)))
+```
 
 
 ## Flow diagram nomenclature
