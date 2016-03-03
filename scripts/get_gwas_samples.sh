@@ -12,19 +12,9 @@ in_file_prefix=../data/input/${site}/gwas
 out_file_prefix=../data/working/${site}/gwas_init
 work_dir=../data/working/${site}
 
-if [ "$site" == "jhu_bdos" ]
+if [ "$site" == "jhu_bdos" ] || [ "site" == "jhu_abr" ] ||  [ "$site" == "washington" ]
 then
-    plink --bfile  ${in_file_prefix} --remove ../data/input/jhu_bdos/sample_delete.txt \
-          --make-bed --out ${work_dir}/tmp_del
-    cat map_gwas_fam_file_ids.R | R --vanilla --args \
-                                ${work_dir}/tmp_del.fam \
-                                ${work_dir}/tmp.fam \
-                                $institute
-    cp ${work_dir}/tmp_del.bed ${work_dir}/tmp.bed
-    cp ${work_dir}/tmp_del.bim ${work_dir}/tmp.bim
-elif [ "$site" == "jhu_abr" ]
-then
-    plink --bfile  ${in_file_prefix} --remove ../data/input/jhu_abr/sample_delete.txt \
+    plink --bfile  ${in_file_prefix} --remove ../data/input/${site}/sample_delete.txt \
           --make-bed --out ${work_dir}/tmp_del
     cat map_gwas_fam_file_ids.R | R --vanilla --args \
                                 ${work_dir}/tmp_del.fam \
@@ -48,10 +38,10 @@ plink --bfile ${work_dir}/tmp \
       --remove ${work_dir}/tmp_rm_ids.txt \
       --make-bed --out ${work_dir}/tmp_fixed
 
-if [ "$site" == "jhu_abr" ]
+if [ "site" == "jhu_abr" ] ||  [ "$site" == "washington" ]
 then
-    cat swap_abr_samples.R | R --vanilla
-    mv ../data/working/jhu_abr/new_tmp_fixed.fam ../data/working/jhu_abr/tmp_fixed.fam
+    cat swap_samples.R | R --vanilla --args $site
+    mv ../data/working/${site}/new_tmp_fixed.fam ../data/working/${site}/tmp_fixed.fam
 fi
 plink --bfile ${work_dir}/tmp_fixed --chr 1-22 --make-bed --out $out_file_prefix
 
