@@ -7,7 +7,7 @@ sites <- c("chicago",
            "jhu_650y",
            "jhu_abr",
            #"jhu_bdos",
-           #"ucsf_pr",
+           "ucsf_pr",
            "ucsf_sf",
            #"washington",
            "winston_salem")
