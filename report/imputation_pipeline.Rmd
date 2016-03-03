@@ -64,6 +64,17 @@ Some sample swaps occurred for this site in the GWAS data set. The sample identi
 
 Samples with suspect identities identified for the Barbados sample identity project were deleted from the GWAS file (<i>data/input/jhu\_barbados/sample\_delete.txt</i>; 9 samples).
 
+### Washington 
+
+The following samples are IBD duplicates, but for some reason do not show up in the <i>mz dups</i> worksheet of the manifest: WG0237441-DNAE02 and WG0237461-DNAH12; WG0237458-DNAD06 and WG0237462-DNAF09. The samples with the highest missing rates were deleted (WG0237461-DNAH12: 23397/791642 vs WG0237441-DNAE02: 14259/791642; WG0237458-DNAD06: 24716/791462 vs WG0237462-DNAF09: 1715/791462). In addition, the following 2 samples were swapped around in either the ADPC or GWAS data sets:
+
+- ADPC_WG0237446-DNAD04 GWAS_WG0237450-DNAC03 PI_HAT=0.99
+- ADPC_WG0237450-DNAC03 GWAS_WG0237446-DNAD04 PI_HAT=1.00
+
+The GWAS samples were updated to have the corresponding ADPC ID for now.
+
+For all of the above issues, Nick is following up with Ayo so we can determine the correct identities for these samples, but these errors should not hold up imputation.
+
 ## Issues
 - On average, there are 5000 ADPC AT/CG SNPs that have a MAF difference of more than 2.5% compared to the CAAPA reference panel. For Barbados and ABR, this is about double (roughly 10 000 SNPs), and for Puerto Rico, this is almost 5 times more (roughly 24 000 SNPs). Since these populations may be distinct from African Americans, should we change this threshold to 5% for these sites?
 - For UCSF PR, there are 4 additional GOOD common samples(WG0233330-DNAH04\_HR5371, WG0233320-DNAA02\_NY50126, WG0233342-DNAC01\_SJ1252, WG0233354-DNAF02\_SJ5348), which was not inclduded in the original run. I don't know why...(In the Master sheet of the manifest, all flags are 0 for these samples, they are in the GOOD sheet, and NOT in the illumina fails sheet, and NOT in the QC errors sheet.). 
