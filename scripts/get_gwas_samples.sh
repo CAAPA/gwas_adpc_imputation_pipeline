@@ -60,7 +60,7 @@ plink --bfile ${work_dir}/tmp \
       --remove ${work_dir}/tmp_rm_ids.txt \
       --make-bed --out ${work_dir}/tmp_fixed
 
-if [ "site" == "jhu_abr" ]
+if [ "$site" == "jhu_abr" ]
 then
     cat swap_samples.R | R --vanilla --args $site
     mv ../data/working/${site}/new_tmp_fixed.fam ../data/working/${site}/tmp_fixed.fam
