@@ -55,13 +55,17 @@ knitr::kable(getImputationQCStatistics2("gwas"), align=c("l", rep("r",6)))
 - For all the JHU sites, there are no AT/CG SNPs in the GWAS data sets, since the array did not capture any AT/CG SNPs (according to Nick).
 - A manual check was done to ensure that there are no IBD duplicates in the GWAS QC data set; no IBD duplicates were found in any of the sites checked (TODO: Detroit still needs to be checked)
 - A check was also done to ensure that there are no discordant ADPC + GWAS samples (sample with the same ID in the ADPC and GWAS data sets, that are NOT IBD duplicates): if a site has e.g. 1000 samples, 10 samples could theoretically be discordant, and overall concordance between the data sets could then still be 99\%. With the exception of Jackson JHS, JHU ABR, UCSF SanFransisco and Winston Salem, discordant samples were found for all of the sites. There are no crossmatched samples (sample with different IDs in the ADPC and GWAS data sets, that are IBD duplicates). Discordant samples were deleted from the data sets.
-- It is my understanding that the non-JHU sites did their own GWAS QC at a sample level; looking at the maximum percentage of missing genotypes per sample per site, these sites appeared to use a threshold of 5\%. The JHU sites appeared to use a much higher threshold, which Nick explained was due to historic reasons. In order to be consistent, samples with more than 5\% missing genotypes were removed in the GWAS QC step (plink parameters <code>--mind 0.05</code>) for each of the 3 JHU sites, resulting in the loss of 1, 1, and 9 samples in the JHU 650Y, JHU ABR and JHU BDOS sites respectively.
+
 
 ### File pre-processing steps
 
 #### Jackson
 
 The GWAS bim file was lifted over from hg18 to hg19, using CrossMap (http://crossmap.sourceforge.net), and the hg18tohg19 chain file published with this software. In addition, the ARIC and JHS sites had to be split out from the original file, according to <i>data/input/jackson/site_map.txt</i>
+
+### JHU sites
+
+It is my understanding that the non-JHU sites did their own GWAS QC at a sample level; looking at the maximum percentage of missing genotypes per sample per site, these sites appeared to use a threshold of 5\%. The JHU sites appeared to use a much higher threshold, which Nick explained was due to historic reasons. In order to be consistent, samples with more than 5\% missing genotypes were removed in the GWAS QC step (plink parameters <code>--mind 0.05</code>) for each of the 3 JHU sites, resulting in the loss of 2, 1, and 9 samples in the JHU 650Y, JHU ABR and JHU BDOS sites respectively.
 
 ### JHU ABR
 
