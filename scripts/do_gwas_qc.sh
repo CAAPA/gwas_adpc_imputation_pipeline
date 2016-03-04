@@ -13,7 +13,6 @@ out_file_prefix=../data/working/${site}/gwas_qc
 #remove SNPs with high missingness (>5%), out of HWE (P<10-4), monomorphic SNPs
 plink --noweb --bfile $in_file_prefix \
       --maf 0.0001 --geno 0.05 --hwe 0.0001 \
-      --mind 0.05 \
       --make-bed --out $out_file_prefix
 
 #report nrs
