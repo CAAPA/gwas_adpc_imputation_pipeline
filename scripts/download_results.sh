@@ -18,7 +18,7 @@ job_nr=$3
 zip_password=$4
 url_prefix=https://imputationserver.sph.umich.edu/results
 
-cd ../data/working/$site
+cd ../data/working/${site}
 
 #Get the statistics file
 wget --load-cookies $cookie_file_name -p ${url_prefix}/${job_nr}/statistics/statistics.txt
@@ -27,7 +27,7 @@ wget --load-cookies $cookie_file_name -p ${url_prefix}/${job_nr}/statistics/stat
 wget --load-cookies $cookie_file_name -p ${url_prefix}/${job_nr}/qcreport/qcreport.html
 
 #Download the chromosomes
-for ((chr=22; chr<=22; chr++)); do
+for ((chr=1; chr<=22; chr++)); do
     wget --load-cookies $cookie_file_name -p ${url_prefix}/${job_nr}/local/chr_${chr}.zip
 done
 
@@ -46,4 +46,4 @@ cd ../statistics
 stats_dir=../../../../../../output/${site}/statistics
 mv statistics.txt ${stats_dir}/imputation_statistics.txt
 cd ../qcreport
-mv qcreport.html ${stats_dir}
+mv qcreport.html ${stats_dir}/imputation_qcreport.html
