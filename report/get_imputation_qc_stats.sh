@@ -19,7 +19,7 @@ pdftotext $pdf_file $work_file
 n=`grep Samples: $work_file | cut -f2 -d":" | tr -s ' '`
 m_excluded=`grep "Excluded sites in total" $work_file | cut -f2 -d":" | tr -s ' '`
 m_remaining=`grep "Remaining sites in total" $work_file | cut -f2 -d":" | tr -s ' '`
-chunks_excluded=`grep "Chunks excluded" $work_file | cut -f2 -d":" | tr -s ' ' | cut -f2 -d' '`
+chunks_excluded=`grep "Chunks excluded" $work_file | head -1 | cut -f2 -d":" | tr -s ' ' | cut -f2 -d' '`
 chunks_remaining=`grep "Remaining chunk" $work_file | cut -f2 -d":" | tr -s ' '`
 m_match=`grep Match: $work_file | cut -f2 -d":" | tr -s ' '`
 ref_overlap=`grep "Reference Overlap:" $work_file | cut -f2 -d":" | tr -s ' '`
