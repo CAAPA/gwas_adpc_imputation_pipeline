@@ -29,6 +29,12 @@ cp ${work_dir}/adpc_flipped.fam.new ${work_dir}/adpc_flipped.fam
 sed 's/_/-/g' ${work_dir}/gwas_flipped.fam > ${work_dir}/gwas_flipped.fam.new
 cp ${work_dir}/gwas_flipped.fam ${work_dir}/gwas_flipped.fam.bak
 cp ${work_dir}/gwas_flipped.fam.new ${work_dir}/gwas_flipped.fam
+sed 's/_/-/g' ${work_dir}/adpc_discordant_samples.txt  > ${work_dir}/adpc_discordant_samples.txt.new
+cp ${work_dir}/adpc_discordant_samples.txt ${work_dir}/adpc_discordant_samples.txt.bak
+cp ${work_dir}/adpc_discordant_samples.txt.new ${work_dir}/adpc_discordant_samples.txt
+sed 's/_/-/g' ${work_dir}/gwas_discordant_samples.txt  > ${work_dir}/gwas_discordant_samples.txt.new
+cp ${work_dir}/gwas_discordant_samples.txt ${work_dir}/gwas_discordant_samples.txt.bak
+cp ${work_dir}/gwas_discordant_samples.txt.new ${work_dir}/gwas_discordant_samples.txt
 
 
 #Delete discordant samples
