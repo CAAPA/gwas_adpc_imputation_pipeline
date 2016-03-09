@@ -1,0 +1,15 @@
+---
+title: "Investigate QC parameters"
+output: html_document
+---
+
+# Rsq thresholds
+
+Suggested by http://www.ncbi.nlm.nih.gov/pubmed/22851474: SNPs with MAF <= 0.005 should be removed if they have Rsq <= 0.5; SNPs with MAF > 0.005 should be removed if the have Rsq <= 0.3
+
+## Chromosome 22
+
+```{r, echo=FALSE}
+sites <- c("chicago", "jackson_aric", "jackson_jhs")
+```
+
