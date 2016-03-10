@@ -7,9 +7,51 @@ output: html_document
 
 Suggested by http://www.ncbi.nlm.nih.gov/pubmed/22851474: SNPs with MAF <= 0.005 should be removed if they have Rsq <= 0.5; SNPs with MAF > 0.005 should be removed if the have Rsq <= 0.3
 
-## Chromosome 22
+## Chromosome 22 - proportion of SNPs deleted
 
 ```{r, echo=FALSE}
-sites <- c("chicago", "jackson_aric", "jackson_jhs")
+maf.threshold <- 0.005
+lt.rsq <- 0.5
+gt.rsq <- 0.3
+sites <- c("chicago", "jackson_jhs", "winston_salem")#TODO: add 650y and ABR and BDOS, ucsf_sf, washington
+frame <- data.frame()
+err.snps.lt <- c()
+err.snps.gt <- c()
+
+for (site in sites) {
+  file.name <- paste0("../data/output/", site, "/imputed/chr22.info.gz")
+  info <- read.table(gzfile(file.name), header=T, stringsAsFactors = F)
+  total <- dim(info)[1]
+  total.lt <- sum(info$MAF <= maf.threshold)
+  total.gt <- sum(info$MAF > maf.threshold)
+  low.rsq.lt <- sum(info$Rsq[info$MAF <= maf.threshold] <= lt.rsq)
+  low.rsq.gt <- sum(info$Rsq[info$MAF > maf.threshold] <= gt.rsq)
+  prop.lt <- as.character(round(total.lt/total,2))
+  str.lt <- as.character(paste(low.rsq.lt, "/", total.lt, "=", round(low.rsq.lt/total.lt,2)))
+  str.gt <- as.character(paste(low.rsq.gt, "/", total.gt, "=", round(low.rsq.gt/total.gt,2)))
+  str.total <- as.character(paste(low.rsq.lt + low.rsq.gt, "/", total, "=", 
+                                  round((low.rsq.lt + low.rsq.gt)/total,2)))
+  err.snps.lt <- c(err.snps.lt, 
+                       info$SNP[(info$MAF <= maf.threshold) & (info$Rsq <= lt.rsq)])
+  err.snps.gt <- c(err.snps.gt, 
+                       info$SNP[(info$MAF > maf.threshold) & (info$Rsq <= gt.rsq)])
+  frame <- rbind(frame, data.frame(site, str.lt, str.gt, prop.lt, str.total))
+}
+
+site <- "overall"
+str.lt <- as.character(length(unique(err.snps.lt)))
+str.gt <- as.character(length(unique(err.snps.gt)))
+prop.lt <- ""
+err.snps <- c(err.snps.lt, err.snps.gt)
+str.total <- as.character(paste(length(unique(err.snps)), "/", total, "=",
+                                       round(length(unique(err.snps))/ total,2)))
+frame <- rbind(frame, data.frame(site, str.lt, str.gt, prop.lt, str.total))
+
+names(frame) <- c("",
+                  "Prop low freq SNPs dropped",
+                  "Prop other SNPs dropped",
+                  "Prop low freq SNPs",
+                  "Total prop SNPs dropped")
+knitr::kable(frame, align="r")
 ```
 
