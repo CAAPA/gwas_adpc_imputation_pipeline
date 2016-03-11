@@ -15,8 +15,6 @@ for ((chr=$chr_start; chr<=$chr_end; chr++)); do
 
     #Apply QC as documented in VCF_DataRelease_README_Oct2015.pdf, and extract only SNPs
     vcftools --gzvcf ../data/raw/caapa/chr${chr}/chr${chr}.CAAPA.vcf.Oct2015.gz \
-             --remove-indels \
-             --remove-filtered-all \
              --minGQ 20 --minDP 7 --exclude-bed ../data/raw/caapa/hg19_segdup.txt \
              --recode --stdout | bgzip -c > ../data/working/caapa_chr${chr}.vcf.gz
 
