@@ -16,12 +16,12 @@ stats_file=../data/output/${site}/statistics/${dataset}_statistics.txt
 flip_file=../data/working/${site}/${dataset}_flip.txt
 grep -i strand $stats_file | cut -f5 -d' ' | grep rs > $flip_file
 grep -i strand $stats_file | cut -f5 -d' ' | grep RS >> $flip_file
-grep -i strand $stats_file | cut -f5 -d' ' | grep KGP >> $flip_file
+grep -i strand $stats_file | cut -f5 -d' ' | grep KG >> $flip_file
 grep -i strand $stats_file | cut -f5 -d' ' | grep GA >> $flip_file
 grep -i strand $stats_file | cut -f5 -d' ' | grep JHU >> $flip_file
 grep -i strand $stats_file | cut -f8 -d' ' | grep rs >> $flip_file
 grep -i strand $stats_file | cut -f8 -d' ' | grep RS >> $flip_file
-grep -i strand $stats_file | cut -f8 -d' ' | grep KGP >> $flip_file
+grep -i strand $stats_file | cut -f8 -d' ' | grep KG >> $flip_file
 grep -i strand $stats_file | cut -f8 -d' ' | grep GA >> $flip_file
 grep -i strand $stats_file | cut -f8 -d' ' | grep JHU >> $flip_file
 
