@@ -34,7 +34,7 @@ done
 #Unzip the chromosomes
 cd imputationserver.sph.umich.edu/results/${job_nr}/local/
 for ((chr=1; chr<=22; chr++)); do
-    unzip -P $zip_password chr_${chr}.zip
+    7z e chr_${chr}.zip -y -p$zip_password
 done
 
 #Move the files to their correct locations
