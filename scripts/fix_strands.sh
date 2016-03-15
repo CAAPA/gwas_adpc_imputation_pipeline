@@ -19,11 +19,17 @@ grep -i strand $stats_file | cut -f5 -d' ' | grep RS >> $flip_file
 grep -i strand $stats_file | cut -f5 -d' ' | grep KG >> $flip_file
 grep -i strand $stats_file | cut -f5 -d' ' | grep GA >> $flip_file
 grep -i strand $stats_file | cut -f5 -d' ' | grep JHU >> $flip_file
+grep -i strand $stats_file | cut -f5 -d' ' | grep b36 >> $flip_file
+grep -i strand $stats_file | cut -f5 -d' ' | grep SNP >> $flip_file
+grep -i strand $stats_file | cut -f5 -d' ' | grep UN >> $flip_file
 grep -i strand $stats_file | cut -f8 -d' ' | grep rs >> $flip_file
 grep -i strand $stats_file | cut -f8 -d' ' | grep RS >> $flip_file
 grep -i strand $stats_file | cut -f8 -d' ' | grep KG >> $flip_file
 grep -i strand $stats_file | cut -f8 -d' ' | grep GA >> $flip_file
 grep -i strand $stats_file | cut -f8 -d' ' | grep JHU >> $flip_file
+grep -i strand $stats_file | cut -f8 -d' ' | grep b36 >> $flip_file
+grep -i strand $stats_file | cut -f8 -d' ' | grep SNP >> $flip_file
+grep -i strand $stats_file | cut -f8 -d' ' | grep UN >> $flip_file
 
 #Create the output file
 plink --bfile $fix_at_cg_file_prefix \
