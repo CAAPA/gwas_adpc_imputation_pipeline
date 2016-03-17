@@ -38,10 +38,10 @@ plink --bfile $fix_at_cg_file_prefix \
 
 #Report the output parameters
 snp_flip_file_name=../data/working/${site}/${dataset}_AT_CG_update.txt
-#m_at_cg=`wc -l $snp_flip_file_name | tr -s ' ' | cut -f2 -d' '`
-m_flip=`wc -l $flip_file | tr -s ' ' | cut -f2 -d' '`
-#echo "m_non_at_cg_${dataset} $m_non_at_cg" >> ../data/output/${site}/flow/flow_nrs.txt
-#m_flip=$(($m_at_cg+$m_non_at_cg))
+m_at_cg=`wc -l $snp_flip_file_name | tr -s ' ' | cut -f2 -d' '`
+m_non_at_cg=`wc -l $flip_file | tr -s ' ' | cut -f2 -d' '`
+echo "m_non_atcg_flip_${dataset} $m_non_at_cg" >> ../data/output/${site}/flow/flow_nrs.txt
+m_flip=$(($m_at_cg+$m_non_at_cg))
 echo "m_flip_${dataset} $m_flip" >> ../data/output/${site}/flow/flow_nrs.txt
 
 n_stranded=`wc -l ${out_file_prefix}.fam | tr -s ' ' | cut -f2 -d' '`

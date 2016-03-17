@@ -5,7 +5,10 @@ in.freq.file.name <- args[1]
 in.bim.file.name <- args[2]
 del.file.name <- args[3]
 update.file.name <- args[4]
-maf.diff <- 0.025
+site <- args[5]
+dataset <- args[6]
+maf.diff <- 0.01
+maf.thresh <- 0.4
 
 #Create initial empty output data frame
 del.frame <- data.frame()
@@ -41,13 +44,20 @@ for (chr in 1:22) {
   del.frame <- rbind(del.frame,
                      data.frame(SNP=merged.freq$SNP[ind],
                                 reason=rep("not_in_ref", sum(ind))))
+  #Get SNPs to delete - either site or refernce genome MAF > maf.thresh 
+  ind <- !is.na(merged.freq$MAF.y) & ((merged.freq$MAF.x > maf.thresh ) | (merged.freq$MAF.y > maf.thresh))
+  del.frame <- rbind(del.frame,
+                     data.frame(SNP=merged.freq$SNP[ind],
+                                reason=rep("large_maf", sum(ind))))
   #Get SNPs to delete - all SNPs with large MAF difference
-  ind <- !is.na(merged.freq$MAF.DIFF) & (merged.freq$MAF.DIFF > maf.diff)
+  ind <- !is.na(merged.freq$MAF.DIFF) & (merged.freq$MAF.DIFF > maf.diff) & 
+    (merged.freq$MAF.x <= maf.thresh ) & (merged.freq$MAF.y <= maf.thresh )
   del.frame <- rbind(del.frame,
                      data.frame(SNP=merged.freq$SNP[ind],
                                 reason=rep("maf_diff", sum(ind))))
   #Remaining SNPs with differing minor alleles need to be flipped
   ind <- !is.na(merged.freq$MAF.DIFF) & (merged.freq$MAF.DIFF <= maf.diff) &
+    (merged.freq$MAF.x <= maf.thresh ) & (merged.freq$MAF.y <= maf.thresh) &
     (merged.freq$A1.x != merged.freq$A1.y)
   update.frame <- rbind(update.frame,
                         data.frame(SNP=merged.freq$SNP[ind]))
@@ -56,3 +66,9 @@ for (chr in 1:22) {
 
 write.table(del.frame, del.file.name, sep="\t", quote=F, row.names=F, col.names=F)
 write.table(update.frame, update.file.name, sep="\t", quote=F, row.names=F, col.names=F)
+
+#Workout how many SNPs remain
+snps.remain <- dim(freq)[1] - dim(del.frame)[1]
+str <- paste0("m_remain_atcg_", dataset, " ", snps.remain, "\n")
+file <- paste0("../data/output/", site, "/flow/flow_nrs.txt")
+cat(str, file=file, append=T)
