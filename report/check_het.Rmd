@@ -1,0 +1,41 @@
+---
+title: "Check heterozygosity by site"
+output: html_document
+---
+
+The only interesting thing here really is that the WinstonSalem heterozygosity is relatively high here.
+There does not appear to be any obvious samples with excess heterozygosity for any of the sites, so that is good.
+Also note the lack of heterozygotes for the ADPC chip; this is probably because the chip has been enriched for rare variants, 
+so in effect heterozygosity cannot really be used to check for sample quality.
+
+```{r, echo=FALSE}
+sites <- c("chicago",
+           #"detroit",
+           "jackson_aric",
+           "jackson_jhs",
+           "jhu_650y",
+           "jhu_abr",
+           "jhu_bdos",
+           "ucsf_pr",
+           "ucsf_sf",
+           "washington",
+           "winston_salem")
+
+
+plotF <- function(site, dataset) {
+  plink.file <- paste0("../data/working/", site, "/", dataset, "_flipped_concordant")
+  system(paste("plink --bfile", plink.file, "--het --out het"))
+  het <- read.table("het.het", head=T)
+  het$H <- 1-het$O.HOM./het$N.NM.
+  #hist(het$F, breaks = 20, xlab="F", main=paste(site, dataset))
+  boxplot(het$H, main=paste(site, dataset))
+}
+
+for (site in sites) {
+  par(mfrow=c(1,2))
+  plotF(site, "gwas")
+  plotF(site, "adpc")
+}
+
+```
+
