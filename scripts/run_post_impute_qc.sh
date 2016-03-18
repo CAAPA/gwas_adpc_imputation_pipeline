@@ -15,4 +15,8 @@ mkdir ../data/output/${site}/imputed_qc
 cat get_low_qual_imputed_snps.R | R --vanilla --args $site
 
 #Delete those SNPs
-#
+for ((chr=21; chr<=22; chr++)); do
+    vcftools --gzvcf ../data/output/${site}/imputed/chr${chr}.dose.vcf.gz \
+             --exclude-positions ../data/output/${site}/imputed_qc/snps_deleted_chr${chr}.txt \
+             --recode --stdout | gzip -c > ../data/output/${site}/imputed_qc/chr${chr}
+done

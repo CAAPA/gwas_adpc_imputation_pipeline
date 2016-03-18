@@ -10,8 +10,7 @@ gt.rsq <- 0.3
 cat("chr", "total_lt", "total_gt", "low_rsq_lt", "low_rsq_gt", "total\n", 
     sep="\t", file=out.chr.nr.file.name)
 
-for (chr in 1:22) {
-  print(chr)
+for (chr in 21:22) {
   file.name <- paste0("../data/output/", site, "/imputed/chr", chr, ".info.gz")
   info <- read.table(gzfile(file.name), header=T, stringsAsFactors = F)
   
@@ -26,8 +25,8 @@ for (chr in 1:22) {
   
   #Write the SNPs that should be deleted to file
   out.snp.file.name <- paste0(out.snp.file.prefix, chr, ".txt")
-  cat(info$SNP[(info$MAF <= maf.threshold) & (info$Rsq <= lt.rsq)],
+  cat(gsub(":", "\t", info$SNP[(info$MAF <= maf.threshold) & (info$Rsq <= lt.rsq)]),
       sep="\n", file=out.snp.file.name)
-  cat(info$SNP[(info$MAF > maf.threshold) & (info$Rsq <= gt.rsq)],
+  cat(gsub(":", "\t", info$SNP[(info$MAF > maf.threshold) & (info$Rsq <= gt.rsq)]),
       sep="\n", file=out.snp.file.name, append = T)
 }
