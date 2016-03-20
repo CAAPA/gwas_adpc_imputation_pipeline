@@ -33,7 +33,7 @@ cut -f1  $snp_del_file_name >  ../data/working/${site}/snps_plink_delete.txt
 #Remove and flip those SNPs
 plink --bfile $in_file_prefix \
       --exclude  ../data/working/${site}/snps_plink_delete.txt \
-      --make-bed --out $fix_at_cg_file_prefix
+      --make-bed --out $fix_at_cg_file_prefix \
       --flip $snp_flip_file_name \
 
 #Create VCF files to upload to server, to identify strand flips
