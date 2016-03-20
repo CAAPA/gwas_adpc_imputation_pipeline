@@ -4,6 +4,11 @@ bash setup.sh chicago
 bash run_qc.sh chicago UChicago
 bash merge_files.sh chicago
 
+bash setup.sh detroit
+bash preprocess_detroit.sh
+bash run_qc.sh detroit CHPHSR
+
+
 bash preprocess_jackson.sh
 bash setup.sh jackson_aric
 bash run_qc.sh jackson_aric JHS_Uvermont
