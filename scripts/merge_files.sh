@@ -15,4 +15,4 @@ bash get_common_snp_files.sh $site
 bash merge_adpc_gwas.sh $site
 
 #Create the flow diagram for this site
-bash ../doc/build_flow.sh $site
+#bash ../doc/build_flow.sh $site
