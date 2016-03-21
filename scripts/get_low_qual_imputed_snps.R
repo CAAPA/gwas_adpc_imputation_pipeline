@@ -51,7 +51,7 @@ for (chr in 1:22) {
   merged <- merge(info, ref.freq)
   names(merged) <- c("POS", "REF_A", "ALT_A", "SITE_F", "REF_ALT_A", "REF_REF_A",  "REF_F")     #REF_A, ALT_A is defined according to the site
   merged <- merged[,c(1:4,6,5,7)]
-  merged$REF_F[merged$REF_A != merged$REF_ALT_A] <- 1 - merged$REF_F[merged$REF_A != merged$REF_ALT_A] 
+  merged$REF_F[merged$REF_A != merged$REF_REF_A] <- 1 - merged$REF_F[merged$REF_A != merged$REF_REF_A] 
   
   #Write the outped
   write.table(merged[,-c(5,6)], paste0("../data/output/", site, "/imputed_qc/freq_chr", chr, ".txt"),  
