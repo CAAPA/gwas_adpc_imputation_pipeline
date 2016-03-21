@@ -11,6 +11,12 @@ site=$1
 rm -r ../data/output/${site}/imputed_qc
 mkdir ../data/output/${site}/imputed_qc
 
+#Calculate frequencies of original genotypes before imputation
+for ((chr=1; chr<=22; chr++)); do
+    plink --bfile ../data/working/${site}/merged_chr${chr} --freq \
+          --out ../data/working/${site}/orig_freq_chr${chr}
+done
+
 #Get SNPs that should be deleted
 cat get_low_qual_imputed_snps.R | R --vanilla --args $site
 

@@ -53,8 +53,20 @@ for (chr in 1:22) {
   merged <- merged[,c(1:4,6,5,7)]
   merged$REF_F[merged$REF_A != merged$REF_REF_A] <- 1 - merged$REF_F[merged$REF_A != merged$REF_REF_A] 
   
+  #Add frequency of original genotyped SNPs
+  file.name <- paste0("../data/working/", site, "/orig_freq_chr", chr, ".frq")
+  orig.freq <- read.table(file.name, head=T, stringsAsFactors = F)
+  file.name <- paste0("../data/working/", site, "/merged_chr", chr, ".bim")
+  orig.bim <- read.table(file.name,  stringsAsFactors = F)[,c(2,4)]
+  names(orig.bim) <- c("SNP", "POS")
+  orig.freq <- merge(orig.freq, orig.bim)
+  orig.freq <- orig.freq[,c(4,3,5,7)]
+  names(orig.freq) <- c("ORIG_REF_A", "ORIG_ALT_A", "ORIG_F", "POS")
+  merged <- merge(merged, orig.freq, all.x=T)
+  merged$ORIG_F[which(merged$REF_A != merged$ORIG_REF_A)] <- 1 - merged$ORIG_F[which(merged$REF_A != merged$ORIG_REF_A)] 
+  
   #Write the outped
-  write.table(merged[,-c(5,6)], paste0("../data/output/", site, "/imputed_qc/freq_chr", chr, ".txt"),  
+  write.table(merged[,-c(5,6,8,9)], paste0("../data/output/", site, "/imputed_qc/freq_chr", chr, ".txt"),  
               sep="\t", quote=F, row.names=F, col.names=T)
   
 }
