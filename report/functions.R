@@ -183,26 +183,46 @@ drawSNPsDeletedHeatMap <- function(del.cat) {
   return(p)
 }
 
-
 ###############################################################################
-getSNPsLargeFreqDiff <- function(compare.cols, threshold) {
-  
-  frame <- data.frame()
+#All these calculations are done once off and written to file so as to save
+#compuation time
+getSNPsDiffStats <- function() {
+  ref.diff.05.frame <- data.frame()
+  ref.diff.10.frame <- data.frame()
+  geno.diff.10.frame <- data.frame()
+  t.frame <- data.frame()
   for (site in sites){
     file.prefix <- paste0("../data/output/", site, "/imputed_qc/freq_chr")
-     for (chr in 1:22) {
+    for (chr in 1:22) {
       freq.file <- paste0(file.prefix, chr, ".txt")
       freq <- read.table(freq.file, head=T, stringsAsFactors = F)
-      freq <- freq[,names(freq) %in% compare.cols]
-      freq$delta <- abs(freq[,1] - freq[,2])
+      
+      threshold <- 0.05
+      freq$delta <- abs(freq$SITE_F - freq$REF_F)
       total_exceed <- sum(freq$delta > threshold)
       total <- dim(freq)[1]
       proportion <- total_exceed/total
-      frame <- rbind(frame, data.frame(site, total_exceed, total, proportion, chr))
+      ref.diff.05.frame <- rbind(ref.diff.05.frame , data.frame(site, total_exceed, total, proportion, chr))
+      
+      threshold <- 0.1
+      freq$delta <- abs(freq$SITE_F - freq$REF_F)
+      total_exceed <- sum(freq$delta > threshold)
+      total <- dim(freq)[1]
+      proportion <- total_exceed/total
+      ref.diff.10.frame <- rbind(ref.diff.10.frame , data.frame(site, total_exceed, total, proportion, chr))
+      
+      freq$delta <- abs(freq$SITE_F - freq$ORIG_F)
+      total_exceed <- sum(freq$delta > threshold, na.rm=T)
+      total <- sum(!is.na(freq$delta))
+      proportion <- total_exceed/total
+      geno.diff.10.frame <- rbind(geno.diff.10.frame , data.frame(site, total_exceed, total, proportion, chr))
     }
   }
   
-  return(frame)
+  #Write the output files
+  write.table(ref.diff.05.frame, "../data/output/ref_diff_05.txt",  sep="\t", quote=F, row.names=F, col.names=T)
+  write.table(ref.diff.10.frame, "../data/output/ref_diff_10.txt",  sep="\t", quote=F, row.names=F, col.names=T)
+  write.table(geno.diff.10.frame, "../data/output/geno_diff_10.txt",  sep="\t", quote=F, row.names=F, col.names=T)
 }
 
 ###############################################################################
