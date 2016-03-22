@@ -1,0 +1,38 @@
+---
+title: "Check missingness by site"
+output: html_document
+---
+
+
+
+```{r, echo=FALSE}
+sites <- c("chicago",
+           #"detroit",
+           "jackson_aric",
+           "jackson_jhs",
+           "jhu_650y",
+           "jhu_abr",
+           "jhu_bdos",
+           "ucsf_pr",
+           "ucsf_sf",
+           "washington",
+           "winston_salem")
+
+
+plotMiss <- function(site, dataset) {
+  plink.file <- paste0("../data/working/", site, "/", dataset, "_flipped_concordant")
+  system(paste("plink --bfile", plink.file, "--missing --out miss"))
+  imiss <- read.table("miss.imiss", head=T, stringsAsFactors = F)
+  hist(imiss$F_MISS, xlab="", main=paste(site, dataset, "missingness per individual"), breaks=20)
+  lmiss <- read.table("miss.lmiss", head=T, stringsAsFactors = F)
+  hist(lmiss$F_MISS, xlab="", main=paste(site, dataset, "missingness per SNP"), breaks=20)
+}
+
+for (site in sites) {
+  par(mfrow=c(2,2))
+  plotMiss(site, "gwas")
+  plotMiss(site, "adpc")
+}
+
+```
+

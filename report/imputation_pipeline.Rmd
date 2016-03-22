@@ -14,22 +14,22 @@ knitr::kable(getPreQCStatistics(), align=c("l", rep("r",10)))
 
 ### Imputation QC
 
-These statistics were scraped from the imputation server's QC reports and sumamrized into tables, so that statistics can be compared across sites.
+These statistics were scraped from the imputation server's QC reports and summarized into tables, so that statistics can be compared across sites.
 
 #### ADPC
 
 ```{r, echo=FALSE}
-source("functions.R")
-knitr::kable(getImputationQCStatistics1("adpc"), align=c("l", rep("r",7)))
-knitr::kable(getImputationQCStatistics2("adpc"), align=c("l", rep("r",6)))
+#source("functions.R")
+#knitr::kable(getImputationQCStatistics1("adpc"), align=c("l", rep("r",7)))
+#knitr::kable(getImputationQCStatistics2("adpc"), align=c("l", rep("r",6)))
 ```
 
 #### GWAS
 
 ```{r, echo=FALSE}
-source("functions.R")
-knitr::kable(getImputationQCStatistics1("gwas"), align=c("l", rep("r",7)))
-knitr::kable(getImputationQCStatistics2("gwas"), align=c("l", rep("r",6)))
+#source("functions.R")
+#knitr::kable(getImputationQCStatistics1("gwas"), align=c("l", rep("r",7)))
+#knitr::kable(getImputationQCStatistics2("gwas"), align=c("l", rep("r",6)))
 ```
 
 ### Merged
@@ -39,6 +39,53 @@ source("functions.R")
 knitr::kable(getImputationQCStatistics1("imputation"), align=c("l", rep("r",7)))
 knitr::kable(getImputationQCStatistics2("imputation"), align=c("l", rep("r",6)))
 ```
+
+### Post-imputation QC
+
+#### Proportion SNPs deleted accoss the genome
+
+```{r, echo=FALSE}
+source("functions.R")
+knitr::kable(getSNPsDeleted(), align=c("l", rep("r",9)))
+```
+
+#### Proportion rare SNPs (MAF <= 0.005) deleted across the genome
+
+```{r, echo=FALSE}
+source("functions.R")
+drawSNPsDeletedHeatMap("lt")
+```
+
+#### Proportion other SNPs (MAF > 0.005) deleted across the genome
+
+```{r, echo=FALSE}
+source("functions.R")
+drawSNPsDeletedHeatMap("gt")
+```
+
+#### Proportion SNPs with large frequency difference compared to reference
+
+```{r, echo=FALSE}
+source("functions.R")
+ref.freq.diff <- getSNPsLargeFreqDiff(c("SITE_F", "REF_F"), 0.1)
+knitr::kable(getGenomeFreqDiff(ref.freq.diff), align=c("l", rep("r",3)))
+```
+
+#### Proportion genotyped SNPs with large frequency difference compared to imputed version
+
+```{r, echo=FALSE}
+#source("functions.R")
+#drawFreqDiffHeatMap()
+```
+
+#### Frequency difference QQ plot
+
+```{r, echo=FALSE}
+#source("functions.R")
+#Summary of SNP counts before and after deletion by site across the genome (just a table)
+#drawQQFreqDiff()
+```
+
 
 ## Nomenclature
 
@@ -51,7 +98,7 @@ knitr::kable(getImputationQCStatistics2("imputation"), align=c("l", rep("r",6)))
 
 ## Technical notes
 
-- All the sites were run through on git revision eca90dd 
+- All the sites were run through on git revision 476348c (TODO: update this!) 
 - When the initial ADPC and GWAS files are created, sex and phenotype values in the fam files are set to missing (0)
 - The SNP positions of the initial ADPC file was fixed to match dbSNP 142 chromosome end positions (instead of the start position), but not for SNPs with rs IDs - these SNP positions were already correct. This does result in some duplicate SNPs by position (2 SNP pairs), which were removed (4 SNPs).
 - For some sites, there are a small number of duplicate SNPs by position in the GWAS dataset. All such SNPs are removed. 

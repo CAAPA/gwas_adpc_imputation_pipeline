@@ -1,16 +1,21 @@
 library(stringr)
+library(ggplot2)
+library(reshape2)
 
-sites <- c("chicago",
-           #"detroit",
-           "jackson_aric",
-           "jackson_jhs",
-           "jhu_650y",
-           "jhu_abr",
-           #"jhu_bdos",
-           "ucsf_pr",
-           "ucsf_sf",
-           #"washington",
-           "winston_salem")
+# sites <- c("chicago",
+#            #"detroit",
+#            "jackson_aric",
+#            "jackson_jhs",
+#            "jhu_650y",
+#            "jhu_abr",
+#            "jhu_bdos",
+#            "ucsf_pr",
+#            "ucsf_sf",
+#            "washington",
+#            "winston_salem")
+
+sites <- c("jhu_650y",
+           "ucsf_sf")
 
 ###############################################################################
 getPreQCStatistics <- function () {
@@ -99,7 +104,7 @@ getImputationQCStatistics2 <- function (dataset) {
       stats <- read.table(stats.summ.file)[,2]
       nrs <- c(site, as.character(stats))
     } else {
-      nrs <- c(site, rep("", 7))
+      nrs <- c(site, rep("", 6))
     }
     out.frame <- rbind(out.frame, data.frame(t(nrs)))
   }
@@ -114,4 +119,118 @@ getImputationQCStatistics2 <- function (dataset) {
   
   return (out.frame)
   
+}
+
+###############################################################################
+getSNPsDeleted <- function() {
+  
+  out.frame <- data.frame()
+  
+  for (site in sites){
+    count.file <- paste0("../data/output/", site, "/imputed_qc/chr_snp_count.txt")
+    counts <- read.table(count.file, head=T, stringsAsFactors = F)
+    low_rsq_lt <-  formatC(sum(counts$low_rsq_lt), format="d", big.mark=",")  
+    total_lt <- formatC(sum(counts$total_lt), format="d", big.mark=",")  
+    prop_lt_deleted <- round(sum(counts$low_rsq_lt)/sum(counts$total_lt), 2)
+    low_rsq_gt <- formatC(sum(counts$low_rsq_gt), format="d", big.mark=",")  
+    total_gt <- formatC(sum(counts$total_gt), format="d", big.mark=",")  
+    prop_gt_deleted <- round(sum(counts$low_rsq_gt)/sum(counts$total_gt), 2)
+    total <- formatC(sum(counts$total), format="d", big.mark=",")  
+    remain <- formatC(sum(counts$total) - sum(counts$low_rsq_lt) - sum(counts$low_rsq_gt), format="d", big.mark=",")  
+    total_prop_deleted <- round((sum(counts$low_rsq_lt) + sum(counts$low_rsq_gt))/sum(counts$total),2)
+    out.frame <- rbind(out.frame, 
+                       data.frame(site,
+                                  low_rsq_lt, total_lt, prop_lt_deleted,
+                                  low_rsq_gt, total_gt, prop_gt_deleted,
+                                  total, remain, total_prop_deleted))
+  }
+  
+  names(out.frame) <- c("site",
+                        "m_rare_low_rsq", "m_rare", "prop_low_maf_del",
+                        "m_other_low_rsq", "m_other", "prop_other_del",
+                        "m_original", "m_remain", "prop_del")
+  
+  return(out.frame)
+}
+
+###############################################################################
+#del.cat=lt/gt
+drawSNPsDeletedHeatMap <- function(del.cat) {
+   
+  frame <- data.frame(rep(0,22))
+  for (site in sites){
+    count.file <- paste0("../data/output/", site, "/imputed_qc/chr_snp_count.txt")
+    counts <- read.table(count.file, head=T, stringsAsFactors = F)
+    counts <- counts[,names(counts) %in% c("chr", paste0("total_", del.cat), paste0("low_rsq_", del.cat))]
+    prop <- counts[,3]/counts[,2]
+    frame <- cbind(frame, data.frame(prop))
+  }
+  
+  frame <- frame[,-1]
+  names(frame) <- sites
+  chr.names <- rownames(frame)
+  frame <- suppressMessages(melt(frame))
+  frame$chr <- chr.names
+  names(frame)[2] <- "proportion_deleted"
+  frame$chr <- factor(frame$chr, levels=as.character(1:22))
+
+  p <- ggplot(frame, aes(variable, chr)) + 
+        geom_tile(aes(fill = proportion_deleted), colour = "white") + 
+        scale_fill_gradient(low = "white", high = "steelblue") + 
+        labs(x="")  + 
+        theme_bw()
+  
+  return(p)
+}
+
+
+###############################################################################
+getSNPsLargeFreqDiff <- function(compare.cols, threshold) {
+  
+  frame <- data.frame()
+  for (site in sites){
+    file.prefix <- paste0("../data/output/", site, "/imputed_qc/freq_chr")
+     for (chr in 1:22) {
+      freq.file <- paste0(file.prefix, chr, ".txt")
+      freq <- read.table(freq.file, head=T, stringsAsFactors = F)
+      freq <- freq[,names(freq) %in% compare.cols]
+      freq$delta <- abs(freq[,1] - freq[,2])
+      total_exceed <- sum(freq$delta > threshold)
+      total <- dim(freq)[1]
+      proportion <- total_exceed/total
+      frame <- rbind(frame, data.frame(site, total_exceed, total, proportion, chr))
+    }
+  }
+  
+  return(frame)
+}
+
+###############################################################################
+getGenomeFreqDiff <- function(frame) {
+  
+  out.frame <- data.frame()
+  
+  for (site in unique(frame$site)){
+    m_exceed <- sum(frame$total_exceed[frame$site == site])
+    m <- sum(frame$total[frame$site == site])
+    proportion_exceed <- round(m_exceed/m,4)
+    m_exceed <- formatC(m_exceed, format="d", big.mark=",") 
+    m <- formatC(m, format="d", big.mark=",") 
+    out.frame <- rbind(out.frame, 
+                       data.frame(site, m_exceed, m, proportion_exceed))
+  }
+  
+  return(out.frame)
+}
+
+###############################################################################
+drawFreqDiffHeatMap <- function(frame) {
+  
+  p <- ggplot(frame, aes(site, chr)) + 
+    geom_tile(aes(fill = proportion), colour = "white") + 
+    scale_fill_gradient(low = "white", high = "steelblue") + 
+    labs(x="")  + 
+    theme_bw()
+  
+  return(p)
 }
