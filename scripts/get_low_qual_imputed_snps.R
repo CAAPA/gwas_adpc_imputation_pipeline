@@ -42,15 +42,15 @@ for (chr in 1:22) {
   #Remove redundant columns from info, delete low quality SNPs, and rename to merge
   info <- info[!(info$SNP %in% low.qual.str),]
   info$POS <- as.numeric(unlist(strsplit(info$SNP, split=":"))[seq(2,dim(info)[1]*2,2)])
-  info <- info[,c(14,2,3,4)]
+  info <- info[,c(14,7,2,3,4)]
   
   #Remove redundant columns from reference freq
   ref.freq <- ref.freq[,-c(1,6)]
   
   #Merge the files, rename columns to make sense
   merged <- merge(info, ref.freq)
-  names(merged) <- c("POS", "REF_A", "ALT_A", "SITE_F", "REF_ALT_A", "REF_REF_A",  "REF_F")     #REF_A, ALT_A is defined according to the site
-  merged <- merged[,c(1:4,6,5,7)]
+  names(merged) <- c("POS", "RSQ", "REF_A", "ALT_A", "SITE_F", "REF_ALT_A", "REF_REF_A",  "REF_F")     #REF_A, ALT_A is defined according to the site
+  merged <- merged[,c(1:5,7,6,8)]
   merged$REF_F[merged$REF_A != merged$REF_REF_A] <- 1 - merged$REF_F[merged$REF_A != merged$REF_REF_A] 
   
   #Add frequency of original genotyped SNPs
@@ -66,7 +66,7 @@ for (chr in 1:22) {
   merged$ORIG_F[which(merged$REF_A != merged$ORIG_REF_A)] <- 1 - merged$ORIG_F[which(merged$REF_A != merged$ORIG_REF_A)] 
   
   #Write the outped
-  write.table(merged[,-c(5,6,8,9)], paste0("../data/output/", site, "/imputed_qc/freq_chr", chr, ".txt"),  
+  write.table(merged[,-c(6,7,9,10)], paste0("../data/output/", site, "/imputed_qc/freq_chr", chr, ".txt"),  
               sep="\t", quote=F, row.names=F, col.names=T)
   
 }
