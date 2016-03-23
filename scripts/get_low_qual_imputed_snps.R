@@ -41,8 +41,8 @@ for (chr in 1:22) {
 
   #Save the rsq values
   rsq <- info$Rsq
-  rsq.lt <- info$Rsq[which(info$Rsq[info$MAF <= maf.threshold])]
-  rsq.gt <- info$Rsq[which(info$Rsq[info$MAF > maf.threshold])]
+  rsq.lt <- info$Rsq[which(info$MAF <= maf.threshold)]
+  rsq.gt <- info$Rsq[which(info$MAF > maf.threshold)]
   rsq.all <- c(rsq.all, rsq)
   rsq.all.lt <- c(rsq.all.lt, rsq.lt)
   rsq.all.gt <- c(rsq.all.gt, rsq.gt)
@@ -90,8 +90,8 @@ for (chr in 1:22) {
   
   #Write the quality rsq output to file
   rsq <- info$Rsq
-  rsq.lt <- info$Rsq[which(info$Rsq[info$MAF <= maf.threshold])]
-  rsq.gt <- info$Rsq[which(info$Rsq[info$MAF > maf.threshold])]
+  rsq.lt <- info$Rsq[which(info$MAF <= maf.threshold)]
+  rsq.gt <- info$Rsq[which(info$MAF > maf.threshold)]
   rsq.qual <- c(rsq.qual, rsq)
   rsq.qual.lt <- c(rsq.qual.lt, rsq.lt)
   rsq.qual.gt <- c(rsq.qual.gt, rsq.gt)
