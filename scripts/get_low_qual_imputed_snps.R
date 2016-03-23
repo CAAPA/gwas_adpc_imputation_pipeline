@@ -4,13 +4,17 @@ args <- commandArgs(trailingOnly = TRUE)
 site <- args[1]
 out.snp.file.prefix <- paste0("../data/output/", site, "/imputed_qc/snps_deleted_chr")
 out.chr.nr.file.name <- paste0("../data/output/", site, "/imputed_qc/chr_snp_count.txt")
+out.rsq.file.name <- paste0("../data/output/", site, "/imputed_qc/rsq_summary.txt")
 hist.file.name <-  paste0("../data/output/", site, "/imputed_qc/rsq_hist.pdf")
 maf.threshold <- 0.005
 lt.rsq <- 0.5
 gt.rsq <- 0.3
 cat("chr", "total_lt", "total_gt", "low_rsq_lt", "low_rsq_gt", "total\n", 
     sep="\t", file=out.chr.nr.file.name)
+cat("chr", "median_all_rsq", "median_qc_rsq\n", 
+    sep="\t", file=out.raq.file.name)
 rsq.all <- c()
+rsq.qual <- c()
 
 for (chr in 1:22) {
   file.name <- paste0("../data/output/", site, "/imputed/chr", chr, ".info.gz")
@@ -32,7 +36,8 @@ for (chr in 1:22) {
   cat(gsub(":", "\t", low.qual.str), sep="\n", file=out.snp.file.name)
 
   #Save the rsq values
-  rsq.all <- c(rsq.all, info$Rsq)
+  rsq <- info$Rsq
+  rsq.all <- c(rsq.all, rsq)
   
   #Get the reference frequencies
   file.name <- paste0("../data/input/caapa_freq_chr", chr, ".txt")
@@ -65,11 +70,18 @@ for (chr in 1:22) {
   merged <- merge(merged, orig.freq, all.x=T)
   merged$ORIG_F[which(merged$REF_A != merged$ORIG_REF_A)] <- 1 - merged$ORIG_F[which(merged$REF_A != merged$ORIG_REF_A)] 
   
-  #Write the outped
+  #Write the output
   write.table(merged[,-c(6,7,9,10)], paste0("../data/output/", site, "/imputed_qc/freq_chr", chr, ".txt"),  
               sep="\t", quote=F, row.names=F, col.names=T)
+  
+  #Write the rsq output to file
+  rsq.qual <- c(rsq.qual, info$Rsq)
+  cat(chr, median(rsq), paste0(median(info$Rsq), "\n"), 
+      sep="\t", append=T, file=out.rsq.file.name)
   
 }
 pdf(hist.file.name)
 hist(rsq.all, main=site, xlab="Rsq", breaks=20)
 dev.off()
+cat("1-22", median(rsq.all), paste0(median(rsq.qual), "\n"), 
+    sep="\t", append=T, file=out.rsq.file.name)
