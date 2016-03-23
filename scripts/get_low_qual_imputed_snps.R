@@ -11,10 +11,14 @@ lt.rsq <- 0.5
 gt.rsq <- 0.3
 cat("chr", "total_lt", "total_gt", "low_rsq_lt", "low_rsq_gt", "total\n", 
     sep="\t", file=out.chr.nr.file.name)
-cat("chr", "median_all_rsq", "median_qc_rsq\n", 
+cat("chr", "category", "rsq\n",
     sep="\t", file=out.rsq.file.name)
 rsq.all <- c()
+rsq.all.lt <- c()
+rsq.all.gt <- c()
 rsq.qual <- c()
+rsq.qual.lt <- c()
+rsq.qual.gt <- c()
 
 for (chr in 1:22) {
   file.name <- paste0("../data/output/", site, "/imputed/chr", chr, ".info.gz")
@@ -37,7 +41,17 @@ for (chr in 1:22) {
 
   #Save the rsq values
   rsq <- info$Rsq
+  rsq.lt <- info$Rsq[which(info$Rsq[info$MAF <= maf.threshold])]
+  rsq.gt <- info$Rsq[which(info$Rsq[info$MAF > maf.threshold])]
   rsq.all <- c(rsq.all, rsq)
+  rsq.all.lt <- c(rsq.all.lt, rsq.lt)
+  rsq.all.gt <- c(rsq.all.gt, rsq.gt)
+  cat(chr, "all", paste0(median(rsq), "\n"), 
+      sep="\t", append=T, file=out.rsq.file.name)
+  cat(chr, "all_lt", paste0(median(rsq.lt), "\n"), 
+      sep="\t", append=T, file=out.rsq.file.name)
+  cat(chr, "all_gt", paste0(median(rsq.gt), "\n"), 
+      sep="\t", append=T, file=out.rsq.file.name)
   
   #Get the reference frequencies
   file.name <- paste0("../data/input/caapa_freq_chr", chr, ".txt")
@@ -74,14 +88,38 @@ for (chr in 1:22) {
   write.table(merged[,-c(6,7,9,10)], paste0("../data/output/", site, "/imputed_qc/freq_chr", chr, ".txt"),  
               sep="\t", quote=F, row.names=F, col.names=T)
   
-  #Write the rsq output to file
-  rsq.qual <- c(rsq.qual, info$Rsq)
-  cat(chr, median(rsq), paste0(median(info$Rsq), "\n"), 
+  #Write the quality rsq output to file
+  rsq <- info$Rsq
+  rsq.lt <- info$Rsq[which(info$Rsq[info$MAF <= maf.threshold])]
+  rsq.gt <- info$Rsq[which(info$Rsq[info$MAF > maf.threshold])]
+  rsq.qual <- c(rsq.qual, rsq)
+  rsq.qual.lt <- c(rsq.qual.lt, rsq.lt)
+  rsq.qual.gt <- c(rsq.qual.gt, rsq.gt)
+  cat(chr, "qc", paste0(median(rsq), "\n"), 
+      sep="\t", append=T, file=out.rsq.file.name)
+  cat(chr, "qc_lt", paste0(median(rsq.lt), "\n"), 
+      sep="\t", append=T, file=out.rsq.file.name)
+  cat(chr, "qc_gt", paste0(median(rsq.gt), "\n"), 
       sep="\t", append=T, file=out.rsq.file.name)
   
 }
+
+#Create a histogram of Rsq values
 pdf(hist.file.name)
 hist(rsq.all, main=site, xlab="Rsq", breaks=20)
 dev.off()
-cat("1-22", median(rsq.all), paste0(median(rsq.qual), "\n"), 
+
+#Save median across the genome
+cat("1-22", "all", paste0(median(rsq.all), "\n"), 
     sep="\t", append=T, file=out.rsq.file.name)
+cat("1-22", "all_lt", paste0(median(rsq.all.lt), "\n"), 
+    sep="\t", append=T, file=out.rsq.file.name)
+cat("1-22", "all_gt", paste0(median(rsq.all.gt), "\n"), 
+    sep="\t", append=T, file=out.rsq.file.name)
+cat("1-22", "qual", paste0(median(rsq.qual), "\n"), 
+    sep="\t", append=T, file=out.rsq.file.name)
+cat("1-22", "qual_lt", paste0(median(rsq.qual.lt), "\n"), 
+    sep="\t", append=T, file=out.rsq.file.name)
+cat("1-22", "qual_gt", paste0(median(rsq.qual.gt), "\n"), 
+    sep="\t", append=T, file=out.rsq.file.name)
+
