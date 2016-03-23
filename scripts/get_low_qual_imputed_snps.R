@@ -12,7 +12,7 @@ gt.rsq <- 0.3
 cat("chr", "total_lt", "total_gt", "low_rsq_lt", "low_rsq_gt", "total\n", 
     sep="\t", file=out.chr.nr.file.name)
 cat("chr", "median_all_rsq", "median_qc_rsq\n", 
-    sep="\t", file=out.raq.file.name)
+    sep="\t", file=out.rsq.file.name)
 rsq.all <- c()
 rsq.qual <- c()
 
