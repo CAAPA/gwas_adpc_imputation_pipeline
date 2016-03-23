@@ -46,11 +46,11 @@ for (chr in 1:22) {
   rsq.all <- c(rsq.all, rsq)
   rsq.all.lt <- c(rsq.all.lt, rsq.lt)
   rsq.all.gt <- c(rsq.all.gt, rsq.gt)
-  cat(chr, "all", paste0(median(rsq), "\n"), 
+  cat(chr, "all", paste0(median(rsq, na.rm=T), "\n"), 
       sep="\t", append=T, file=out.rsq.file.name)
-  cat(chr, "all_lt", paste0(median(rsq.lt), "\n"), 
+  cat(chr, "all_lt", paste0(median(rsq.lt, na.rm=T), "\n"), 
       sep="\t", append=T, file=out.rsq.file.name)
-  cat(chr, "all_gt", paste0(median(rsq.gt), "\n"), 
+  cat(chr, "all_gt", paste0(median(rsq.gt, na.rm=T), "\n"), 
       sep="\t", append=T, file=out.rsq.file.name)
   
   #Get the reference frequencies
@@ -95,11 +95,11 @@ for (chr in 1:22) {
   rsq.qual <- c(rsq.qual, rsq)
   rsq.qual.lt <- c(rsq.qual.lt, rsq.lt)
   rsq.qual.gt <- c(rsq.qual.gt, rsq.gt)
-  cat(chr, "qc", paste0(median(rsq), "\n"), 
+  cat(chr, "qc", paste0(median(rsq, na.rm=T), "\n"), 
       sep="\t", append=T, file=out.rsq.file.name)
-  cat(chr, "qc_lt", paste0(median(rsq.lt), "\n"), 
+  cat(chr, "qc_lt", paste0(median(rsq.lt, na.rm=T), "\n"), 
       sep="\t", append=T, file=out.rsq.file.name)
-  cat(chr, "qc_gt", paste0(median(rsq.gt), "\n"), 
+  cat(chr, "qc_gt", paste0(median(rsq.gt, na.rm=T), "\n"), 
       sep="\t", append=T, file=out.rsq.file.name)
   
 }
@@ -110,16 +110,16 @@ hist(rsq.all, main=site, xlab="Rsq", breaks=20)
 dev.off()
 
 #Save median across the genome
-cat("1-22", "all", paste0(median(rsq.all), "\n"), 
+cat("1-22", "all", paste0(median(rsq.all, na.rm=T), "\n"), 
     sep="\t", append=T, file=out.rsq.file.name)
-cat("1-22", "all_lt", paste0(median(rsq.all.lt), "\n"), 
+cat("1-22", "all_lt", paste0(median(rsq.all.lt, na.rm=T), "\n"), 
     sep="\t", append=T, file=out.rsq.file.name)
-cat("1-22", "all_gt", paste0(median(rsq.all.gt), "\n"), 
+cat("1-22", "all_gt", paste0(median(rsq.all.gt, na.rm=T), "\n"), 
     sep="\t", append=T, file=out.rsq.file.name)
-cat("1-22", "qual", paste0(median(rsq.qual), "\n"), 
+cat("1-22", "qual", paste0(median(rsq.qual, na.rm=T), "\n"), 
     sep="\t", append=T, file=out.rsq.file.name)
-cat("1-22", "qual_lt", paste0(median(rsq.qual.lt), "\n"), 
+cat("1-22", "qual_lt", paste0(median(rsq.qual.lt, na.rm=T), "\n"), 
     sep="\t", append=T, file=out.rsq.file.name)
-cat("1-22", "qual_gt", paste0(median(rsq.qual.gt), "\n"), 
+cat("1-22", "qual_gt", paste0(median(rsq.qual.gt, na.rm=T), "\n"), 
     sep="\t", append=T, file=out.rsq.file.name)
 
