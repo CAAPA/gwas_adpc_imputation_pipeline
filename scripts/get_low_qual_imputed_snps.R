@@ -53,13 +53,27 @@ for (chr in 1:22) {
   cat(chr, "all_gt", paste0(median(rsq.gt, na.rm=T), "\n"), 
       sep="\t", append=T, file=out.rsq.file.name)
   
+  #Delete low quality SNPs and save and write Rsq info
+  info <- info[!(info$SNP %in% low.qual.str),]
+  rsq <- info$Rsq
+  rsq.lt <- info$Rsq[which(info$MAF <= maf.threshold)]
+  rsq.gt <- info$Rsq[which(info$MAF > maf.threshold)]
+  rsq.qual <- c(rsq.qual, rsq)
+  rsq.qual.lt <- c(rsq.qual.lt, rsq.lt)
+  rsq.qual.gt <- c(rsq.qual.gt, rsq.gt)
+  cat(chr, "qc", paste0(median(rsq, na.rm=T), "\n"), 
+      sep="\t", append=T, file=out.rsq.file.name)
+  cat(chr, "qc_lt", paste0(median(rsq.lt, na.rm=T), "\n"), 
+      sep="\t", append=T, file=out.rsq.file.name)
+  cat(chr, "qc_gt", paste0(median(rsq.gt, na.rm=T), "\n"), 
+      sep="\t", append=T, file=out.rsq.file.name)
+  
   #Get the reference frequencies
   file.name <- paste0("../data/input/caapa_freq_chr", chr, ".txt")
   ref.freq <- read.table(file.name, head=T, stringsAsFactors = F)
   ref.freq <- ref.freq[!is.na(ref.freq$MAF),]
   
-  #Remove redundant columns from info, delete low quality SNPs, and rename to merge
-  info <- info[!(info$SNP %in% low.qual.str),]
+  #Get info frame ready for merging, also remove redundant columns
   info$POS <- as.numeric(unlist(strsplit(info$SNP, split=":"))[seq(2,dim(info)[1]*2,2)])
   info <- info[,c(14,7,2,3,4)]
   
@@ -84,23 +98,9 @@ for (chr in 1:22) {
   merged <- merge(merged, orig.freq, all.x=T)
   merged$ORIG_F[which(merged$REF_A != merged$ORIG_REF_A)] <- 1 - merged$ORIG_F[which(merged$REF_A != merged$ORIG_REF_A)] 
   
-  #Write the output
+  #Write the frequency output
   write.table(merged[,-c(6,7,9,10)], paste0("../data/output/", site, "/imputed_qc/freq_chr", chr, ".txt"),  
               sep="\t", quote=F, row.names=F, col.names=T)
-  
-  #Write the quality rsq output to file
-  rsq <- info$Rsq
-  rsq.lt <- info$Rsq[which(info$MAF <= maf.threshold)]
-  rsq.gt <- info$Rsq[which(info$MAF > maf.threshold)]
-  rsq.qual <- c(rsq.qual, rsq)
-  rsq.qual.lt <- c(rsq.qual.lt, rsq.lt)
-  rsq.qual.gt <- c(rsq.qual.gt, rsq.gt)
-  cat(chr, "qc", paste0(median(rsq, na.rm=T), "\n"), 
-      sep="\t", append=T, file=out.rsq.file.name)
-  cat(chr, "qc_lt", paste0(median(rsq.lt, na.rm=T), "\n"), 
-      sep="\t", append=T, file=out.rsq.file.name)
-  cat(chr, "qc_gt", paste0(median(rsq.gt, na.rm=T), "\n"), 
-      sep="\t", append=T, file=out.rsq.file.name)
   
 }
 
