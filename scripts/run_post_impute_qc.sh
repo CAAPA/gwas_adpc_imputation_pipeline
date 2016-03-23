@@ -34,7 +34,7 @@ done
 n_cols=`zcat < ../data/output/${site}/imputed_qc/chr22.dose.vcf.gz | head -10 | tail -1 | wc -w`
 n_imputed=$(($n_cols-9))
 echo "n_imputed $n_imputed" >> ../data/output/${site}/flow/flow_nrs.txt
-m_imputed=`tail -22 chr_snp_count.txt | cut -f6 | paste -sd+ - | bc`
+m_imputed=`tail -22  ../data/output/${site}/imputed_qc/chr_snp_count.txt | cut -f6 | paste -sd+ - | bc`
 echo "m_imputed $m_imputed" >> ../data/output/${site}/flow/flow_nrs.txt
 echo "m_qc_imputed $total_kept_snps" >> ../data/output/${site}/flow/flow_nrs.txt
 m_qc_del_impute=`wc -l ../data/output/${site}/imputed_qc/snps_deleted_chr* | tail -1 | tr -s ' ' | cut -f2 -d' '`
