@@ -36,8 +36,8 @@ These statistics were scraped from the imputation server's QC reports and summar
 
 ```{r, echo=FALSE}
 source("functions.R")
-knitr::kable(getImputationQCStatistics1("imputation"), align=c("l", rep("r",7)))
-knitr::kable(getImputationQCStatistics2("imputation"), align=c("l", rep("r",6)))
+#knitr::kable(getImputationQCStatistics1("imputation"), align=c("l", rep("r",7)))
+#knitr::kable(getImputationQCStatistics2("imputation"), align=c("l", rep("r",6)))
 ```
 
 ### Post-imputation QC
@@ -47,6 +47,15 @@ SNPs with MAF <= 0.005 were deleted if Rsq <= 0.5;
 SNPs with MAF > 0.005 were deleted if Rsq <= 0.3;
 
 This was based on http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3410659/, the paragraph just above the heading "TO INCLUDE OR NOT TO INCLUDE: RARE SNPs DURING HAPLOTYPE RECONSTRUCTION".
+
+#### Median Rsq
+
+The Rsq distribution is not normal, which is why the median was chosen as centrality statistic.
+```{r, echo=FALSE}
+source("functions.R")
+drawMedianRsq()
+```
+
 
 #### Proportion SNPs deleted accoss the genome
 

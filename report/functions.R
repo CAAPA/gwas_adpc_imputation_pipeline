@@ -2,20 +2,19 @@ library(stringr)
 library(ggplot2)
 library(reshape2)
 
-# sites <- c("chicago",
-#            #"detroit",
-#            "jackson_aric",
-#            "jackson_jhs",
-#            "jhu_650y",
-#            "jhu_abr",
-#            "jhu_bdos",
-#            "ucsf_pr",
-#            "ucsf_sf",
-#            "washington",
-#            "winston_salem")
-
-sites <- c("jhu_650y",
-           "ucsf_sf")
+ sites <- c(#"chicago",
+            #"detroit",
+            #"jackson_aric",
+            #"jackson_jhs",
+            "jhu_650y") #,
+            #"jhu_abr",
+            #"jhu_bdos",
+            #"ucsf_pr",
+            #"ucsf_sf",
+            #"washington") #,
+            #"winston_salem")
+#sites <- c("jhu_650y",
+#          "ucsf_sf")
 
 ###############################################################################
 getPreQCStatistics <- function () {
@@ -118,6 +117,32 @@ getImputationQCStatistics2 <- function (dataset) {
                         "m allele mismatch")
   
   return (out.frame)
+  
+}
+ 
+############################################################################### 
+drawMedianRsq <- function() {
+  
+  draw.frame <- data.frame()
+  for (site in sites){
+    frame <- read.table(paste0("../data/output/", site, "/imputed_qc/rsq_summary.txt"), head=T, stringsAsFactors = F)
+    frame$site <- site
+    draw.frame <- rbind(draw.frame, frame)
+  }
+  draw.frame$category[draw.frame$category == "all"] <- "All SNPs"
+  draw.frame$category[draw.frame$category == "all_lt"] <- "All SNPs MAF <= 0.005"
+  draw.frame$category[draw.frame$category == "all_gt"] <- "All SNPs MAF > 0.005"
+  draw.frame$category[draw.frame$category == "qc"] <- "QC SNPs"
+  draw.frame$category[draw.frame$category == "qc_lt"] <- "QC SNPs MAF <= 0.005"
+  draw.frame$category[draw.frame$category == "qc_gt"] <- "QC SNPs MAF > 0.005"
+  draw.frame <- draw.frame[draw.frame$chr != "1-22",]
+  draw.frame$chr <- factor(draw.frame$chr, levels=as.character(1:22))
+  
+  ggplot(data=draw.frame, aes(x=chr, y=rsq, group=site, colour=site)) +
+    facet_wrap(~category) +
+    geom_line() +
+    geom_point() + 
+    theme_bw()
   
 }
 
