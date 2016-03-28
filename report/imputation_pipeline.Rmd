@@ -125,7 +125,7 @@ source("functions.R")
 
 ## Technical notes
 
-- All the sites were run through on git revision b5e4c15
+- All the sites were run through on git revision b5e4c15, with the exception of jhu_650y, which was run on 72bb543 (new file pre-processing introduced, since we realized that a lot of SNPs were missing from the original file that Hiro prepared)
 - When the initial ADPC and GWAS files are created, sex and phenotype values in the fam files are set to missing (0)
 - The SNP positions of the initial ADPC file was fixed to match dbSNP 142 chromosome end positions (instead of the start position), but not for SNPs with rs IDs - these SNP positions were already correct. This does result in some duplicate SNPs by position (2 SNP pairs), which were removed (4 SNPs).
 - For some sites, there are a small number of duplicate SNPs by position in the GWAS dataset. All such SNPs are removed. 
@@ -165,6 +165,11 @@ Some sample swaps occurred for this site in the GWAS data set. The sample identi
 ### JHU Barbados
 
 Samples with suspect identities identified for the Barbados sample identity project were deleted from the GWAS file (<i>data/input/jhu\_barbados/sample\_delete.txt</i>; 9 samples).
+
+### JHU 650y
+
+The coordinates of this data set was lifted over using the JHU Barbados BIM file. 
+
 
 ### Washington 
 
