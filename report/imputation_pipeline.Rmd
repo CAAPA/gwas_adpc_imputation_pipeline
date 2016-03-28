@@ -141,6 +141,7 @@ source("functions.R")
 - Proportionally, a lot more AT/CG SNPs are deleted for Barbados, ABR, and Puerto Rico, since these populations may be distinct from African Americans. We should perhaps have considered changing the MAF cut-off threshold for these sites, but in order to be consistent across sites, we didn't.
 - For UCSF PR, there are 4 additional GOOD common samples(WG0233330-DNAH04\_HR5371, WG0233320-DNAA02\_NY50126, WG0233342-DNAC01\_SJ1252, WG0233354-DNAF02\_SJ5348), which was not inclduded in the original run. I don't know why...(In the Master sheet of the manifest, all flags are 0 for these samples, they are in the GOOD sheet, and NOT in the illumina fails sheet, and NOT in the QC errors sheet.). 
 - For the JHU sites, the initial GWAS file has samples with more than 5\% missing genotypes. These samples were removed during the GWAS QC step. For Detroit, there were 2 samples with borderline missingness (WG0233409-DNAH10\_11593-9 and WG0233409-DNAE11\_11608-3, missingness 0.05121 and 0.05182). Since this was so borderline (which was not the case for the JHU sites), I decided to retain these samples.
+- The Jackson site was genotyped in 2 different batches, the one having better quality than the other (the JHS samples performed better than the ARIC samples). In order to not remove SNPs unnecessarily from the “JHS” batch, the batches were QC’ed and imputed separately 
 
 ### File pre-processing steps
 
