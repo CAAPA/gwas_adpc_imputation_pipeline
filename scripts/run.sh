@@ -5,11 +5,11 @@ bash run_qc.sh chicago UChicago
 bash merge_files.sh chicago
 
 bash setup.sh detroit
-bash preprocess_detroit.sh
+#bash preprocess_detroit.sh
 bash run_qc.sh detroit CHPHSR
+bash merge_files.sh detroit
 
-
-bash preprocess_jackson.sh
+#bash preprocess_jackson.sh
 bash setup.sh jackson_aric
 bash run_qc.sh jackson_aric JHS_Uvermont
 bash merge_files.sh jackson_aric
@@ -18,6 +18,7 @@ bash setup.sh jackson_jhs
 bash run_qc.sh jackson_jhs JHS_Uvermont
 bash merge_files.sh jackson_jhs
 
+bash preprocess_jhu_650y.sh
 bash setup.sh jhu_650y
 bash run_qc.sh jhu_650y JHU
 bash merge_files.sh jhu_650y
