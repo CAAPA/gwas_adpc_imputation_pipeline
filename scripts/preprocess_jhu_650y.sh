@@ -12,6 +12,6 @@ cat map_graad_bim.R | R --vanilla
 
 plink --bfile ../data/working/jhu_650y/bdos_overlap \
       --exclude ../data/working/jhu_650y/bdos_map_snps_not_found.txt \
-      --make-bed --out ../data/input/jhu_650y
+      --make-bed --out ../data/input/jhu_650y/gwas
 
 rm -r  ../data/working/jhu_650y
