@@ -1,6 +1,6 @@
 ---
 title: "CAAPA GWAS+ADPC imputation pipeline"
-output: html_document
+output: word_document
 ---
 
 ## Summary statistics
@@ -61,21 +61,21 @@ drawMedianRsq()
 
 ```{r, echo=FALSE}
 source("functions.R")
-knitr::kable(getSNPsDeleted(), align=c("l", rep("r",9)))
+#knitr::kable(getSNPsDeleted(), align=c("l", rep("r",9)))
 ```
 
 #### Proportion rare SNPs (MAF <= 0.005) deleted per chromosome
 
 ```{r, echo=FALSE}
 source("functions.R")
-drawSNPsDeletedHeatMap("lt")
+#drawSNPsDeletedHeatMap("lt")
 ```
 
 #### Proportion other SNPs (MAF > 0.005) deleted per chromosome
 
 ```{r, echo=FALSE}
 source("functions.R")
-drawSNPsDeletedHeatMap("gt")
+#drawSNPsDeletedHeatMap("gt")
 ```
 
 #### Proportion SNPs with large frequency difference (> 0.05) compared to reference across the genome
@@ -83,35 +83,35 @@ drawSNPsDeletedHeatMap("gt")
 ```{r, echo=FALSE}
 source("functions.R")
 #getSNPsDiffStats() #This takes long to run - uncomment only if necessary to regenerate data/output/*diff*.txt files
-knitr::kable(getGenomeFreqDiff(read.table("../data/output/ref_diff_05.txt", head=T)), align=c("l", rep("r",3))) 
+#knitr::kable(getGenomeFreqDiff(read.table("../data/output/ref_diff_05.txt", head=T)), align=c("l", rep("r",3))) 
 ```
 
 #### Proportion SNPs with large frequency difference (> 0.1) compared to reference across the genome
 
 ```{r, echo=FALSE}
 source("functions.R")
-knitr::kable(getGenomeFreqDiff(read.table("../data/output/ref_diff_10.txt", head=T)), align=c("l", rep("r",3))) 
+#knitr::kable(getGenomeFreqDiff(read.table("../data/output/ref_diff_10.txt", head=T)), align=c("l", rep("r",3))) 
 ```
 
 #### Proportion SNPs with large frequency difference (> 0.1) compared to reference per chromosome
 
 ```{r, echo=FALSE}
 source("functions.R")
-drawFreqDiffHeatMap(read.table("../data/output/ref_diff_10.txt", head=T))
+#drawFreqDiffHeatMap(read.table("../data/output/ref_diff_10.txt", head=T))
 ```
 
 #### Proportion genotyped SNPs with large frequency difference (> 0.1) compared to imputed version across the genome
 
 ```{r, echo=FALSE}
 source("functions.R")
-knitr::kable(getGenomeFreqDiff(read.table("../data/output/geno_diff_10.txt", head=T)), align=c("l", rep("r",3))) 
+#knitr::kable(getGenomeFreqDiff(read.table("../data/output/geno_diff_10.txt", head=T)), align=c("l", rep("r",3))) 
 ```
 
 #### Proportion genotyped SNPs with large frequency difference (> 0.1) compared to imputed version per chromosome
 
 ```{r, echo=FALSE}
 source("functions.R")
-drawFreqDiffHeatMap(read.table("../data/output/geno_diff_10.txt", head=T))
+#drawFreqDiffHeatMap(read.table("../data/output/geno_diff_10.txt", head=T))
 ```
 
 ## Nomenclature
@@ -201,7 +201,7 @@ Here I had to match the original PLINK files that Nick received from the investi
 - <i>chicago</i>: CAG__2010-09-17__Illumina_1Mv1__hg19 (fam file line count = Nick's previous QC fam file line count;  bim file line count is in the same order as Nick's previous QC bim file)
 - <i>detroit</i>: SAPPHIRE_Detroit_GWAS/sapphire\_adpcNDNC 
 - <i>jackson</i>: JHS/JHS\_CAAPA\_AFFY6; site\_map.txt was extracted from JHS\_992GenotypedSamples\_ForCAAPA_Phenotypes\_15May2015.xls (received in an email from Nick)
-- <i>jhu\_650y</i>: GRAAD/GRAAD\_650Y
+- <i>jhu\_650y</i>: Extracted from BC gene (the BOX folder GRAAD/GRAAD\_650Y had ~ 185 000 SNPs to little; originally this file was used in the pipeline, but we then noticed the discrepancy in SNP numbers)
 - <i>jhu\_abr</i>: GRAAD/ABR\_GWAS; files for GWAS sample identity fixes are also in this folder
 - <i>jhu\_bdos</i>: Extracted from BC gene; a file containing a list of samples with suspect IDs that should be deleted also located in this folder
 - <i>ucsf\_pr</i>: Puerto Rico/GALA2\_hg19\_NA34\_121214\_rsid\_PuertoRicans\_ADPC
