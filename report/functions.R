@@ -2,19 +2,18 @@ library(stringr)
 library(ggplot2)
 library(reshape2)
 
- sites <- c(#"chicago",
-            #"detroit",
-            #"jackson_aric",
-            #"jackson_jhs",
-            "jhu_650y") #,
-            #"jhu_abr",
-            #"jhu_bdos",
-            #"ucsf_pr",
-            #"ucsf_sf",
-            #"washington") #,
-            #"winston_salem")
-#sites <- c("jhu_650y",
-#          "ucsf_sf")
+ sites <- c("chicago",
+            "detroit",
+            "jackson_aric",
+            "jackson_jhs",
+            "jhu_650y",
+            "jhu_abr",
+            "jhu_bdos",
+            "ucsf_pr",
+            "ucsf_sf",
+            "washington",
+            "winston_salem")
+
 
 ###############################################################################
 getPreQCStatistics <- function () {

@@ -7,6 +7,8 @@ then
     exit
 fi
 
+site=$1
+
 cp ../data/working/${site}/discordant_samples.txt ../data/output/${site}
 cp ../data/working/${site}/crossmatched_samples.txt ../data/output/${site}
 

@@ -1,6 +1,6 @@
 ---
 title: "CAAPA GWAS+ADPC imputation pipeline"
-output: word_document
+output: html_document
 ---
 
 ## Summary statistics
@@ -19,25 +19,25 @@ These statistics were scraped from the imputation server's QC reports and summar
 #### ADPC
 
 ```{r, echo=FALSE}
-#source("functions.R")
-#knitr::kable(getImputationQCStatistics1("adpc"), align=c("l", rep("r",7)))
-#knitr::kable(getImputationQCStatistics2("adpc"), align=c("l", rep("r",6)))
+source("functions.R")
+knitr::kable(getImputationQCStatistics1("adpc"), align=c("l", rep("r",7)))
+knitr::kable(getImputationQCStatistics2("adpc"), align=c("l", rep("r",6)))
 ```
 
 #### GWAS
 
 ```{r, echo=FALSE}
-#source("functions.R")
-#knitr::kable(getImputationQCStatistics1("gwas"), align=c("l", rep("r",7)))
-#knitr::kable(getImputationQCStatistics2("gwas"), align=c("l", rep("r",6)))
+source("functions.R")
+knitr::kable(getImputationQCStatistics1("gwas"), align=c("l", rep("r",7)))
+knitr::kable(getImputationQCStatistics2("gwas"), align=c("l", rep("r",6)))
 ```
 
 ### Merged
 
 ```{r, echo=FALSE}
 source("functions.R")
-#knitr::kable(getImputationQCStatistics1("imputation"), align=c("l", rep("r",7)))
-#knitr::kable(getImputationQCStatistics2("imputation"), align=c("l", rep("r",6)))
+knitr::kable(getImputationQCStatistics1("imputation"), align=c("l", rep("r",7)))
+knitr::kable(getImputationQCStatistics2("imputation"), align=c("l", rep("r",6)))
 ```
 
 ### Post-imputation QC
@@ -51,7 +51,7 @@ This was based on http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3410659/, the para
 #### Median Rsq
 
 The Rsq distribution is not normal, which is why the median was chosen as centrality statistic.
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width = 15, fig.height = 15}
 source("functions.R")
 drawMedianRsq()
 ```
@@ -61,21 +61,21 @@ drawMedianRsq()
 
 ```{r, echo=FALSE}
 source("functions.R")
-#knitr::kable(getSNPsDeleted(), align=c("l", rep("r",9)))
+knitr::kable(getSNPsDeleted(), align=c("l", rep("r",9)))
 ```
 
 #### Proportion rare SNPs (MAF <= 0.005) deleted per chromosome
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width = 15, fig.height = 10}
 source("functions.R")
-#drawSNPsDeletedHeatMap("lt")
+drawSNPsDeletedHeatMap("lt")
 ```
 
 #### Proportion other SNPs (MAF > 0.005) deleted per chromosome
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width = 15, fig.height = 10}
 source("functions.R")
-#drawSNPsDeletedHeatMap("gt")
+drawSNPsDeletedHeatMap("gt")
 ```
 
 #### Proportion SNPs with large frequency difference (> 0.05) compared to reference across the genome
@@ -83,35 +83,35 @@ source("functions.R")
 ```{r, echo=FALSE}
 source("functions.R")
 #getSNPsDiffStats() #This takes long to run - uncomment only if necessary to regenerate data/output/*diff*.txt files
-#knitr::kable(getGenomeFreqDiff(read.table("../data/output/ref_diff_05.txt", head=T)), align=c("l", rep("r",3))) 
+knitr::kable(getGenomeFreqDiff(read.table("../data/output/ref_diff_05.txt", head=T)), align=c("l", rep("r",3))) 
 ```
 
 #### Proportion SNPs with large frequency difference (> 0.1) compared to reference across the genome
 
 ```{r, echo=FALSE}
 source("functions.R")
-#knitr::kable(getGenomeFreqDiff(read.table("../data/output/ref_diff_10.txt", head=T)), align=c("l", rep("r",3))) 
+knitr::kable(getGenomeFreqDiff(read.table("../data/output/ref_diff_10.txt", head=T)), align=c("l", rep("r",3))) 
 ```
 
 #### Proportion SNPs with large frequency difference (> 0.1) compared to reference per chromosome
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width = 15, fig.height = 10}
 source("functions.R")
-#drawFreqDiffHeatMap(read.table("../data/output/ref_diff_10.txt", head=T))
+drawFreqDiffHeatMap(read.table("../data/output/ref_diff_10.txt", head=T))
 ```
 
 #### Proportion genotyped SNPs with large frequency difference (> 0.1) compared to imputed version across the genome
 
 ```{r, echo=FALSE}
 source("functions.R")
-#knitr::kable(getGenomeFreqDiff(read.table("../data/output/geno_diff_10.txt", head=T)), align=c("l", rep("r",3))) 
+knitr::kable(getGenomeFreqDiff(read.table("../data/output/geno_diff_10.txt", head=T)), align=c("l", rep("r",3))) 
 ```
 
 #### Proportion genotyped SNPs with large frequency difference (> 0.1) compared to imputed version per chromosome
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width = 15, fig.height = 10}
 source("functions.R")
-#drawFreqDiffHeatMap(read.table("../data/output/geno_diff_10.txt", head=T))
+drawFreqDiffHeatMap(read.table("../data/output/geno_diff_10.txt", head=T))
 ```
 
 ## Nomenclature
@@ -121,7 +121,14 @@ source("functions.R")
 
 ## Flow diagram nomenclature
 
+- All flow diagrams with QC nrs annotation in output/<site>/flows/flow.png
 - "good" samples are those samples that are listed in <i>manifest_good_sample_list.txt</i>
+
+## QC observations
+
+- Rsq histograms (pre-imputation QC) were drawn per site to check that the distribution looks the same (<i>output/site/imputation_qc/rsq_hist.pdf</i> ); the histograms generally look the same, with <i>jhu\_abr</i> generally having a bit less mass for the intermediate Rsq values, and <i>ucsf\_pr</i> and  <i>ucsf\_sf</i> having a bit more mass for the intermediate Rsq values
+- 19 is the chromosome with the worst imputation metrics, and 13 is the chromosome with the best metrics
+- ABR is the best site for common SNPs, and worst site for rare SNPs - possibly implying that SNP density is most important for common variant imputation, and sample size is most important for rare variant imputation; a similiar trend w.r.t. small sample size is seen for Chicago
 
 ## Technical notes
 
@@ -141,7 +148,8 @@ source("functions.R")
 - Proportionally, a lot more AT/CG SNPs are deleted for Barbados, ABR, and Puerto Rico, since these populations may be distinct from African Americans. We should perhaps have considered changing the MAF cut-off threshold for these sites, but in order to be consistent across sites, we didn't.
 - For UCSF PR, there are 4 additional GOOD common samples(WG0233330-DNAH04\_HR5371, WG0233320-DNAA02\_NY50126, WG0233342-DNAC01\_SJ1252, WG0233354-DNAF02\_SJ5348), which was not inclduded in the original run. I don't know why...(In the Master sheet of the manifest, all flags are 0 for these samples, they are in the GOOD sheet, and NOT in the illumina fails sheet, and NOT in the QC errors sheet.). 
 - For the JHU sites, the initial GWAS file has samples with more than 5\% missing genotypes. These samples were removed during the GWAS QC step. For Detroit, there were 2 samples with borderline missingness (WG0233409-DNAH10\_11593-9 and WG0233409-DNAE11\_11608-3, missingness 0.05121 and 0.05182). Since this was so borderline (which was not the case for the JHU sites), I decided to retain these samples.
-- The Jackson site was genotyped in 2 different batches, the one having better quality than the other (the JHS samples performed better than the ARIC samples). In order to not remove SNPs unnecessarily from the “JHS” batch, the batches were QC’ed and imputed separately 
+- The Jackson site was genotyped in 2 different batches, the one having better quality than the other (the JHS samples performed better than the ARIC samples). In order to not remove SNPs unnecessarily from the “JHS” batch, the batches were QC’ed and imputed separately
+
 
 ### File pre-processing steps
 
@@ -170,7 +178,6 @@ Samples with suspect identities identified for the Barbados sample identity proj
 
 The coordinates of this data set was lifted over using the JHU Barbados BIM file. 
 
-
 ### Washington 
 
 The following samples are IBD duplicates, but for some reason do not show up in the <i>mz dups</i> worksheet of the manifest: WG0237441-DNAE02 and WG0237461-DNAH12; WG0237458-DNAD06 and WG0237462-DNAF09. In addition, the following 2 samples were swapped around in either the ADPC or GWAS data sets:
@@ -179,9 +186,6 @@ The following samples are IBD duplicates, but for some reason do not show up in 
 - ADPC_WG0237450-DNAC03 GWAS_WG0237446-DNAD04 PI_HAT=1.00
 
 Nick followed up with Ayo, who said that they removed all 6 these samples due to inconsistencies. These 6 samples will therefore be deleted (<i>data/input/washingon/sample\_delete.txt</i> )
-
-## Issues
-
 
 ## Folder structure
 
