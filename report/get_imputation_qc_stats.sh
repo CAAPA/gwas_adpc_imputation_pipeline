@@ -34,8 +34,8 @@ echo "ref_overlap $ref_overlap" >> $out_file_1
 
 m_allele_freq=`grep "Alternative allele" $work_file | cut -f2 -d":" | tr -s ' '`
 m_allele_switch=`grep "Allele switch:" $work_file | cut -f2 -d":" | tr -s ' '`
-m_strand_flip=`grep "Strand flip:" $work_file | cut -f2 -d":" | tr -s ' '`
-m_strand_flip_allele_switch=`grep "Strand flip and allele switch:" $work_file | cut -f2 -d":" | tr -s ' '`
+m_strand_flip=`grep "Strand" $work_file | head -1 | cut -f2 -d":" | tr -s ' '`
+m_strand_flip_allele_switch=`grep "allele switch:" $work_file | cut -f2 -d":" | tr -s ' '`
 m_at_cg=`grep "A/T, C/G genotypes:" $work_file | cut -f2 -d":" | tr -s ' '`
 m_allele_mismatch=`grep "Allele mismatch:" $work_file | cut -f2 -d":" | tr -s ' '`
 echo "m_allele_freq $m_allele_freq" > $out_file_2
