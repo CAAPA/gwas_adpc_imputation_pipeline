@@ -5,10 +5,12 @@
 #Set parameters
 if [ "$#" -eq  "0" ]
 then
-    echo "Usage: ${0##*/} <site> <cookie_file_name> <job_nr> <zip_password>"
+    echo "Usage: ${0##*/} <site> <cookie_file_name> <job_nr> <zip_password> <impute_dir> <stats_file>"
     echo "The cookies.txt chrome web store application should be installed within chrome"
     echo "Login for the relevant user, and save cookies to <cookie_file_name>"
     echo "Also remember to print the summary report and save it to the statistics folder as imputation.pdf"
+    echo "<impute_dir> is e.g. imputed or masked/imputed_tgp"
+    echo "<stats_file> is e.g. imputation_statistics.txt or tgp_imputation_statistics.txt" 
     exit
 fi
 
@@ -16,6 +18,8 @@ site=$1
 cookie_file_name=$2
 job_nr=$3
 zip_password=$4
+impute_dir=$5
+stats_file=$6
 url_prefix=https://imputationserver.sph.umich.edu/results
 
 cd ../data/working/${site}
@@ -38,12 +42,12 @@ for ((chr=1; chr<=22; chr++)); do
 done
 
 #Move the files to their correct locations
-impute_dir=../../../../../../output/${site}/imputed
+impute_dir=../../../../../../output/${site}/${impute_dir}
 rm -r $impute_dir
 mkdir $impute_dir
 mv *.gz* $impute_dir
 cd ../statistics
 stats_dir=../../../../../../output/${site}/statistics
-mv statistics.txt ${stats_dir}/imputation_statistics.txt
+mv statistics.txt ${stats_dir}/${stats_file}
 cd ../qcreport
 mv qcreport.html ${stats_dir}/imputation_qcreport.html
