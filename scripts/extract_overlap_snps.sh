@@ -34,3 +34,12 @@ vcf-concat  ../data/working/typed_overlap/${site}_chr1.vcf \
 
 plink --vcf ../data/working/typed_overlap/${site}.vcf \
       --make-bed --out ../data/working/typed_overlap/${site}
+
+#Change SNP names in BIM files to chr:position, so that they will be merged correctly
+cut -f1,4 ../data/working/typed_overlap/${site}.bim | tr '\t' ':' > ../data/working/typed_overlap/c2.txt
+cut -f1 ../data/working/typed_overlap/${site}.bim > ../data/working/typed_overlap/c1.txt
+cut -f3-6 ../data/working/typed_overlap/${site}.bim > ../data/working/typed_overlap/c3_6.txt
+paste ../data/working/typed_overlap/c1.txt \
+      ../data/working/typed_overlap/c2.txt \
+      ../data/working/typed_overlap/c3_6.txt >  ../data/working/typed_overlap/new_${site}.bim
+mv  ../data/working/typed_overlap/new_${site}.bim  ../data/working/typed_overlap/${site}.bim
