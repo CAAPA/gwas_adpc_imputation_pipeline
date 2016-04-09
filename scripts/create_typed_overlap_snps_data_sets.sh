@@ -33,7 +33,8 @@ bash merge_overlap_snps.sh c_d_6_abr jackson_aric c_d_6_abr_aric
 bash merge_overlap_snps.sh c_d_6_abr_aric jackson_jhs c_d_6_abr_aric_jhs
 bash merge_overlap_snps.sh c_d_6_abr_aric_jhs ucsf_sf c_d_6_abr_aric_jhs_sf
 bash merge_overlap_snps.sh c_d_6_abr_aric_jhs_sf washington c_d_6_abr_aric_jhs_sf_wa
-bash merge_overlap_snps.sh c_d_6_abr_aric_jhs_sf_wa winston_salem african_american
+bash merge_overlap_snps.sh c_d_6_abr_aric_jhs_sf_wa winston_salem afr_am
+mv ../data/working/typed_overlap/afr_am.* ../data/output/typed_overlap
 mv ../data/working/typed_overlap/jhu_bdos.* ../data/output/typed_overlap
 mv ../data/working/typed_overlap/ucsf_pr.* ../data/output/typed_overlap
 rm ../data/output/typed_overlap/*.vcf
