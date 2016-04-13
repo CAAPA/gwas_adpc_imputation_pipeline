@@ -138,7 +138,7 @@ drawFreqDiffHeatMap(read.table("../data/output/geno_diff_10.txt", head=T))
 - For some sites, there are a small number of duplicate SNPs by position in the GWAS dataset. All such SNPs are removed. 
 - The following PLINK parameters were used for the SNP QC (both GWAS and ADPC): <code>--maf 0.0001 --geno 0.05 --hwe 0.0001</code>. It may be a bit hard to justify this HWE threshold since 10^(-6) is what is normally used. 10^(-4) was the setting that Nick originally in his pipeline documentation recommended, and I carried it forward. To me it makes sense to use a slightly stringent threshold as there seemed to have been a lot of quality issues with the ADPC chip. The following link also uses this threshold: http://hrsonline.isr.umich.edu/sitedocs/genetics/HRS\_QC\_REPORT\_MAR2012.pdf, and a reference to support it: http://www.ncbi.nlm.nih.gov/pubmed/18217698
 - For SNPs that are discordant between ADPC and GWAS (same SNP in the ADPC and GWAS data sets, for the same sample, with different genotype calls): if a SNP is discordant in 5% of samples or more, the SNP is deleted from the dataset, else the SNP value is set to missing for the sample(s) it is discordant for
-- For the imputation configuration, the <i>CAAPA - African American</i> reference panel was used, and the configured population was <i>AA (CAAPA)</i>
+- For the imputation configuration, the <i>CAAPA - African American</i> reference panel was used, and the configured population was <i>AA (CAAPA)</i>, with the exception of Puerto Rico, for which  we used <i>1000G Phase 3 v5</i> as reference panel and <i>Mixed</i> as population. Initially, the CAAPA reference panel was also for Puerto Rico, but then 23% of typed genotypes differed more than 10% in MAF with their imputed versions (this number was 0.5% or less for all the other cohorts).
 - When calculating CAAPA allele frequencies, the related individuals documented in <i>VCF\_DataRelease\_README\_Oct2015.pdf</i> are first removed. The remaining 883 samples are exactly the same 883 samples that we sent as the CAAPA reference panel to Michigan (checked against <i>data/raw/caapa/CAAPA_chr22_manifest_postFiltering.txt</i>)
 - For Chicago, there is one additional GOOD common sample, WG0237021-DNAA02, which was not inclduded in the original run. I don't know why...(In the Master sheet of the manifest, all flags are 0 for this sample, it is in the GOOD sheet, it is NOT in the illumina fails sheet, and NOT in the QC errors sheet.). Nick confirmed that there is no reason to remove this sample, and it will be included in the analysis.
 - For the JHU 650Y and BDOS sites, there are no AT/CG SNPs in the GWAS data sets, since the array did not capture any AT/CG SNPs (according to Nick).
@@ -218,6 +218,10 @@ Here I had to match the original PLINK files that Nick received from the investi
 - <i>ucsf\_sf</i>: UCSF/SAGE\_hg19\_NA3\4_082814\_rsid\_AfricanAmericans\_ADPC
 - <i>washington</i>: Rotimi/hgc\_all\_501\_autosome\_b37\_d8 
 - <i>winston\_salem</i>: WFU/SARP\_ADPC (note that SAD is entirely contained in SARP)
+
+### data/output/typed_output
+
+3 data sets, constituted of a joint African American cohort, Barbados cohort and Puerto Rican cohort, for the intersect of SNPs in the merged (ADPC + GWAS) typed data sets, to use as a base for estimating population structore and kinship matrices. 
 
 ### data/output/\<site\>/
 
