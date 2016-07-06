@@ -37,7 +37,7 @@ grep -i strand $stats_file | cut -f8 -d' ' | grep UN >> $flip_file
 
 for ((chr=1; chr<=22; chr++)); do
     vcftools --gzvcf ../data/output/${site}/merged/chr${chr}.vcf.gz \
-             --exclude-positions ../data/output/${site}/masked/snp_pos_chr${chr}.txt \
+             --exclude-positions ../data/output/masked/snp_pos_chr${chr}.txt \
              --recode --stdout  > ../data/working/${site}/masked_chr${chr}.vcf
 
     plink --vcf ../data/working/${site}/masked_chr${chr}.vcf \
