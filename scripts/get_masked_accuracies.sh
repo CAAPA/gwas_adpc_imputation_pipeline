@@ -22,4 +22,4 @@ cat calc_precision_recall.R | R --vanilla --args washington masked_typed_genos.v
 #bash extract_masked_snps.sh washington imputed_tgp
 #python extract_masked_genos.py washington masked_imputed_tgp masked_typed_tgp
 cat compare_masked_genos.R | R --vanilla --args washington masked_typed_tgp_genos.vcf masked_imputed_tgp_genos.vcf imputed_tgp accuracies_tgp.txt
-cat calc_precision_recall.R | R --vanilla --args washingon masked_typed_tgp_genos.vcf masked_imputed_tgp_genos.vcf imputed_tgp precision_recall_tgp.txt
+cat calc_precision_recall.R | R --vanilla --args washington masked_typed_tgp_genos.vcf masked_imputed_tgp_genos.vcf imputed_tgp precision_recall_tgp.txt
