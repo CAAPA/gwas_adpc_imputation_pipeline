@@ -1,0 +1,394 @@
+---
+title: "inspect_imputation_accuracies"
+output: html_document
+---
+
+# Summary statistics of accuracies
+
+```{r}
+
+acc <- read.delim("../data/output/jhu_abr/masked/accuracies.txt", head=T, stringsAsFactors = F)
+acc[(is.na(acc$prop_match)),]
+summary(acc$prop_match)
+pr <- read.delim("../data/output/jhu_abr/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+summary(pr$precision)
+summary(pr$recall)
+
+acc <- read.delim("../data/output/ucsf_pr/masked/accuracies.txt", head=T, stringsAsFactors = F)
+acc[(is.na(acc$prop_match)),]
+summary(acc$prop_match)
+pr <- read.delim("../data/output/ucsf_pr/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+summary(pr$precision)
+summary(pr$recall)
+
+acc <- read.delim("../data/output/washington/masked/accuracies.txt", head=T, stringsAsFactors = F)
+acc[(is.na(acc$prop_match)),]
+summary(acc$prop_match)
+pr <- read.delim("../data/output/washington/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+summary(pr$precision)
+summary(pr$recall)
+
+acc <- read.delim("../data/output/washington/masked/accuracies_tgp.txt", head=T, stringsAsFactors = F)
+acc[(is.na(acc$prop_match)),]
+summary(acc$prop_match)
+pr <- read.delim("../data/output/washington/masked/precision_recall_tgp.txt", head=T, stringsAsFactors = F)
+summary(pr$precision)
+summary(pr$recall)
+
+```
+
+
+# Histogram of accuracies
+
+```{r}
+
+acc <- read.delim("../data/output/jhu_abr/masked/accuracies.txt", head=T, stringsAsFactors = F)
+hist(acc$prop_match, main="jhu_abr", breaks = 20)
+pr <- read.delim("../data/output/jhu_abr/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+hist(pr$precision, main="jhu_abr", breaks = 20)
+hist(pr$recall, main="jhu_abr", breaks = 20)
+
+acc <- read.delim("../data/output/washington/masked/accuracies.txt", head=T, stringsAsFactors = F)
+hist(acc$prop_match, main="washington", breaks = 20)
+pr <- read.delim("../data/output/washington/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+hist(pr$precision, main="washington", breaks = 20)
+hist(pr$recall, main="washington", breaks = 20)
+
+acc <- read.delim("../data/output/washington/masked/accuracies.txt", head=T, stringsAsFactors = F)
+hist(acc$prop_match, main="washington", breaks = 20)
+pr <- read.delim("../data/output/washington/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+hist(pr$precision, main="washington", breaks = 20)
+hist(pr$recall, main="washington", breaks = 20)
+
+acc <- read.delim("../data/output/washington/masked/accuracies_tgp.txt", head=T, stringsAsFactors = F)
+hist(acc$prop_match, main="washington_tgp", breaks = 20)
+pr <- read.delim("../data/output/washington/masked/precision_recall_tgp.txt", head=T, stringsAsFactors = F)
+hist(pr$precision, main="washington_tgp", breaks = 20)
+hist(pr$recall, main="washington_tgp", breaks = 20)
+
+```
+
+# Plot accuracies against MAF
+
+```{r}
+
+acc <- read.delim("../data/output/jhu_abr/masked/accuracies.txt", head=T, stringsAsFactors = F)
+plot(acc$MAF, acc$prop_match, main="jhu_abr")
+pr <- read.delim("../data/output/jhu_abr/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+plot(pr$MAF, pr$precision, main="jhu_abr")
+
+acc <- read.delim("../data/output/ucsf_pr/masked/accuracies.txt", head=T, stringsAsFactors = F)
+plot(acc$MAF, acc$prop_match, main="ucsf_pr")
+pr <- read.delim("../data/output/ucsf_pr/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+plot(pr$MAF, pr$precision, main="ucsf_pr")
+
+acc <- read.delim("../data/output/washington/masked/accuracies_tgp.txt", head=T, stringsAsFactors = F)
+plot(acc$MAF, acc$prop_match, main="washington_tgp")
+pr <- read.delim("../data/output/washington/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+plot(pr$MAF, pr$precision, main="washington_tgp")
+
+
+```
+
+# Plot accuracies against Rsq
+
+```{r}
+
+acc <- read.delim("../data/output/jhu_abr/masked/accuracies.txt", head=T, stringsAsFactors = F)
+plot(acc$Rsq, acc$prop_match, main="jhu_abr")
+pr <- read.delim("../data/output/jhu_abr/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+plot(pr$Rsq, pr$precision, main="jhu_abr")
+
+acc <- read.delim("../data/output/ucsf_pr/masked/accuracies.txt", head=T, stringsAsFactors = F)
+plot(acc$Rsq, acc$prop_match, main="ucsf_pr")
+pr <- read.delim("../data/output/ucsf_pr/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+plot(pr$Rsq, pr$precision, main="ucsf_pr")
+
+acc <- read.delim("../data/output/washington/masked/accuracies.txt", head=T, stringsAsFactors = F)
+plot(acc$Rsq, acc$prop_match, main="washington")
+pr <- read.delim("../data/output/washington/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+plot(pr$Rsq, pr$precision, main="washington")
+
+acc <- read.delim("../data/output/washington/masked/accuracies_tgp.txt", head=T, stringsAsFactors = F)
+plot(acc$Rsq, acc$prop_match, main="washington_tgp")
+pr <- read.delim("../data/output/washington/masked/precision_recall_tgp.txt", head=T, stringsAsFactors = F)
+plot(pr$Rsq, pr$precision, main="washington_tgp")
+```
+
+### Boxplots of accuracy by site
+
+jhu_abr does best; ucsf_pr and washington seems similar; washington_tgp looks slightly better than washington
+
+#### Overall
+
+```{r}
+
+acc.all <- read.delim("../data/output/jhu_abr/masked/accuracies.txt", head=T, stringsAsFactors = F)
+acc.all$site <- "jhu_abr"
+
+acc <- read.delim("../data/output/ucsf_pr/masked/accuracies.txt", head=T, stringsAsFactors = F)
+acc$site <- "ucsf_pr"
+acc.all <- rbind(acc.all, acc)
+
+acc <- read.delim("../data/output/washington/masked/accuracies.txt", head=T, stringsAsFactors = F)
+acc$site <- "washington"
+acc.all <- rbind(acc.all, acc)
+
+acc <- read.delim("../data/output/washington/masked/accuracies_tgp.txt", head=T, stringsAsFactors = F)
+acc$site <- "washington_tgp"
+acc.all <- rbind(acc.all, acc)
+
+boxplot(prop_match ~ site, data=acc.all)
+```
+
+#### Split into 4 Rsq bins
+
+washington_tgp does better for the lower Rsq bins, not really for the highest quality bin.
+
+```{r}
+
+par(mfrow=c(2,2))
+
+bin1.acc <- acc.all[acc.all$Rsq <= 0.25,]
+bin2.acc <- acc.all[(acc.all$Rsq > 0.25) & (acc.all$Rsq <= 0.5),]
+bin3.acc <- acc.all[(acc.all$Rsq > 0.5) & (acc.all$Rsq <= 0.75),]
+bin4.acc <- acc.all[(acc.all$Rsq > 0.75) & (acc.all$Rsq <= 1),]
+
+boxplot(prop_match ~ site, data=bin1.acc, main="Rsq [0.00 - 0.25]")
+boxplot(prop_match ~ site, data=bin2.acc, main="Rsq (0.25 - 0.50]")
+boxplot(prop_match ~ site, data=bin3.acc, main="Rsq (0.50 - 0.75]")
+boxplot(prop_match ~ site, data=bin4.acc, main="Rsq (0.75 - 1.00]")
+
+barplot(c(sum(bin1.acc$site=="jhu_abr", na.rm=T)/sum(acc.all$site == "jhu_abr"), 
+          sum(bin1.acc$site=="ucsf_pr", na.rm=T)/sum(acc.all$site == "ucsf_pr"), 
+          sum(bin1.acc$site=="washington", na.rm=T)/sum(acc.all$site == "washington"), 
+          sum(bin1.acc$site=="washington_tgp", na.rm=T)/sum(acc.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="Rsq [0.00 - 0.25]")
+barplot(c(sum(bin2.acc$site=="jhu_abr", na.rm=T)/sum(acc.all$site == "jhu_abr"), 
+          sum(bin2.acc$site=="ucsf_pr", na.rm=T)/sum(acc.all$site == "ucsf_pr"), 
+          sum(bin2.acc$site=="washington", na.rm=T)/sum(acc.all$site == "washington"), 
+          sum(bin2.acc$site=="washington_tgp", na.rm=T)/sum(acc.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="Rsq [0.25 - 0.50]")
+barplot(c(sum(bin3.acc$site=="jhu_abr", na.rm=T)/sum(acc.all$site == "jhu_abr"), 
+          sum(bin3.acc$site=="ucsf_pr", na.rm=T)/sum(acc.all$site == "ucsf_pr"), 
+          sum(bin3.acc$site=="washington", na.rm=T)/sum(acc.all$site == "washington"), 
+          sum(bin3.acc$site=="washington_tgp", na.rm=T)/sum(acc.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="Rsq [0.50 - 0.75]")
+barplot(c(sum(bin4.acc$site=="jhu_abr", na.rm=T)/sum(acc.all$site == "jhu_abr"), 
+          sum(bin4.acc$site=="ucsf_pr", na.rm=T)/sum(acc.all$site == "ucsf_pr"), 
+          sum(bin4.acc$site=="washington", na.rm=T)/sum(acc.all$site == "washington"), 
+          sum(bin4.acc$site=="washington_tgp", na.rm=T)/sum(acc.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="Rsq [0.75 - 1.00]")
+
+```
+
+#### Subset into the MAF and Rsq BINs you used for filtering
+
+How many more SNPs do you loose with Washington TGP for Rsq filters
+
+```{r}
+
+par(mfrow=c(2,2))
+
+bin1.acc <- acc.all[(acc.all$MAF<= 0.005) & (acc.all$Rsq <= 0.5),]
+bin2.acc <- acc.all[(acc.all$MAF<= 0.005) & (acc.all$Rsq > 0.5),]
+bin3.acc <- acc.all[(acc.all$MAF > 0.005) & (acc.all$Rsq <= 0.3),]
+bin4.acc <- acc.all[(acc.all$MAF > 0.005) & (acc.all$Rsq > 0.3),]
+
+boxplot(prop_match ~ site, data=bin1.acc, main="MAF <= 0.005 Rsq <= 0.5")
+boxplot(prop_match ~ site, data=bin2.acc, main="MAF <= 0.005 Rsq > 0.5")
+boxplot(prop_match ~ site, data=bin3.acc, main="MAF > 0.005 Rsq <= 0.3")
+boxplot(prop_match ~ site, data=bin4.acc, main="MAF > 0.005 Rsq > 0.3")
+
+barplot(c(sum(bin1.acc$site=="jhu_abr", na.rm=T)/sum(acc.all$site == "jhu_abr"), 
+          sum(bin1.acc$site=="ucsf_pr", na.rm=T)/sum(acc.all$site == "ucsf_pr"), 
+          sum(bin1.acc$site=="washington", na.rm=T)/sum(acc.all$site == "washington"), 
+          sum(bin1.acc$site=="washington_tgp", na.rm=T)/sum(acc.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="MAF <= 0.005 Rsq <= 0.5")
+barplot(c(sum(bin2.acc$site=="jhu_abr", na.rm=T)/sum(acc.all$site == "jhu_abr"), 
+          sum(bin2.acc$site=="ucsf_pr", na.rm=T)/sum(acc.all$site == "ucsf_pr"), 
+          sum(bin2.acc$site=="washington", na.rm=T)/sum(acc.all$site == "washington"), 
+          sum(bin2.acc$site=="washington_tgp", na.rm=T)/sum(acc.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="MAF <= 0.005 Rsq > 0.5")
+barplot(c(sum(bin3.acc$site=="jhu_abr", na.rm=T)/sum(acc.all$site == "jhu_abr"), 
+          sum(bin3.acc$site=="ucsf_pr", na.rm=T)/sum(acc.all$site == "ucsf_pr"), 
+          sum(bin3.acc$site=="washington", na.rm=T)/sum(acc.all$site == "washington"), 
+          sum(bin3.acc$site=="washington_tgp", na.rm=T)/sum(acc.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="MAF > 0.005 Rsq <= 0.3")
+barplot(c(sum(bin4.acc$site=="jhu_abr", na.rm=T)/sum(acc.all$site == "jhu_abr"), 
+          sum(bin4.acc$site=="ucsf_pr", na.rm=T)/sum(acc.all$site == "ucsf_pr"), 
+          sum(bin4.acc$site=="washington", na.rm=T)/sum(acc.all$site == "washington"), 
+          sum(bin4.acc$site=="washington_tgp", na.rm=T)/sum(acc.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="MAF > 0.005 Rsq > 0.3")
+
+```
+
+### Boxplots of precision by site
+
+#### Overall
+
+```{r}
+pr.all <- read.delim("../data/output/jhu_abr/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+pr.all$site <- "jhu_abr"
+
+pr <- read.delim("../data/output/ucsf_pr/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+pr$site <- "ucsf_pr"
+pr.all <- rbind(pr.all, pr)
+
+pr <- read.delim("../data/output/washington/masked/precision_recall.txt", head=T, stringsAsFactors = F)
+pr$site <- "washington"
+pr.all <- rbind(pr.all, pr)
+
+pr <- read.delim("../data/output/washington/masked/precision_recall_tgp.txt", head=T, stringsAsFactors = F)
+pr$site <- "washington_tgp"
+pr.all <- rbind(pr.all, pr)
+
+boxplot(precision ~ site, data=pr.all)
+```
+
+#### Split into 4 Rsq bins
+
+```{r}
+
+par(mfrow=c(2,2))
+
+bin1.pr <- pr.all[pr.all$Rsq <= 0.25,]
+bin2.pr <- pr.all[(pr.all$Rsq > 0.25) & (pr.all$Rsq <= 0.5),]
+bin3.pr <- pr.all[(pr.all$Rsq > 0.5) & (pr.all$Rsq <= 0.75),]
+bin4.pr <- pr.all[(pr.all$Rsq > 0.75) & (pr.all$Rsq <= 1),]
+
+boxplot(precision ~ site, data=bin1.pr, main="Rsq [0.00 - 0.25]")
+boxplot(precision ~ site, data=bin2.pr, main="Rsq (0.25 - 0.50]")
+boxplot(precision ~ site, data=bin3.pr, main="Rsq (0.50 - 0.75]")
+boxplot(precision ~ site, data=bin4.pr, main="Rsq (0.75 - 1.00]")
+
+barplot(c(sum(bin1.pr$site=="jhu_abr", na.rm=T)/sum(pr.all$site == "jhu_abr"), 
+          sum(bin1.pr$site=="ucsf_pr", na.rm=T)/sum(pr.all$site == "ucsf_pr"), 
+          sum(bin1.pr$site=="washington", na.rm=T)/sum(pr.all$site == "washington"), 
+          sum(bin1.pr$site=="washington_tgp", na.rm=T)/sum(pr.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="Rsq [0.00 - 0.25]")
+barplot(c(sum(bin2.pr$site=="jhu_abr", na.rm=T)/sum(pr.all$site == "jhu_abr"), 
+          sum(bin2.pr$site=="ucsf_pr", na.rm=T)/sum(pr.all$site == "ucsf_pr"), 
+          sum(bin2.pr$site=="washington", na.rm=T)/sum(pr.all$site == "washington"), 
+          sum(bin2.pr$site=="washington_tgp", na.rm=T)/sum(pr.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="Rsq [0.25 - 0.50]")
+barplot(c(sum(bin3.pr$site=="jhu_abr", na.rm=T)/sum(pr.all$site == "jhu_abr"), 
+          sum(bin3.pr$site=="ucsf_pr", na.rm=T)/sum(pr.all$site == "ucsf_pr"), 
+          sum(bin3.pr$site=="washington", na.rm=T)/sum(pr.all$site == "washington"), 
+          sum(bin3.pr$site=="washington_tgp", na.rm=T)/sum(pr.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="Rsq [0.50 - 0.75]")
+barplot(c(sum(bin4.pr$site=="jhu_abr", na.rm=T)/sum(pr.all$site == "jhu_abr"), 
+          sum(bin4.pr$site=="ucsf_pr", na.rm=T)/sum(pr.all$site == "ucsf_pr"), 
+          sum(bin4.pr$site=="washington", na.rm=T)/sum(pr.all$site == "washington"), 
+          sum(bin4.pr$site=="washington_tgp", na.rm=T)/sum(pr.all$site == "washington_tgp")),
+        legend.text=c("jhu_abr", "ucsf_pr", "washington", "washington_tgp"),
+        args.legend = list(x = "bottom"),
+        main="Rsq [0.75 - 1.00]")
+
+```
+
+### Boxplots of recall by site
+
+#### Overall
+
+```{r}
+boxplot(recall ~ site, data=pr.all)
+```
+
+#### Split into 4 Rsq bins
+
+```{r}
+boxplot(recall ~ site, data=bin1.pr, main="Rsq [0.00 - 0.25]")
+boxplot(recall ~ site, data=bin2.pr, main="Rsq (0.25 - 0.50]")
+boxplot(recall ~ site, data=bin3.pr, main="Rsq (0.50 - 0.75]")
+boxplot(recall ~ site, data=bin4.pr, main="Rsq (0.75 - 1.00]")
+```
+
+### Boxplots of accuracy for MAF BINs 0.005, 0.01, 0.05, 0.1, 0.5
+
+#### Overall
+
+```{r}
+boxplot(prop_match ~ site, data=acc.all)
+```
+
+#### Split into MAF BINs
+
+```{r}
+par(mfrow=c(3,2))
+
+bin1.acc <- acc.all[(acc.all$MAF > 0) & (acc.all$MAF<= 0.005),]
+bin2.acc <- acc.all[(acc.all$MAF > 0.005) & (acc.all$MAF<= 0.01),]
+bin3.acc <- acc.all[(acc.all$MAF > 0.01) & (acc.all$MAF<= 0.05),]
+bin4.acc <- acc.all[(acc.all$MAF > 0.05) & (acc.all$MAF<= 0.1),]
+bin5.acc <- acc.all[(acc.all$MAF > 0.1) & (acc.all$MAF<= 0.5),]
+
+boxplot(prop_match ~ site, data=bin1.acc, main="MAF 0 - 0.005")
+boxplot(prop_match ~ site, data=bin2.acc, main="MAF 0.005 - 0.01")
+boxplot(prop_match ~ site, data=bin3.acc, main="MAF 0.01 - 0.05")
+boxplot(prop_match ~ site, data=bin4.acc, main="MAF 0.05 - 0.10")
+boxplot(prop_match ~ site, data=bin5.acc, main="MAF 0.1 - 0.5")
+
+```
+
+### Boxplots of precision for MAF BINs 0.005, 0.01, 0.05
+
+#### Overall
+
+```{r}
+boxplot(precision ~ site, data=pr.all)
+```
+
+#### Split into MAF BINs
+
+```{r}
+bin1.pr <- pr.all[(pr.all$MAF > 0) & (pr.all$MAF<= 0.005),]
+bin2.pr <- pr.all[(pr.all$MAF > 0.005) & (pr.all$MAF<= 0.01),]
+bin3.pr <- pr.all[(pr.all$MAF > 0.01) & (pr.all$MAF<= 0.05),]
+
+par(mfrow=c(2,2))
+boxplot(precision ~ site, data=bin1.pr, main="MAF 0 - 0.005")
+boxplot(precision ~ site, data=bin2.pr, main="MAF 0.005 - 0.01")
+boxplot(precision ~ site, data=bin3.pr, main="MAF 0.01 - 0.05")
+```
+
+### Boxplots of recall for MAF BINs 0.005, 0.01, 0.05
+
+#### Overall
+
+```{r}
+boxplot(recall ~ site, data=pr.all)
+```
+
+#### Split into MAF BINs
+
+```{r}
+par(mfrow=c(2,2))
+boxplot(recall ~ site, data=bin1.pr, main="MAF 0 - 0.005")
+boxplot(recall ~ site, data=bin2.pr, main="MAF 0.005 - 0.01")
+boxplot(recall ~ site, data=bin3.pr, main="MAF 0.01 - 0.05")
+```
+
+### Is the TGP IL33 and ST2 regions just as dense as for CAAPA? Are the new ILL33 SNPs in this data?
