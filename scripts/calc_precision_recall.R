@@ -9,7 +9,7 @@ out.file <- args[5] #precision_recall.txt
 out.file <- paste0("../data/output/", site, "/masked/", out.file)
 typed.file <- paste0("../data/output/", site, "/masked/", typed.file)
 imputed.file <- paste0("../data/output/", site, "/masked/", imputed.file)
-snp.info.prefix <- paste0("../data/output/", site, "/masked/imputed/chr")
+snp.info.prefix <- paste0("../data/output/", site, "/masked/", imputed.dir, "/chr")
 
 snp.info <- data.frame()
 for (chr in 1:22) {
